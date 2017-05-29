@@ -13,7 +13,7 @@ if (FORCE_PAUSE !== true) {
     var gc = require('lib.gc');
     var gf = require('lib.gf');
     var _ = require('lib.lodash');
-    var sai = require('lib.sai');
+    require('lib.sai');
 
     //INIT
     require('init.system');
@@ -39,7 +39,7 @@ if (FORCE_PAUSE !== true) {
 
         //CPU CHECK
         if (Game.cpu.limit > 100 || Game.cpu.tickLimit < 100 || Game.cpu.bucket < 100) {
-            sai.log('CPU: ' + Game.cpu.getUsed() + '%');
+            log('CPU: ' + Game.cpu.getUsed() + '%');
         }
         else {
             //PULSE ALL ROOMS
@@ -57,7 +57,7 @@ if (FORCE_PAUSE !== true) {
         for (var name in Memory.creeps) {
             if (!Game.creeps[name] || Memory.creeps[name] == undefined) {
                 delete Memory.creeps[name];
-                sai.log('Creep ' + name + ' died.');
+                log('Creep ' + name + ' died.');
             }
         }
 
