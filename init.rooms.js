@@ -114,7 +114,7 @@ module.exports = function (room) {
 
         //REGISTER STORAGE NEAR MINERAL
         if (!Memory.rooms[room.name].structure.storage.nearmineral || Memory.rooms[room.name].structure.storage.nearmineral === 'undefined') {
-            if (Memory.rooms[room.name].mineral.id) {
+            if (Memory.rooms[room.name].mineral) {
                 var mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
                 var mineralpos = new RoomPosition(mineral.pos.x, mineral.pos.y, room.name);
                 var storage = mineralpos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
