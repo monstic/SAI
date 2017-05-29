@@ -1,8 +1,5 @@
-module.exports = function() {
+'use strict';
+
 //LOG SHORTCUT
-    Room.prototype.log = function (msg) {
-    console.log(msg);
-}
+Room.prototype.log = ( msg ) => console.log(msg);
 
-
-};

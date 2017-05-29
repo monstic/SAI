@@ -4,8 +4,7 @@
 
 
 //START
-//LOG SHORTCUT
-const log = console.log;
+
 
 //USE THIS ONLY IF HAVE ERRORS
 var FORCE_PAUSE = false;
