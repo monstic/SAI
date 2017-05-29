@@ -120,13 +120,15 @@ module.exports = function (spawn) {
                                 }
                             }
                             if (i === 0) {
-                                if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
-                                    var totalSpawnedMiners = countCreeps('miner', spawn.pos.roomName);
-                                    var totalQueuedMiners = countQueue('miner', spawn.name);
-                                    var totalMiners = (totalSpawnedMiners+totalQueuedMiners);
-                                    if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                        addToQueue('miner', spawn.name);
-                                        i++;
+                                if (Memory.rooms[spawn.pos.roomName].mineral) {
+                                    if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
+                                        var totalSpawnedMiners = countCreeps('miner', spawn.pos.roomName);
+                                        var totalQueuedMiners = countQueue('miner', spawn.name);
+                                        var totalMiners = (totalSpawnedMiners+totalQueuedMiners);
+                                        if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                            addToQueue('miner', spawn.name);
+                                            i++;
+                                        }
                                     }
                                 }
                             }
