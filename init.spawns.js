@@ -48,8 +48,10 @@ module.exports = function (spawn) {
                         if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner) {
 
                             //PARASITES
-                            var sources = Memory.rooms[spawn.pos.roomName].sources.total;
-                            Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
+                            if (Memory.rooms[spawn.pos.roomName].sources) {
+                                var sources = Memory.rooms[spawn.pos.roomName].sources.total;
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
+                            }
 
                             //ENGINEER
                             var repairs = countRepairs(spawn.pos.roomName);
