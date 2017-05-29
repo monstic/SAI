@@ -1,4 +1,6 @@
-require('lib.sai');
+//LOG SHORTCUT
+const log = console.log;
+
 
 //CREATE DATABASES
 if (!Memory.system || Memory.system === undefined) {
