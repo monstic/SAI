@@ -1,4 +1,3 @@
-'use strict';
 // Screeting Artificial intelligence - SAI
 // [Coded by Hans]
 // Version 1.0a
