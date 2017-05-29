@@ -1,2 +1,2 @@
 //LOG SHORTCUT
-log = (msg) => console.log(msg);
+const log = (msg) => console.log(msg);
