@@ -1,5 +1,7 @@
 module.exports = function (room) {
 
+    //START ONE TIME RUN
+
     //REGISTER NEW ROOM
     if (!Memory.rooms[room.name] || Memory.rooms[room.name] === 'undefined') {
         Memory.rooms[room.name] = {};
@@ -59,7 +61,9 @@ module.exports = function (room) {
         Memory.rooms[room.name].cron[4].interval = 5;
     }
 
-    //CRON 0 [REGISTER STRUCTURES]
+    //END ONE TIME RUN
+
+    //START CRON 0 [REGISTER STRUCTURES]
     if (Memory.rooms[room.name].cron[0].lastrun < (Game.time-Memory.rooms[room.name].cron[0].interval)) {
 
 
@@ -140,7 +144,7 @@ module.exports = function (room) {
     }
     //END CRON 0
 
-    //CRON 1 [CLEANING OLD DATA]
+    //START CRON 1 [CLEANING OLD DATA]
     if (Memory.rooms[room.name].cron[1].lastrun < (Game.time-Memory.rooms[room.name].cron[1].interval)) {
 
         //DELETE UNUSED ROOMS (CRON)
