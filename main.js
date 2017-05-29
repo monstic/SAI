@@ -2,6 +2,8 @@
 // [Coded by Hans]
 // Version 1.0a
 
+//LOG SHORTCUT
+log = console.log;
 
 //START
 
@@ -13,18 +15,18 @@ if (FORCE_PAUSE !== true) {
     var gc = require('lib.gc');
     var gf = require('lib.gf');
     var _ = require('lib.lodash');
+    require('lib.sai');
+
+
+    //INIT
+    require('init.system');
+    var initCreeps = require('init.creeps');
+    var initRooms = require('init.rooms');
+    var initSpawns = require('init.spawns');
 
 
     //START LOOP
     module.exports.loop = function () {
-
-        require('lib.sai');
-
-        //INIT
-        require('init.system');
-        var initCreeps = require('init.creeps');
-        var initRooms = require('init.rooms');
-        var initSpawns = require('init.spawns');
 
         //BUCKET CHECK
         if (Game.cpu.bucket > 100) {
