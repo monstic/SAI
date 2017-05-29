@@ -16,7 +16,7 @@ if (FORCE_PAUSE !== true) {
     var sai = require('lib.sai');
 
     //INIT
-    var initSystem = require('init.system');
+    require('init.system');
     var initCreeps = require('init.creeps');
     var initRooms = require('init.rooms');
     var initSpawns = require('init.spawns');
@@ -24,8 +24,6 @@ if (FORCE_PAUSE !== true) {
 
     //START LOOP
     module.exports.loop = function () {
-
-        initSystem();
 
         //BUCKET CHECK
         if (Game.cpu.bucket > 100) {
