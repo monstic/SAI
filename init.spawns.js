@@ -42,7 +42,7 @@ module.exports = function (spawn) {
 
 
                     //START CRON 2 [SPAWNER]
-                    if (Memory.rooms[room.name].cron[2].lastrun < (Game.time-Memory.rooms[room.name].cron[2].interval)) {
+                    if (Memory.rooms[spawn.pos.roomName].cron[2].lastrun < (Game.time-Memory.rooms[spawn.pos.roomName].cron[2].interval)) {
 
                         //SPAWN RULES UPDATER
                         if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner) {
