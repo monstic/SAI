@@ -35,7 +35,7 @@ module.exports = function (spawn) {
                     }
 
                     //CREATE QUEUE LIST
-                    if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue) {
+                    if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue === undefined) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue = {};
                         console.log(spawn.name + ' queue list initialized.');
                     }
@@ -81,6 +81,7 @@ module.exports = function (spawn) {
                             var totalSpawnedHarvesters = countCreeps('harvester', spawn.pos.roomName);
                             var totalQueuedHarvesters = countQueue('harvester', spawn.name);
                             var totalHarvesters = (totalSpawnedHarvesters+totalQueuedHarvesters);
+                            log(totalHarvesters);
                             if (totalHarvesters < totalOfNecessaryHarvesters) {
                                 addToQueue('harvester', spawn.name);
                                 i++;
