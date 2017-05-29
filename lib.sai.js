@@ -1,7 +1,7 @@
 'use strict';
 
 //LOG SHORTCUT
-Room.prototype.log =
+log =
     function (msg) {
         console.log(msg);
     };
