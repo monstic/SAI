@@ -1,3 +1,3 @@
 //LOG SHORTCUT
-const log = console.log;
+Room.prototype.log = console.log;
 
