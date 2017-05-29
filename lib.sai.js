@@ -1,5 +1,5 @@
 //LIB SAI
-const log = console.log;
+log = console.log;
 
 //COUNT CONSTRUCTIONS TO BUILD
 countConstructions =
