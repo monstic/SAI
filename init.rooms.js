@@ -142,7 +142,7 @@ module.exports = function (room) {
             }
         }
 
-    Memory.rooms[room.name].cron.database.lastcheck = Game.time;
+    Memory.rooms[room.name].cron[0].lastrun = Game.time;
     }
     //END CRON 0
 
@@ -166,6 +166,8 @@ module.exports = function (room) {
                 }
             }
         }
+
+    Memory.rooms[room.name].cron[1].lastrun
     }
     //END CRON 1
 
