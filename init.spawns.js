@@ -35,7 +35,7 @@ module.exports = function (spawn) {
                     }
 
                     //CREATE QUEUE LIST
-                    if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue === undefined) {
+                    if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue = {};
                         console.log(spawn.name + ' queue list initialized.');
                     }
