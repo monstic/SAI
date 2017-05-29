@@ -1,3 +1,6 @@
+//LOG SHORTCUT
+let log = console.log;
+
 //CREATE DATABASES
 if (!Memory.system || Memory.system === undefined) {
     Memory.system = {};
