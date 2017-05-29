@@ -39,7 +39,7 @@ if (FORCE_PAUSE !== true) {
 
         //CPU CHECK
         if (Game.cpu.limit > 100 || Game.cpu.tickLimit < 100 || Game.cpu.bucket < 100) {
-            log('CPU: ' + Game.cpu.getUsed() + '%');
+            sai.log('CPU: ' + Game.cpu.getUsed() + '%');
         }
         else {
             //PULSE ALL ROOMS
@@ -57,7 +57,7 @@ if (FORCE_PAUSE !== true) {
         for (var name in Memory.creeps) {
             if (!Game.creeps[name] || Memory.creeps[name] == undefined) {
                 delete Memory.creeps[name];
-                log('Creep ' + name + ' died.');
+                sai.log('Creep ' + name + ' died.');
             }
         }
 

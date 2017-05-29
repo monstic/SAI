@@ -5,7 +5,7 @@ module.exports = function (room) {
     //REGISTER NEW ROOM
     if (!Memory.rooms[room.name] || Memory.rooms[room.name] === 'undefined') {
         Memory.rooms[room.name] = {};
-        log('Room ' + room.name + ' registered in database.');
+        sai.log('Room ' + room.name + ' registered in database.');
     }
 
     //CREATE SUMMARY
@@ -74,7 +74,7 @@ module.exports = function (room) {
             if (findMinerals.length > 0) {
                 Memory.rooms[room.name].mineral = {};
                 Memory.rooms[room.name].mineral.id = findMinerals[0].id;
-                log('Mineral type ' + findMinerals[0].mineralType + ' was found in room ' + room.name + '.');
+                sai.log('Mineral type ' + findMinerals[0].mineralType + ' was found in room ' + room.name + '.');
             }
         }
 
@@ -96,11 +96,11 @@ module.exports = function (room) {
             if (findSources.length > 0) {
                 Memory.rooms[room.name].sources = {};
                 Memory.rooms[room.name].sources.total = findSources.length;
-                log('Found ' + findSources.length + ' source(s) in room ' + room.name + '.');
+                sai.log('Found ' + findSources.length + ' source(s) in room ' + room.name + '.');
                 i = 0;
                 while (i < findSources.length) {
                     Memory.rooms[room.name].sources[i] = findSources[i].id;
-                    log('Registered source ' + findSources[i].id + ' in room ' + room.name + '.');
+                    sai.log('Registered source ' + findSources[i].id + ' in room ' + room.name + '.');
                     i++;
                 }
             }
@@ -173,7 +173,7 @@ module.exports = function (room) {
             var searchStructures;
             searchStructures = room.find(FIND_MY_STRUCTURES);
             if (searchStructures.length === 0) {
-                console.log('Deleting ' + room.name + ' from memory, no structures in this room.');
+                sai.log('Deleting ' + room.name + ' from memory, no structures in this room.');
                 delete Memory.rooms[room.name];
             }
         }
