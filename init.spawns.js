@@ -176,7 +176,7 @@ module.exports = function (spawn) {
                         }
 
                         //SAVE LAST RUN
-                        Memory.rooms[room.name].cron[2].lastrun = Game.time;
+                        Memory.rooms[spawn.pos.roomName].cron[2].lastrun = Game.time;
 
                     }
                     //END CRON 2
