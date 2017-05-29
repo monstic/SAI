@@ -64,11 +64,13 @@ module.exports = function (spawn) {
                             }
 
                             //MINER
-                            if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 1;
-                            }
-                            else {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 0;
+                            if (Memory.rooms[spawn.pos.roomName].mineral) {
+                                if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 1;
+                                }
+                                else {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 0;
+                                }
                             }
                         }
 
