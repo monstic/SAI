@@ -69,7 +69,8 @@ module.exports = function (room) {
 
         //REGISTER AVAILABLE MINERALS
         if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
-            var findMinerals = room.find(FIND_MINERALS);
+            var findMinerals;
+            findMinerals = room.find(FIND_MINERALS);
             if (findMinerals.length > 0) {
                 Memory.rooms[room.name].mineral = {};
                 Memory.rooms[room.name].mineral.id = findMinerals[0].id;
@@ -80,7 +81,8 @@ module.exports = function (room) {
         //REGISTER EXTRACTOR
         if (Memory.rooms[room.name].mineral) {
             if (!Memory.rooms[room.name].mineral.extractor || Memory.rooms[room.name].mineral.extractor === 'undefined') {
-                var extractor = room.find(FIND_STRUCTURES, { filter: (structure) => { return (structure.structureType === STRUCTURE_EXTRACTOR)}});
+                var extractor;
+                extractor = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_EXTRACTOR)});
                 if (extractor.length > 0) {
                     Memory.rooms[room.name].mineral.extractor = extractor[0].id;
                 }
@@ -89,7 +91,8 @@ module.exports = function (room) {
 
         //REGISTER AVAILABLE SOURCES
         if (!Memory.rooms[room.name].sources || Memory.rooms[room.name].sources === 'undefined') {
-            var findSources = room.find(FIND_SOURCES);
+            var findSources;
+            findSources = room.find(FIND_SOURCES);
             if (findSources.length > 0) {
                 Memory.rooms[room.name].sources = {};
                 Memory.rooms[room.name].sources.total = findSources.length;
@@ -103,46 +106,62 @@ module.exports = function (room) {
             }
         }
 
-        //REGISTER CONTAINER NEAR CONTROLLER
-        if (!Memory.rooms[room.name].structure.container.nearcontroller || Memory.rooms[room.name].structure.container.nearcontroller === 'undefined') {
-            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-            var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
-            if (container[0]) {
-                Memory.rooms[room.name].structure.container.nearcontroller = container[0].id;
-            }
-        }
+        //REGISTER STRUCTURES
+        if (Memory.rooms[room.name].structure) {
 
-        //REGISTER STORAGE NEAR MINERAL
-        if (!Memory.rooms[room.name].structure.storage.nearmineral || Memory.rooms[room.name].structure.storage.nearmineral === 'undefined') {
-            if (Memory.rooms[room.name].mineral) {
-                var mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
-                var mineralpos = new RoomPosition(mineral.pos.x, mineral.pos.y, room.name);
-                var storage = mineralpos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
-                if (storage[0]) {
-                    Memory.rooms[room.name].structure.storage.nearmineral = storage[0].id;
-                }
-            }
-        }
-
-
-
-        //REGISTER TOWERS
-        if (!Memory.rooms[room.name].structure.tower || Memory.rooms[room.name].structure.tower === 'undefined') {
-            var towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
-            if (towers.length > 0) {
-                Memory.rooms[room.name].structure.tower.total = towers.length;
-                var i = 0;
-                while (i < towers.length) {
-                    if (!Memory.rooms[room.name].structure.tower[i] || Memory.rooms[room.name].structure.tower[i] === 'undefined') {
-                        Memory.rooms[room.name].structure.tower[i] = {};
-                        Memory.rooms[room.name].structure.tower[i] = towers[i].id;
+            //REGISTER CONTAINER NEAR CONTROLLER
+            if (Memory.rooms[room.name].structure.container) {
+                if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
+                    var controller;
+                    var container;
+                    controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
+                    container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
+                    if (container[0]) {
+                        Memory.rooms[room.name].structure.container.controller = container[0].id;
                     }
-                    i++;
+                }
+            }
+
+            //REGISTER STORAGES NEAR MINERAL
+            if (Memory.rooms[room.name].structure.storage) {
+                if (!Memory.rooms[room.name].structure.storage.mineral || Memory.rooms[room.name].structure.storage.mineral === 'undefined') {
+                    if (Memory.rooms[room.name].mineral) {
+                        var mineral;
+                        var mineralpos;
+                        var storage;
+                        mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
+                        mineralpos = new RoomPosition(mineral.pos.x, mineral.pos.y, room.name);
+                        storage = mineralpos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
+                        if (storage[0]) {
+                            Memory.rooms[room.name].structure.storage.mineral = storage[0].id;
+                        }
+                    }
+                }
+            }
+
+            //REGISTER TOWERS
+            if (!Memory.rooms[room.name].structure.tower || Memory.rooms[room.name].structure.tower === 'undefined') {
+                var towers;
+                towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
+                if (towers.length > 0) {
+                    Memory.rooms[room.name].structure.tower.total = towers.length;
+                    var i = 0;
+                    while (i < towers.length) {
+                        if (!Memory.rooms[room.name].structure.tower[i] || Memory.rooms[room.name].structure.tower[i] === 'undefined') {
+                            Memory.rooms[room.name].structure.tower[i] = {};
+                            Memory.rooms[room.name].structure.tower[i] = towers[i].id;
+                        }
+                        i++;
+                    }
                 }
             }
         }
 
-    Memory.rooms[room.name].cron[0].lastrun = Game.time;
+
+        //SAVE LAST RUN
+        Memory.rooms[room.name].cron[0].lastrun = Game.time;
+
+
     }
     //END CRON 0
 
@@ -151,23 +170,17 @@ module.exports = function (room) {
 
         //DELETE UNUSED ROOMS (CRON)
         if (Memory.rooms[room.name]) {
-
-            if (!Memory.rooms[room.name].info.lastseen) {
-                var searchStructures = room.find(FIND_MY_STRUCTURES);
-                if (searchStructures.length === 0) {
-                    console.log('Deleting ' + room.name + ' from memory, no structures in this room.');
-                    delete Memory.rooms[room.name];
-                }
-            }
-            else {
-                if (Memory.rooms[room.name].info.lastseen < (Game.time - Memory.rooms[room.name].config.deleteemptyroomsafter)) {
-                    console.log(`Deleting empty ${room.name} from memory, older than 500 tickes`);
-                    delete Memory.rooms[room.name];
-                }
+            var searchStructures;
+            searchStructures = room.find(FIND_MY_STRUCTURES);
+            if (searchStructures.length === 0) {
+                console.log('Deleting ' + room.name + ' from memory, no structures in this room.');
+                delete Memory.rooms[room.name];
             }
         }
 
-    Memory.rooms[room.name].cron[1].lastrun
+        //SAVE LAST RUN
+        Memory.rooms[room.name].cron[1].lastrun = Game.time;
+
     }
     //END CRON 1
 
