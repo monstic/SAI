@@ -70,3 +70,8 @@ if (FORCE_PAUSE !== true) {
 
 //END
 
+// Screeting Artificial intelligence - SAI
+// http://www.screepting.tk
+
+
+
