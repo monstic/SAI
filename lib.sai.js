@@ -77,14 +77,16 @@ countCreepsInSource =
 //CHECK IF IS SCHEDULED
 countQueue =
     function (type, spawnname) {
-        if (Memory.rooms[spawnname].spawns) {
-            if (type === 'all') {
-                var total = _.sum(Memory.spawns[spawnname].queue, (s) => s.spawnname === spawnname);
-                return total;
-            }
-            else {
-                var total = _.sum(Memory.spawns[spawnname].queue, (s) => (s.type === type && s.spawnname === spawnname));
-                return total;
+        if (Memory.rooms[spawnname]) {
+            if (Memory.rooms[spawnname].spawns) {
+                if (type === 'all') {
+                    var total = _.sum(Memory.spawns[spawnname].queue, (s) => s.spawnname === spawnname);
+                    return total;
+                }
+                else {
+                    var total = _.sum(Memory.spawns[spawnname].queue, (s) => (s.type === type && s.spawnname === spawnname));
+                    return total;
+                }
             }
         }
     };
