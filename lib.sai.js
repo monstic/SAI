@@ -67,6 +67,37 @@ countCreepsInTarget =
         return i;
     };
 
+//COUNT CREEPS IN SAME SOURCE
+countCreepsInSource =
+    function (sourceid) {
+        var total = (_.sum(Game.creeps, (c) => c.memory.sourceId === sourceid));
+        return total;
+    };
+
+
+//CLEAN TARGET
+cleanTarget =
+    function (creep) {
+        delete creep.memory.targetId;
+        delete creep.memory.targetRoom;
+        delete creep.memory.targetType;
+    };
+
+//SIGN CONTROLLER
+signController =
+    function (creep) {
+        if(creep.room.controller) {
+            if(creep.room.controller.my) {
+                if(!creep.room.controller.sign) {
+                    var SignMessage = Memory.system.signmsg;
+                    if(creep.signController(creep.room.controller, SignMessage) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(creep.room.controller);
+                    }
+                }
+            }
+        }
+    };
+
 //GET RAMDOM POSITION WITHOUT STRUCTURES
 getRandomFreePos =
     function (startPos, distance) {
