@@ -1,5 +1,3 @@
-'use strict';
-
 //LOG SHORTCUT
 log =
     function (msg) {
