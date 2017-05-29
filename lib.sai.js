@@ -1,2 +1,4 @@
 //LOG SHORTCUT
-log = (msg) => console.log(msg);
+Room.prototype.log = function(msg) {
+    console.log(msg);
+}
