@@ -19,9 +19,6 @@ if (FORCE_PAUSE !== true) {
 
     //INIT
     require('init.system');
-    var initCreeps = require('init.creeps');
-    var initRooms = require('init.rooms');
-    var initSpawns = require('init.spawns');
 
 
     //START LOOP
@@ -31,6 +28,7 @@ if (FORCE_PAUSE !== true) {
         if (Game.cpu.bucket > 100) {
 
             //PULSE ALL CREEPS
+            var initCreeps = require('init.creeps');
             for (var creepName in Game.creeps) {
                 initCreeps(Game.creeps[creepName]);
                 var creep = Game.creeps[creepName];
@@ -45,11 +43,13 @@ if (FORCE_PAUSE !== true) {
         }
         else {
             //PULSE ALL ROOMS
+            var initRooms = require('init.rooms');
             for (var roomName in Game.rooms) {
                 initRooms(Game.rooms[roomName]);
             }
 
             //PULSE ALL SPAWNS
+            var initSpawns = require('init.spawns');
             for (var spawnName in Game.spawns) {
                 initSpawns(Game.spawns[spawnName]);
             }
