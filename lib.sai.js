@@ -1,2 +1,2 @@
 //LOG SHORTCUT
-log = console.log;
+let log = console.log;
