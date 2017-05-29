@@ -154,7 +154,7 @@ module.exports = function (room) {
                 }
             }
             else {
-                if (Memory.rooms[room.name].info.lastseen < (Game.time - Memory.rooms[room.name].config.deleteemptyroomsafter) {
+                if (Memory.rooms[room.name].info.lastseen < (Game.time - Memory.rooms[room.name].config.deleteemptyroomsafter)) {
                     console.log(`Deleting empty ${room.name} from memory, older than 500 tickes`);
                     delete Memory.rooms[room.name];
                 }
