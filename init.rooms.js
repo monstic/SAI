@@ -89,7 +89,7 @@ module.exports = function (room) {
 
         //REGISTER AVAILABLE SOURCES
         if (!Memory.rooms[room.name].sources || Memory.rooms[room.name].sources === 'undefined') {
-            findSources = room.find(FIND_SOURCES);
+            var findSources = room.find(FIND_SOURCES);
             if (findSources.length > 0) {
                 Memory.rooms[room.name].sources = {};
                 Memory.rooms[room.name].sources.total = findSources.length;
