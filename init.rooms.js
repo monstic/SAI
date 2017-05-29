@@ -13,6 +13,12 @@ module.exports = function (room) {
         Memory.rooms[room.name].info.constructionslevel = 1;
     }
 
+    //CREATE CONFIG
+    if (!Memory.rooms[room.name].config || Memory.rooms[room.name].config === 'undefined') {
+        Memory.rooms[room.name].config = {};
+        Memory.rooms[room.name].config.deleteemptyroomsafter = 500;
+    }
+
     //CREATE SUMMARY
     if (!Memory.rooms[room.name].structure || Memory.rooms[room.name].structure === 'undefined') {
         Memory.rooms[room.name].structure = {};
@@ -116,7 +122,7 @@ module.exports = function (room) {
 
         //REGISTER TOWERS
         if (!Memory.rooms[room.name].structure.tower || Memory.rooms[room.name].structure.tower === 'undefined') {
-            var towers = room.find(FIND_STRUCTURES, { filter: (structure) => { return (structure.structureType === STRUCTURE_TOWER)}});
+            var towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
             if (towers.length > 0) {
                 Memory.rooms[room.name].structure.tower.total = towers.length;
                 var i = 0;
@@ -129,6 +135,7 @@ module.exports = function (room) {
                 }
             }
         }
+
     Memory.rooms[room.name].cron.database.lastcheck = Game.time;
     }
     //END CRON 0
@@ -136,30 +143,28 @@ module.exports = function (room) {
     //CRON 1 [CLEANING OLD DATA]
     if (Memory.rooms[room.name].cron[1].lastrun < (Game.time-Memory.rooms[room.name].cron[1].interval)) {
 
-    //DELETE UNUSED ROOMS (CRON)
-    if (Memory.rooms[room.name]) {
+        //DELETE UNUSED ROOMS (CRON)
+        if (Memory.rooms[room.name]) {
 
-    if (Memory.rooms[room.name].cron.deleterooms.lastcheck < (Game.time-Memory.rooms[room.name].cron.deleterooms.checkinterval)) {
-        if (!Memory.rooms[room.name].cron.deleterooms.lastseen) {
-            var searchStructures = room.find(FIND_MY_STRUCTURES);
-            if (searchStructures.length === 0) {
-                console.log('Deleting ' + room.name + ' from memory, no creeps in this room.');
-                delete Memory.rooms[room.name];
+            if (!Memory.rooms[room.name].info.lastseen) {
+                var searchStructures = room.find(FIND_MY_STRUCTURES);
+                if (searchStructures.length === 0) {
+                    console.log('Deleting ' + room.name + ' from memory, no structures in this room.');
+                    delete Memory.rooms[room.name];
+                }
             }
-        }
-        else {
-            if (Memory.rooms[room.name].cron.deleterooms.lastseen < Game.time-Memory.rooms[room.name].cron.deleterooms.after) {
-                console.log(`Deleting ${room.name} from memory older than 1000000 tickes`);
-                delete Memory.rooms[room.name];
+            else {
+                if (Memory.rooms[room.name].info.lastseen < (Game.time - Memory.rooms[room.name].config.deleteemptyroomsafter) {
+                    console.log(`Deleting empty ${room.name} from memory, older than 500 tickes`);
+                    delete Memory.rooms[room.name];
+                }
             }
         }
     }
-}
-
-
+    //END CRON 1
 
 
 };
-
+//END ROOM
 
 

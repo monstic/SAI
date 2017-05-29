@@ -1,10 +1,6 @@
 //LOG SHORTCUT
 const log = console.log;
 
-//UPDATE MESSAFE
-const UPDATE_MESSAGE = "💾 FILES UPDATED!";
-log(UPDATE_MESSAGE);
-
 //CREATE DATABASES
 if (!Memory.system || Memory.system === undefined) {
     Memory.system = {};
