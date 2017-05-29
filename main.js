@@ -3,7 +3,7 @@
 // Version 1.0a
 
 //LOG SHORTCUT
-log = console.log;
+const log = console.log;
 
 //START
 
