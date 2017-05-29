@@ -2,8 +2,6 @@
 // [Coded by Hans]
 // Version 1.0a
 
-//LOG SHORTCUT
-const log = console.log;
 
 //START
 
