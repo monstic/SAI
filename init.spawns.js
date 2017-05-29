@@ -77,7 +77,7 @@ module.exports = function (spawn) {
                         //POPULATE QUEUE LIST
                         var i = 0;
                         if (i === 0) {
-                            var totalOfNecessaryHarvesters = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.harvester;
+                            var totalOfNecessaryHarvesters = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester;
                             var totalSpawnedHarvesters = countCreeps('harvester', spawn.pos.roomName);
                             var totalQueuedHarvesters = countQueue('harvester', spawn.name);
                             var totalHarvesters = (totalSpawnedHarvesters+totalQueuedHarvesters);
@@ -91,7 +91,7 @@ module.exports = function (spawn) {
                             var totalSpawnedTransporters = countCreeps('transporter', spawn.pos.roomName);
                             var totalQueuedTransporters = countQueue('transporter', spawn.name);
                             var totalTransporters = (totalSpawnedTransporters+totalQueuedTransporters);
-                            if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.transporter && totalHarvesters >= sources) {
+                            if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter && totalHarvesters >= sources) {
                                 addToQueue('transporter', spawn.name);
                                 i++;
                             }
@@ -104,7 +104,7 @@ module.exports = function (spawn) {
                                     var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
                                     var totalQueuedEngineers = countQueue('engineer', spawn.name);
                                     var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
-                                    if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.transporter) {
+                                    if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
                                         addToQueue('engineer', spawn.name);
                                         i++;
                                     }
@@ -114,7 +114,7 @@ module.exports = function (spawn) {
                                 var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
                                 var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
                                 var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
-                                if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.upgrader && totalEngineers >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.engineer) {
+                                if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalEngineers >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
                                     addToQueue('upgrader', spawn.name);
                                     i++;
                                 }
@@ -124,7 +124,7 @@ module.exports = function (spawn) {
                                     var totalSpawnedMiners = countCreeps('miner', spawn.pos.roomName);
                                     var totalQueuedMiners = countQueue('miner', spawn.name);
                                     var totalMiners = (totalSpawnedMiners+totalQueuedMiners);
-                                    if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.transporter) {
+                                    if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
                                         addToQueue('miner', spawn.name);
                                         i++;
                                     }
@@ -134,7 +134,7 @@ module.exports = function (spawn) {
                                 var totalSpawnedGuards = countCreeps('guard', spawn.pos.roomName);
                                 var totalQueuedGuards = countQueue('guard', spawn.name);
                                 var totalGuards = (totalSpawnedGuards+totalQueuedGuards);
-                                if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.guard && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.transporter) {
+                                if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
                                     addToQueue('guard', spawn.name);
                                     i++;
                                 }
@@ -143,7 +143,7 @@ module.exports = function (spawn) {
                                 var totalSpawnedClaimers = countCreeps('claimer', spawn.pos.roomName);
                                 var totalQueuedClaimers = countQueue('claimer', spawn.name);
                                 var totalClaimers = (totalSpawnedClaimers+totalQueuedClaimers);
-                                if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.claimer && totalGuards >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawn.guard) {
+                                if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer && totalGuards >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
                                     addToQueue('claimer', spawn.name);
                                     i++;
                                 }
