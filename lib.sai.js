@@ -1,3 +1,2 @@
 //LOG SHORTCUT
-log = console.log;
-
+const log = console.log;
