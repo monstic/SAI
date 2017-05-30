@@ -165,7 +165,7 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     //VISUALS
                     new RoomVisual(creep.room.name).text('🔌', (target.pos.x), (target.pos.y));
-                    if ((_.sum(target.store) < 2000)) {
+                    if ((_.sum(target.store) < 1000000)) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
                         }
