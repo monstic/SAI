@@ -428,13 +428,13 @@ showRoomInfoInScreen =
             var paths = Memory.rooms[room.name].trail;
             for (var path in paths) {
                 if (paths[path].lastused > (Game.time-16) && paths[path].lastused < (Game.time-10)) {
-                    new RoomVisual(room.name).text('🔷', (paths[path].x), (paths[path].y + 0.05), {size: 0.10, opacity: 0.8, color: '#ffff00'});
+                    new RoomVisual(room.name).text('🔵', (paths[path].x), (paths[path].y + 0.05), {size: 0.10, opacity: 0.8, color: '#ffff00'});
                 }
                 if (paths[path].lastused > (Game.time-11) && paths[path].lastused < (Game.time-5)) {
-                    new RoomVisual(room.name).text('🔷', (paths[path].x), (paths[path].y + 0.05), {size: 0.10, opacity: 0.8, color: '#ffff00'});
+                    new RoomVisual(room.name).text('🔵', (paths[path].x), (paths[path].y + 0.05), {size: 0.10, opacity: 0.8, color: '#ffff00'});
                 }
                 if (paths[path].lastused > (Game.time-6) && paths[path].lastused < (Game.time+1)) {
-                    new RoomVisual(room.name).text('🔷', (paths[path].x), (paths[path].y + 0.05), {size: 0.15, opacity: 0.8, color: '#ffff00'});
+                    new RoomVisual(room.name).text('🔵', (paths[path].x), (paths[path].y + 0.05), {size: 0.15, opacity: 0.8, color: '#ffff00'});
                 }
                 if (paths[path].usedtimes >= 20 && paths[path].lastused < (Game.time-10)) {
                     new RoomVisual(room.name).text('⬛', (paths[path].x), (paths[path].y + 0.05), {size: 0.15, opacity: 0.8, color: 'black'});
@@ -445,15 +445,15 @@ showRoomInfoInScreen =
                     // cannot add more visuals in this tick
                     var room = Game.rooms[roomName];
                     //ROOM STATS
-                    new RoomVisual(roomName).text('ðŸ—º ' + roomName, 1, 1, {align: 'left'});
-                    new RoomVisual(roomName).text('âš™ LVL ' + room.controller.level, 6, 1, {align: 'left'});
+                    new RoomVisual(roomName).text('🗺 ' + roomName, 1, 1, {align: 'left'});
+                    new RoomVisual(roomName).text('⚙ LVL ' + room.controller.level, 6, 1, {align: 'left'});
                     //ENERGY STATS
-                    new RoomVisual(roomName).text('ðŸ”‹ ' + parseInt((100 / Game.rooms[roomName].energyCapacityAvailable) * Game.rooms[roomName].energyAvailable) + '% [' + Game.rooms[roomName].energyAvailable + '/' + Game.rooms[roomName].energyCapacityAvailable + 'W]', 1, 2, {align: 'left'});
+                    new RoomVisual(roomName).text('🔋 ' + parseInt((100 / Game.rooms[roomName].energyCapacityAvailable) * Game.rooms[roomName].energyAvailable) + '% [' + Game.rooms[roomName].energyAvailable + '/' + Game.rooms[roomName].energyCapacityAvailable + 'W]', 1, 2, {align: 'left'});
                     //JOBS
                     var cs = countConstructions(roomName);
                     var rp = countRepairs(roomName);
-                    new RoomVisual(roomName).text('ðŸš§ ' + cs, 1, 4, {align: 'left'});
-                    new RoomVisual(roomName).text('ðŸ›  ' + rp, 1, 5, {align: 'left'});
+                    new RoomVisual(roomName).text('🚧 ' + cs, 1, 4, {align: 'left'});
+                    new RoomVisual(roomName).text('🛠 ' + rp, 1, 5, {align: 'left'});
                     //CPU STATS
                     new RoomVisual(roomName).text('CORES: ' + (Game.cpu.limit), 40, 1, {align: 'left'});
                     new RoomVisual(roomName).text('CPU: ' + parseInt(Game.cpu.getUsed()) + '%', 40, 2, {align: 'left'});
@@ -463,11 +463,11 @@ showRoomInfoInScreen =
                     //ROOM CONTROLLER
                     new RoomVisual(roomName).text('LVL ' + room.controller.level, (room.controller.pos.x), (room.controller.pos.y + 1.5), {align: 'center', size: '0.50', color: 'gray', opacity: 0.2});
                     //CREEPS STATS
-                    new RoomVisual(roomName).text('ðŸ‘· ' + countCreeps('harvester', roomName), 1, 7, {align: 'left'});
-                    new RoomVisual(roomName).text('ðŸ™â€ ' + countCreeps('upgrader', roomName), 1, 8, {align: 'left'});
-                    new RoomVisual(roomName).text('ðŸ‘³ ' + countCreeps('engineer', roomName), 1, 9, {align: 'left'});
-                    new RoomVisual(roomName).text('ðŸšš ' + countCreeps('transporter', roomName), 1, 10, {align: 'left'});
-                    new RoomVisual(roomName).text('ðŸ‘® ' + countCreeps('guard', roomName), 1, 11, {align: 'left'});
+                    new RoomVisual(roomName).text('👷 ' + countCreeps('harvester', roomName), 1, 7, {align: 'left'});
+                    new RoomVisual(roomName).text('🙍‍ ' + countCreeps('upgrader', roomName), 1, 8, {align: 'left'});
+                    new RoomVisual(roomName).text('👳 ' + countCreeps('engineer', roomName), 1, 9, {align: 'left'});
+                    new RoomVisual(roomName).text('🚚 ' + countCreeps('transporter', roomName), 1, 10, {align: 'left'});
+                    new RoomVisual(roomName).text('👮 ' + countCreeps('guard', roomName), 1, 11, {align: 'left'});
 
                 }
             }
