@@ -69,9 +69,15 @@ countCreepsInTarget =
 
 //COUNT CREEPS IN SAME SOURCE
 countCreepsInSource =
-    function (sourceid) {
-        var total = (_.sum(Game.creeps, { filter: (c) => (c.memory.sourceId === sourceid) }));
-        return total;
+    function (source) {
+        var creeps = Game.creeps;
+        var i = 0;
+        for (var creep in creeps) {
+            if (creeps[creep].memory.sourceId === source) {
+                i++;
+            }
+        }
+        return i;
     };
 
 //CHECK IF IS SCHEDULED
