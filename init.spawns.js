@@ -82,7 +82,7 @@ module.exports = function (spawn) {
                         if (totalHarvesters < totalOfNecessaryHarvesters) {
                             addToQueue('harvester', spawn.name);
                         }
-                        var sources = Memory.rooms[spawn.pos.roomName].totalsources;
+                        var sources = Memory.rooms[spawn.pos.roomName].sources.total;
                         var totalSpawnedTransporters = countCreeps('transporter', spawn.pos.roomName);
                         var totalQueuedTransporters = countQueue('transporter', spawn.name);
                         var totalTransporters = (totalSpawnedTransporters+totalQueuedTransporters);
@@ -97,8 +97,8 @@ module.exports = function (spawn) {
                                 var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
                                 var totalQueuedEngineers = countQueue('engineer', spawn.name);
                                 var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
-                                if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
                                     log(totalTransporters);
+                                if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
                                     addToQueue('engineer', spawn.name);
                                 }
                             }
