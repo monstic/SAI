@@ -40,7 +40,7 @@ var creepActFunctions = function(creep) {
                     }
                 }
 
-                if (haveSources === 3) {
+                if (haveSources >= 3) {
                     var isBusy = countCreepsInSource(sources[0]);
                     if (isBusy > 0) {
                         var isBusyToo = countCreepsInSource(sources[1]);

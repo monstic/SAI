@@ -79,7 +79,6 @@ module.exports = function (spawn) {
                         var totalSpawnedHarvesters = countCreeps('harvester', spawn.pos.roomName);
                         var totalQueuedHarvesters = countQueue('harvester', spawn.name);
                         var totalHarvesters = (totalSpawnedHarvesters+totalQueuedHarvesters);
-                        log(totalQueuedHarvesters);
                         if (totalHarvesters < totalOfNecessaryHarvesters) {
                             addToQueue('harvester', spawn.name);
                         }
