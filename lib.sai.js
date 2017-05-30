@@ -195,7 +195,7 @@ spawnProtoCreep =
         if (!spawn.spawning) {
             var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
             if (totalHarvesters === 0) {
-                delete Memory.spawns[spawnname].queue;
+                delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
                 var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
                 if(_.isString(name)) {
                     result = ('Spawning new harvester on ' + spawn.name + ' with name ' + name + '.');
@@ -205,7 +205,7 @@ spawnProtoCreep =
             else {
                 var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
                 if (totalTransporters === 0) {
-                    delete Memory.spawns[spawnname].queue;
+                    delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
                     var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
                     if(_.isString(name)) {
                         result = ('Spawning new transporter on ' + spawn.name + ' with name ' + name + '.');
@@ -300,7 +300,7 @@ spawnProtoCreep =
                             var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
                             if(_.isString(name)) {
                                 result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
-                                delete Memory.spawns[spawn.name].queue[removeFromQueue];
+                                delete Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[removeFromQueue];
                                 log(result);
                             }
                         }
