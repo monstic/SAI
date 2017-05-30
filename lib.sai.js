@@ -70,7 +70,7 @@ countCreepsInTarget =
 //COUNT CREEPS IN SAME SOURCE
 countCreepsInSource =
     function (sourceid) {
-        var total = (_.sum(Game.creeps, (c) => c.memory.sourceId === sourceid));
+        var total = (_.sum(Game.creeps, { filter: (c) => (c.memory.sourceId === sourceid)}));
         return total;
     };
 
@@ -81,11 +81,11 @@ countQueue =
         if (Memory.rooms[spawn.pos.roomName]) {
             if (Memory.rooms[spawn.pos.roomName].spawns) {
                 if (type === 'all') {
-                    var total = _.sum(Memory.spawns[spawnname].queue, (s) => s.spawnname === spawnname);
+                    var total = _.sum(Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue, (s) => s.spawnname === spawnname);
                     return total;
                 }
                 else {
-                    var total = _.sum(Memory.spawns[spawnname].queue, (s) => (s.type === type && s.spawnname === spawnname));
+                    var total = _.sum(Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue, (s) => (s.type === type && s.spawnname === spawnname));
                     return total;
                 }
             }
