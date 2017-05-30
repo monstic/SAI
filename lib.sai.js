@@ -100,6 +100,25 @@ cleanTarget =
         delete creep.memory.targetType;
     };
 
+//SET TARGET
+setTarget =
+    function (creep, targetid, type, roomname) {
+        creep.memory.targetId = targetid;
+        creep.memory.targetType = type;
+        creep.memory .targetRoom = roomname;
+        return 1;
+    };
+
+//SET SOURCE
+setSource =
+    function (creep, sourceid, type, roomname) {
+        creep.memory.sourceId = sourceid;
+        creep.memory.sourceType = type;
+        creep.memory .sourceRoom = roomname;
+        return 1;
+    };
+
+
 //SIGN CONTROLLER
 signController =
     function (creep) {
