@@ -93,6 +93,7 @@ module.exports = function (spawn) {
                         if (Memory.rooms[spawn.pos.roomName].security.underattack === 'no') {
                             var totalConstructions = countConstructions(spawn.pos.roomName);
                             var totalRepairs = countRepairs(spawn.pos.roomName);
+                            log(totalConstructions);
                             if (totalConstructions > 0 || totalRepairs > 0) {
                                 var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
                                 var totalQueuedEngineers = countQueue('engineer', spawn.name);
