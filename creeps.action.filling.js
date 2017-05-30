@@ -4,8 +4,14 @@ var creepActFunctions = function(creep) {
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
 
         if (creep.carry[RESOURCE_GHODIUM_OXIDE] > 0) {
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (s) => (s.structureType === STRUCTURE_STORAGE && s.store[RESOURCE_GHODIUM_OXIDE] < 1000000)});
-            if (target !== 'undefined' && target) {
+            if (Memory.rooms[creep.room.name].structure.storage.mineral) {
+                var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
+            }
+            else {
+                var target = null;
+            }
+            // if one was found
+            if (target !== null && (_.sum(target.store) < 1000000)) {
                 setTarget(creep, target.id, 'LOWSTO', target.room.name);
             }
         }
