@@ -4,154 +4,32 @@ var creepActFunctions = function(creep) {
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         //recharging
         if (creep.memory.action === 'recharging') {
-            if (Memory.rooms[creep.room.name].links) {
-                if (Memory.rooms[creep.room.name].links.default) {
-                    var priority0id = Memory.rooms[creep.room.name].links.default.to;
-                    var priority0 = Game.getObjectById(priority0id);
-                    var isInRange = creep.pos.findInRange(FIND_STRUCTURES, 5, { filter: (s) => (s.structureType === STRUCTURE_LINK) && s.energy > 0});
-                    if ((priority0 && priority0.energy > 0) && isInRange[0]) {
-                        creep.memory.targetId = priority0.id;
-                        creep.memory.targetType = 'HIGST';
-                        creep.memory.targetRoom = priority0.room.name;
-                    }
-                    else {
-                        /** @type {StructureContainer} */
-                        let container;
-                        // if the Creep should look for containers
-                        if (creep || creep !== undefined) {
-                            // find closest container
-                            container = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0});
-                            // if one was found
-                            if (container !== null) {
-                                creep.memory.targetId = container.id;
-                                creep.memory.targetType = 'HIGCT';
-                                creep.memory.targetRoom = creep.room.name;
-                            }
-                            else {
-                                if (Memory.rooms[creep.room.name].links) {
-                                    if (Memory.rooms[creep.room.name].links.default) {
-                                        var priority0id = Memory.rooms[creep.room.name].links.default.to;
-                                        var priority0 = Game.getObjectById(priority0id);
-                                        if (priority0 && priority0.energy > 0) {
-                                            creep.memory.targetId = priority0.id;
-                                            creep.memory.targetType = 'HIGST';
-                                            creep.memory.targetRoom = priority0.room.name;
-                                        }
-                                        else {
-                                            var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-                                            if (droppedSources) {
-                                                creep.memory.targetId = droppedSources.id;
-                                                creep.memory.targetType = 'DROP';
-                                                creep.memory.targetRoom = creep.room.name;
-                                            }
-                                            else {
-                                                creep.say('⚡?');
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-                                        if (droppedSources) {
-                                            creep.memory.targetId = droppedSources.id;
-                                            creep.memory.targetType = 'DROP';
-                                            creep.memory.targetRoom = creep.room.name;
-                                        }
-                                        else {
-                                            creep.say('⚡?');
-                                        }
-                                    }
-                                }
-                                else {
-                                    var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-                                    if (droppedSources) {
-                                        creep.memory.targetId = droppedSources.id;
-                                        creep.memory.targetType = 'DROP';
-                                        creep.memory.targetRoom = creep.room.name;
-                                    }
-                                    else {
-                                        creep.say('⚡?');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    /** @type {StructureContainer} */
-                    let container;
-                    // if the Creep should look for containers
-                    if (creep || creep !== undefined) {
-                        // find closest container
-                        container = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0});
-                        // if one was found
-                        if (container !== null) {
-                            creep.memory.targetId = container.id;
-                            creep.memory.targetType = 'HIGCT';
-                            creep.memory.targetRoom = creep.room.name;
-                        }
-                        else {
-                            if (Memory.rooms[creep.room.name].links) {
-                                if (Memory.rooms[creep.room.name].links.default) {
-                                    var priority0id = Memory.rooms[creep.room.name].links.default.to;
-                                    var priority0 = Game.getObjectById(priority0id);
-                                    if (priority0 && priority0.energy > 0) {
-                                        creep.memory.targetId = priority0.id;
-                                        creep.memory.targetType = 'HIGST';
-                                        creep.memory.targetRoom = priority0.room.name;
-                                    }
-                                }
-                            }
-                            else {
-                                var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-                                if (droppedSources) {
-                                    creep.memory.targetId = priority0.id;
-                                    creep.memory.targetType = 'DROP';
-                                    creep.memory.targetRoom = priority0.room.name;
-                                }
-                                else {
-                                    creep.say('⚡?');
-                                }
-                            }
-                        }
-                    }
-                }
+            var containerId = Memory.rooms[creep.room.name].structure.container.controller;
+            var container = Game.getObjectById(containerId);
+            // if one was found
+            if (container !== null && container.store.energy > 0) {
+                creep.memory.targetId = container.id;
+                creep.memory.targetType = 'HIGCT';
+                creep.memory.targetRoom = creep.room.name;
             }
             else {
-                /** @type {StructureContainer} */
-                let container;
-                // if the Creep should look for containers
-                if (creep || creep !== undefined) {
-                    // find closest container
-                    container = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE) && s.store[RESOURCE_ENERGY] > 0});
-                    // if one was found
-                    if (container !== null) {
-                        creep.memory.targetId = container.id;
-                        creep.memory.targetType = 'HIGCT';
+                var storageId = Memory.rooms[creep.room.name].structure.storage.mineral;
+                var storage = Game.getObjectById(storageId);
+                // if one was found
+                if (storage !== null && ((_.sum(target.store) > 0))) {
+                    creep.memory.targetId = storage.id;
+                    creep.memory.targetType = 'HIGSTO';
+                    creep.memory.targetRoom = creep.room.name;
+                }
+                else {
+                    var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+                    if (droppedSources) {
+                        creep.memory.targetId = droppedSources.id;
+                        creep.memory.targetType = 'DROP';
                         creep.memory.targetRoom = creep.room.name;
                     }
                     else {
-                        if (Memory.rooms[creep.room.name].links) {
-                            if (Memory.rooms[creep.room.name].links.default) {
-                                var priority0id = Memory.rooms[creep.room.name].links.default.to;
-                                var priority0 = Game.getObjectById(priority0id);
-                                if (priority0 && priority0.energy > 0) {
-                                    creep.memory.targetId = priority0.id;
-                                    creep.memory.targetType = 'HIGST';
-                                    creep.memory.targetRoom = priority0.room.name;
-                                }
-                            }
-                        }
-                        else {
-                            var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-                            if (droppedSources) {
-                                creep.memory.targetId = priority0.id;
-                                creep.memory.targetType = 'DROP';
-                                creep.memory.targetRoom = priority0.room.name;
-                            }
-                            else {
-                                creep.say('⚡?');
-                            }
-                        }
+                        creep.say('⚡?');
                     }
                 }
             }
@@ -161,28 +39,34 @@ var creepActFunctions = function(creep) {
     if (creep.memory.targetId) {
 
         if (creep.memory.action === 'recharging') {
-            if (creep.memory.targetType === 'HIGST') {
-                targetId = creep.memory.targetId;
-                structureToExtract = Game.getObjectById(targetId);
-                if (structureToExtract) {
-                    if (structureToExtract.energy > 0 && structureToExtract.energy !== null) {
-                        //VISUALS
-                        new RoomVisual(creep.room.name).text('⛽', (structureToExtract.pos.x + 0.1), (structureToExtract.pos.y + 0.2), {opacity: 0.8});
-                        if (creep.withdraw(structureToExtract, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(structureToExtract, {reusePath: true});
+            if (creep.memory.targetType === 'LOWSTO') {
+                target = Game.getObjectById(creep.memory.targetId);
+                if (target) {
+                    //VISUALS
+                    new RoomVisual(creep.room.name).text('🔌', (target.pos.x), (target.pos.y));
+                    if ((_.sum(target.store) > 0)) {
+                        if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target);
                         }
-                        else if (creep.withdraw(structureToExtract) === ERR_BUSY) {
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             creep.say('❗');
                         }
-                        else if (creep.withdraw(structureToExtract) === ERR_FULL) {
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_FULL) {
                             creep.say('❗');
                         }
-                        else if (creep.withdraw(structureToExtract) === ERR_TIRED) {
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_TIRED) {
                             creep.say('❗');
                         }
-                        else if (creep.withdraw(structureToExtract) === ERR_INVALID_TARGET) {
-                        cleanTarget(creep);
-                        creep.say('❔');
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_INVALID_TARGET) {
+                            cleanTarget(creep);
+                            creep.say('❔');
+                        }
+                        else {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('|', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('-', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('|', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
                         }
                     }
                     else {

@@ -22,7 +22,6 @@ var creepActFunctions = function(creep) {
 
                 if (haveSources === 2) {
                     var isBusy = countCreepsInSource(sources[0]);
-                    log(isBusy);
                     if (isBusy > 0) {
                         var isBusyToo = countCreepsInSource(sources[1]);
                         if (isBusyToo > 0) {
