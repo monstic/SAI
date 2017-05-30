@@ -72,7 +72,9 @@ module.exports = function (room) {
             //END ONE TIME RUN
 
             //START CRON 0 [REGISTER STRUCTURES]
-            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time-Memory.rooms[room.name].cron[0].interval)) {
+            log('ok');
+            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time - Memory.rooms[room.name].cron[0].interval)) {
+                log('ok2');
 
 
                 //REGISTER AVAILABLE MINERALS
