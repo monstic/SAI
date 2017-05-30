@@ -16,7 +16,7 @@ var creepActFunctions = function(creep) {
                 var storageId = Memory.rooms[creep.room.name].structure.storage.mineral;
                 var storage = Game.getObjectById(storageId);
                 // if one was found
-                if (storage !== null && ((_.sum(target.store) > 0))) {
+                if (storage !== null && ((_.sum(storage.store) > 0))) {
                     creep.memory.targetId = storage.id;
                     creep.memory.targetType = 'HIGSTO';
                     creep.memory.targetRoom = creep.room.name;
