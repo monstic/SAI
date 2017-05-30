@@ -482,17 +482,19 @@ saveTrail =
         var placeCod = creep.pos;
         var placeCodx = creep.pos.x;
         var placeCody = creep.pos.y;
-        if (!Memory.rooms[roomname].trail[placeCod] || Memory.rooms[roomname].trail[placeCod] === 'undefined') {
-            Memory.rooms[roomname].trail[placeCod] = {};
-            Memory.rooms[roomname].trail[placeCod].usedtimes = 1;
-            Memory.rooms[roomname].trail[placeCod].lastused = Game.time;
-            Memory.rooms[roomname].trail[placeCod].x = placeCodx;
-            Memory.rooms[roomname].trail[placeCod].y = placeCody;
-        }
-        if (Memory.rooms[roomname].trail[placeCod]) {
-            var oldregister = Memory.rooms[roomname].trail[placeCod].usedtimes;
-            var newregister = (oldregister+1);
-            Memory.rooms[roomname].trail[placeCod].usedtimes = newregister;
-            Memory.rooms[roomname].trail[placeCod].lastused = Game.time;
+        if (Memory.rooms[roomname].trail) {
+            if (!Memory.rooms[roomname].trail[placeCod] || Memory.rooms[roomname].trail[placeCod] === 'undefined') {
+                Memory.rooms[roomname].trail[placeCod] = {};
+                Memory.rooms[roomname].trail[placeCod].usedtimes = 1;
+                Memory.rooms[roomname].trail[placeCod].lastused = Game.time;
+                Memory.rooms[roomname].trail[placeCod].x = placeCodx;
+                Memory.rooms[roomname].trail[placeCod].y = placeCody;
+            }
+            if (Memory.rooms[roomname].trail[placeCod]) {
+                var oldregister = Memory.rooms[roomname].trail[placeCod].usedtimes;
+                var newregister = (oldregister+1);
+                Memory.rooms[roomname].trail[placeCod].usedtimes = newregister;
+                Memory.rooms[roomname].trail[placeCod].lastused = Game.time;
+            }
         }
     };
