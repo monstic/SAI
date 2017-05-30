@@ -50,7 +50,7 @@ var creepActFunctions = function(creep) {
                                     }
                                     // if one was found
                                     if (target !== null && target.store[RESOURCE_ENERGY] < target.storeCapacity) {
-                                        setTarget(creep, Memory.rooms[creep.room.name].containers.controller, 'LOWCT', creep.room.name);
+                                        setTarget(creep, Memory.rooms[creep.room.name].structure.container.controller, 'LOWCT', creep.room.name);
                                     }
                                     else {
 
