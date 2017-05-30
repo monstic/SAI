@@ -425,7 +425,7 @@ showRoomInfoInScreen =
         var roomName = room.name;
         if (Memory.rooms[roomName]) {
             //VISUAL ROADS
-            var paths = Memory.rooms[room.name].mostusedpaths;
+            var paths = Memory.rooms[room.name].trail;
             for (var path in paths) {
                 if (paths[path].lastused > (Game.time-16) && paths[path].lastused < (Game.time-10)) {
                     new RoomVisual(room.name).text('🔷', (paths[path].x), (paths[path].y + 0.05), {size: 0.10, opacity: 0.8, color: '#ffff00'});
