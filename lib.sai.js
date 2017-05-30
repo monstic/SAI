@@ -159,7 +159,8 @@ showTarget =
 
 //ADD CREEP IN QUEUE
 addToQueue =
-    function (type, spawnname, firstaction) {
+    function (type, spawnname, goto) {
+        var spawn = Game.spawns[spawnname];
         //QUEUE LIST LIMIT
         var totalList = countQueue('all', spawnname);
         if (totalList >= 20) {
@@ -167,17 +168,17 @@ addToQueue =
         }
         else {
             var taskId = Game.time;
-            if (!Memory.spawns[spawnname].queue[taskId]) {
-                Memory.spawns[spawnname].queue[taskId] = {};
-                Memory.spawns[spawnname].queue[taskId].type = type;
-                Memory.spawns[spawnname].queue[taskId].spawnname = spawnname;
-                Memory.spawns[spawnname].queue[taskId].registertime = taskId;
+            if (!Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId]) {
+                Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId] = {};
+                Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId].type = type;
+                Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId].spawnname = spawnname;
+                Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId].registertime = taskId;
                 //OPTIONS
-                if (firstaction) {
-                    Memory.spawns[spawnname].queue[taskId].firstaction = firstaction;
+                if (goto) {
+                    Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId].goto = goto;
                 }
                 else {
-                    Memory.spawns[spawnname].queue[taskId].firstaction = 0;
+                    Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue[taskId].goto = spawn.pos.roomName;
                 }
             }
         }
