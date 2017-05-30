@@ -333,7 +333,7 @@ spawnProtoCreep =
 enableTowers =
     function (room) {
         var towers = _.filter(Game.structures, (s) => s.structureType === STRUCTURE_TOWER);
-        for (var tower in towers) {
+        for (let tower of towers) {
             var hostilesHealer = room.find(FIND_HOSTILE_CREEPS, { filter: function(object) { return object.getActiveBodyparts(HEAL) > 0}});
             if (hostilesHealer.length > 0) {
                tower.attack(hostilesHealer[0]);
