@@ -197,6 +197,10 @@ module.exports = function (room) {
             }
             //END CRON 1
         }
+
+        //LOAD MODULES
+        enableTowers(room);
+
     }
 
 };
