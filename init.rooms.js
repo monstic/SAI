@@ -73,12 +73,12 @@ module.exports = function (room) {
                 Memory.rooms[room.name].cron[2].interval = 100;
                 Memory.rooms[room.name].cron[3] = {};
                 Memory.rooms[room.name].cron[3].lastrun = (Game.time+3);
-                Memory.rooms[room.name].cron[3].interval = 5;
+                Memory.rooms[room.name].cron[3].interval = 50;
                 Memory.rooms[room.name].cron[4] = {};
                 Memory.rooms[room.name].cron[4].lastrun = (Game.time+4);
-                Memory.rooms[room.name].cron[4].interval = 5;
+                Memory.rooms[room.name].cron[4].interval = 500;
                 Memory.rooms[room.name].cron[5] = {};
-                Memory.rooms[room.name].cron[5].lastrun = (Game.time+4);
+                Memory.rooms[room.name].cron[5].lastrun = (Game.time+5);
                 Memory.rooms[room.name].cron[5].interval = 5;
             }
 
@@ -217,7 +217,7 @@ module.exports = function (room) {
             }
             //END CRON 3
 
-            //START CRON 4 [AUTO DECREASE ROADS]
+            //START CRON 4 [AUTO BUILD ROADS]
             if (Memory.rooms[room.name].cron[4].lastrun < (Game.time-Memory.rooms[room.name].cron[4].interval)) {
                 autoBuildRoads(room);
                 Memory.rooms[room.name].cron[4].lastrun = Game.time;
