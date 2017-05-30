@@ -54,9 +54,9 @@ var creepActFunctions = function(creep) {
                                     }
                                     else {
 
-                                        if (Memory.rooms[creep.room.name].storages) {
-                                            if (Memory.rooms[creep.room.name].storages.mineral) {
-                                                var target = Game.getObjectById(Memory.rooms[creep.room.name].storages.mineral);
+                                        if (Memory.rooms[creep.room.name].structure.storage) {
+                                            if (Memory.rooms[creep.room.name].structure.storage.mineral) {
+                                                var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
                                             }
                                             else {
                                                 var target = null;
