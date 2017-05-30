@@ -1,4 +1,4 @@
-﻿//LIB SAI
+//LIB SAI
 log = console.log;
 
 //COUNT CONSTRUCTIONS TO BUILD
@@ -499,6 +499,5 @@ saveTrail =
             }
         }
     };
-
 
 
