@@ -52,6 +52,12 @@ module.exports = function (room) {
                 Memory.rooms[room.name].security.underattack = 'no';
             }
 
+            //CREATE TRAIL DB
+            if (!Memory.rooms[room.name].trail || Memory.rooms[room.name].trail === 'undefined') {
+                Memory.rooms[room.name].trail = {};
+            }
+
+
 
             //CREATE CRONJOBS
             if (!Memory.rooms[room.name].cron || Memory.rooms[room.name].cron === 'undefined') {

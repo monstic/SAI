@@ -333,7 +333,7 @@ spawnProtoCreep =
 enableTowers =
     function (room) {
         var towers = _.filter(Game.structures, (s) => s.structureType === STRUCTURE_TOWER);
-        for (let tower of towers) {
+        for (var tower in towers) {
             var hostilesHealer = room.find(FIND_HOSTILE_CREEPS, { filter: function(object) { return object.getActiveBodyparts(HEAL) > 0}});
             if (hostilesHealer.length > 0) {
                tower.attack(hostilesHealer[0]);
@@ -357,9 +357,9 @@ enableTowers =
                             while (i < findConstructionSiteToRepair.length) {
                                 if (b === 0) {
                                     var pos = findConstructionSiteToRepair[i].pos;
-                                    if (Memory.rooms[room.name].mostusedpaths) {
-                                        if (Memory.rooms[room.name].mostusedpaths[pos]) {
-                                            var road = Memory.rooms[room.name].mostusedpaths[pos];
+                                    if (Memory.rooms[room.name].trail) {
+                                        if (Memory.rooms[room.name].trail[pos]) {
+                                            var road = Memory.rooms[room.name].trail[pos];
                                             if (road) {
                                                 if (road.usedtimes > 10) {
                                                     tower.repair(findConstructionSiteToRepair[i]);
@@ -474,3 +474,26 @@ showRoomInfoInScreen =
         }
     };
 
+//MAKE TRAIL
+saveTrail =
+    function (creep) {
+        var roomname = creep.room.name;
+
+        var placeCod = creep.pos;
+        var placeCodx = creep.pos.x;
+        var placeCody = creep.pos.y;
+        if (!Memory.rooms[roomname].mostusedpaths[placeCod] || Memory.rooms[roomname].mostusedpaths[placeCod] === 'undefined') {
+            Memory.rooms[roomname].mostusedpaths[placeCod] = {};
+            Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes = 1;
+            Memory.rooms[roomname].mostusedpaths[placeCod].lastused = Game.time;
+            Memory.rooms[roomname].mostusedpaths[placeCod].x = placeCodx;
+            Memory.rooms[roomname].mostusedpaths[placeCod].y = placeCody;
+        }
+        if (Memory.rooms[roomname].mostusedpaths[placeCod]) {
+            var oldregister = Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes;
+            var newregister = (Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes+1);
+            Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes = newregister;
+            Memory.rooms[roomname].mostusedpaths[placeCod].lastused = Game.time;
+        }
+
+    };
