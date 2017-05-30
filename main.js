@@ -2,9 +2,7 @@
 // [Coded by Hans]
 // Version 1.0a
 
-
 //START
-
 
 //USE THIS ONLY IF HAVE ERRORS
 var FORCE_PAUSE = false;
