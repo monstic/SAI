@@ -7,6 +7,10 @@ module.exports = function (room) {
         if (!Memory.rooms[room.name] || Memory.rooms[room.name] === 'undefined') {
             Memory.rooms[room.name] = {};
             console.log('Room ' + room.name + ' registered in database.');
+        }
+
+        //SCAN ROOM
+        if (Memory.rooms[room.name]) {
 
             //CREATE SPAWNS DATABASE
             if (!Memory.rooms[room.name].spawns || Memory.rooms[room.name].spawns === undefined) {
@@ -72,11 +76,7 @@ module.exports = function (room) {
             //END ONE TIME RUN
 
             //START CRON 0 [REGISTER STRUCTURES]
-            log('ok');
             if (Memory.rooms[room.name].cron[0].lastrun < (Game.time - Memory.rooms[room.name].cron[0].interval)) {
-                log('ok2');
-                
-
 
                 //REGISTER AVAILABLE MINERALS
                 if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
