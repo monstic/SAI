@@ -93,12 +93,12 @@ module.exports = function (spawn) {
                         if (Memory.rooms[spawn.pos.roomName].security.underattack === 'no') {
                             var totalConstructions = countConstructions(spawn.pos.roomName);
                             var totalRepairs = countRepairs(spawn.pos.roomName);
-                            log(totalTransporters);
                             if (totalConstructions > 0 || totalRepairs > 0) {
                                 var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
                                 var totalQueuedEngineers = countQueue('engineer', spawn.name);
                                 var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
                                 if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                    log(totalTransporters);
                                     addToQueue('engineer', spawn.name);
                                 }
                             }
