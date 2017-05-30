@@ -163,8 +163,8 @@ module.exports = function (room) {
                         Memory.rooms[room.name].links = {};
                     }
                     if (Memory.rooms[room.name].links) {
-                        var haveLink = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LINK)});
-                        Memory.rooms[creep.room.name].links.haveLink = haveLink.length;
+                        var haveLink = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LINK)});
+                        Memory.rooms[room.name].links.haveLink = haveLink.length;
 
                     }
 
