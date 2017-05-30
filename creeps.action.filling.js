@@ -43,8 +43,10 @@ var creepActFunctions = function(creep) {
                                 }
                                 else {
 
-                                    if (Memory.rooms[creep.room.name].containers.controller) {
-                                        var target = Game.getObjectById(Memory.rooms[creep.room.name].containers.controller);
+                                    if (Memory.rooms[creep.room.name].containers) {
+                                        if (Memory.rooms[creep.room.name].containers.controller) {
+                                            var target = Game.getObjectById(Memory.rooms[creep.room.name].containers.controller);
+                                        }
                                     }
                                     // if one was found
                                     if (target !== null && target.store[RESOURCE_ENERGY] < target.storeCapacity) {
