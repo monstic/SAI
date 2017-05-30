@@ -27,32 +27,28 @@ if (FORCE_PAUSE !== true) {
     //START LOOP
     module.exports.loop = function () {
 
-        //BUCKET CHECK
-        if (Game.cpu.bucket > 100) {
-
-            //PULSE ALL CREEPS
-            for (var creepName in Game.creeps) {
-                initCreeps(Game.creeps[creepName]);
-                var creep = Game.creeps[creepName];
-                var loadType = require('creeps.type.' + creep.memory.type);
-                loadType(creep);
-            }
-        }
-
         //CPU CHECK
         if (Game.cpu.limit > 100 || Game.cpu.tickLimit < 100 || Game.cpu.bucket < 100) {
             console.log('CPU: ' + Game.cpu.getUsed() + '%');
         }
-        else {
-            //PULSE ALL ROOMS
-            for (var roomName in Game.rooms) {
-                initRooms(Game.rooms[roomName]);
-            }
 
-            //PULSE ALL SPAWNS
-            for (var spawnName in Game.spawns) {
-                initSpawns(Game.spawns[spawnName]);
-            }
+        //PULSE ALL CREEPS
+        for (var creepName in Game.creeps) {
+            initCreeps(Game.creeps[creepName]);
+            //load types
+            var creep = Game.creeps[creepName];
+            var initCreepType = require('creeps.type.' + creep.memory.type);
+            initCreepType(creep);
+        }
+
+        //PULSE ALL ROOMS
+        for (var roomName in Game.rooms) {
+            initRooms(Game.rooms[roomName]);
+        }
+
+        //PULSE ALL SPAWNS
+        for (var spawnName in Game.spawns) {
+            initSpawns(Game.spawns[spawnName]);
         }
 
         //REMOVE DEAD CREEPS FROM MEMORY

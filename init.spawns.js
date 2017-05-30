@@ -75,81 +75,60 @@ module.exports = function (spawn) {
                         }
 
                         //POPULATE QUEUE LIST
-                        var i = 0;
-                        if (i === 0) {
-                            var totalOfNecessaryHarvesters = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester;
-                            var totalSpawnedHarvesters = countCreeps('harvester', spawn.pos.roomName);
-                            var totalQueuedHarvesters = countQueue('harvester', spawn.name);
-                            var totalHarvesters = (totalSpawnedHarvesters+totalQueuedHarvesters);
-                            log(totalQueuedHarvesters);
-                            if (totalHarvesters < totalOfNecessaryHarvesters) {
-                                addToQueue('harvester', spawn.name);
-                                i++;
-                            }
+                        var totalOfNecessaryHarvesters = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester;
+                        var totalSpawnedHarvesters = countCreeps('harvester', spawn.pos.roomName);
+                        var totalQueuedHarvesters = countQueue('harvester', spawn.name);
+                        var totalHarvesters = (totalSpawnedHarvesters+totalQueuedHarvesters);
+                        log(totalQueuedHarvesters);
+                        if (totalHarvesters < totalOfNecessaryHarvesters) {
+                            addToQueue('harvester', spawn.name);
                         }
-                        if (i === 0) {
-                            var sources = Memory.rooms[spawn.pos.roomName].totalsources;
-                            var totalSpawnedTransporters = countCreeps('transporter', spawn.pos.roomName);
-                            var totalQueuedTransporters = countQueue('transporter', spawn.name);
-                            var totalTransporters = (totalSpawnedTransporters+totalQueuedTransporters);
-                            if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter && totalHarvesters >= sources) {
-                                addToQueue('transporter', spawn.name);
-                                i++;
-                            }
+                        var sources = Memory.rooms[spawn.pos.roomName].totalsources;
+                        var totalSpawnedTransporters = countCreeps('transporter', spawn.pos.roomName);
+                        var totalQueuedTransporters = countQueue('transporter', spawn.name);
+                        var totalTransporters = (totalSpawnedTransporters+totalQueuedTransporters);
+                        if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter && totalHarvesters >= sources) {
+                            addToQueue('transporter', spawn.name);
                         }
+                        //ONLY IF ROOM IS CLEAN
                         if (Memory.rooms[spawn.pos.roomName].security.underattack === 'no') {
-                            if (i === 0) {
-                                var totalConstructions = countConstructions(spawn.pos.roomName);
-                                var totalRepairs = countRepairs(spawn.pos.roomName);
-                                if (totalConstructions > 0 || totalRepairs > 0) {
-                                    var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
-                                    var totalQueuedEngineers = countQueue('engineer', spawn.name);
-                                    var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
-                                    if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                        addToQueue('engineer', spawn.name);
-                                        i++;
+                            var totalConstructions = countConstructions(spawn.pos.roomName);
+                            var totalRepairs = countRepairs(spawn.pos.roomName);
+                            if (totalConstructions > 0 || totalRepairs > 0) {
+                                var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
+                                var totalQueuedEngineers = countQueue('engineer', spawn.name);
+                                var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
+                                if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                    addToQueue('engineer', spawn.name);
+                                }
+                            }
+                            var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
+                            var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
+                            var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
+                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalEngineers >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
+                                addToQueue('upgrader', spawn.name);
+                            }
+                            if (Memory.rooms[spawn.pos.roomName].mineral) {
+                                if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
+                                    var totalSpawnedMiners = countCreeps('miner', spawn.pos.roomName);
+                                    var totalQueuedMiners = countQueue('miner', spawn.name);
+                                    var totalMiners = (totalSpawnedMiners+totalQueuedMiners);
+                                    if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                        addToQueue('miner', spawn.name);
                                     }
                                 }
                             }
-                            if (i === 0) {
-                                var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
-                                var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
-                                var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
-                                if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalEngineers >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
-                                    addToQueue('upgrader', spawn.name);
-                                    i++;
-                                }
+                            var totalSpawnedGuards = countCreeps('guard', spawn.pos.roomName);
+                            var totalQueuedGuards = countQueue('guard', spawn.name);
+                            var totalGuards = (totalSpawnedGuards+totalQueuedGuards);
+                            if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                addToQueue('guard', spawn.name);
                             }
-                            if (i === 0) {
-                                if (Memory.rooms[spawn.pos.roomName].mineral) {
-                                    if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
-                                        var totalSpawnedMiners = countCreeps('miner', spawn.pos.roomName);
-                                        var totalQueuedMiners = countQueue('miner', spawn.name);
-                                        var totalMiners = (totalSpawnedMiners+totalQueuedMiners);
-                                        if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                            addToQueue('miner', spawn.name);
-                                            i++;
-                                        }
-                                    }
-                                }
-                            }
-                            if (i === 0) {
-                                var totalSpawnedGuards = countCreeps('guard', spawn.pos.roomName);
-                                var totalQueuedGuards = countQueue('guard', spawn.name);
-                                var totalGuards = (totalSpawnedGuards+totalQueuedGuards);
-                                if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                    addToQueue('guard', spawn.name);
-                                    i++;
-                                }
-                            }
-                            if (i === 0) {
-                                var totalSpawnedClaimers = countCreeps('claimer', spawn.pos.roomName);
-                                var totalQueuedClaimers = countQueue('claimer', spawn.name);
-                                var totalClaimers = (totalSpawnedClaimers+totalQueuedClaimers);
-                                if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer && totalGuards >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
-                                    addToQueue('claimer', spawn.name);
-                                    i++;
-                                }
+                            var totalSpawnedClaimers = countCreeps('claimer', spawn.pos.roomName);
+                            var totalQueuedClaimers = countQueue('claimer', spawn.name);
+                            var totalClaimers = (totalSpawnedClaimers+totalQueuedClaimers);
+                            if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer && totalGuards >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
+                                addToQueue('claimer', spawn.name);
                             }
                         }
 
