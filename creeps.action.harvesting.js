@@ -21,9 +21,9 @@ var creepActFunctions = function(creep) {
                 }
 
                 if (haveSources === 2) {
-                    var isBusy = checkCreepsInSource(sources[0]);
+                    var isBusy = countCreepsInSource(sources[0]);
                     if (isBusy > 0) {
-                        var isBusyToo = checkCreepsInSource(sources[1]);
+                        var isBusyToo = countCreepsInSource(sources[1]);
                         if (isBusyToo > 0) {
                             creep.say('⚡?');
                         }
@@ -41,11 +41,11 @@ var creepActFunctions = function(creep) {
                 }
 
                 if (haveSources === 3) {
-                    var isBusy = checkCreepsInSource(sources[0]);
+                    var isBusy = countCreepsInSource(sources[0]);
                     if (isBusy > 0) {
-                        var isBusyToo = checkCreepsInSource(sources[1]);
+                        var isBusyToo = countCreepsInSource(sources[1]);
                         if (isBusyToo > 0) {
-                            var isBusyTooToo = checkCreepsInSource(sources[2]);
+                            var isBusyTooToo = countCreepsInSource(sources[2]);
                             if (isBusyTooToo > 0) {
                                 creep.say('⚡?');
                             }
