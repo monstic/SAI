@@ -6,8 +6,10 @@ var creepActFunctions = function(creep) {
         //harvesting
         if (creep.memory.action === 'harvesting') {
             
-            var haveSources = Memory.rooms[creep.room.name].totalsources;
-            var sources = Memory.rooms[creep.room.name].sources;
+            if (Memory.rooms[creep.room.name].sources) {
+                var sources = Memory.rooms[creep.room.name].sources;
+                var haveSources = Memory.rooms[creep.room.name].sources.total;
+            }
 
 
             if (haveSources > 0) {
