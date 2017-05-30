@@ -429,13 +429,13 @@ showRoomInfoInScreen =
             var paths = Memory.rooms[room.name].trail;
             for (var path in paths) {
                 if (paths[path].lastused > (Game.time - 16) && paths[path].lastused < (Game.time - 10)) {
-                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 2, opacity: 0.8, color: '#ffff00' });
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.4, opacity: 0.8, color: '#ffff00' });
                 }
                 if (paths[path].lastused > (Game.time - 11) && paths[path].lastused < (Game.time - 5)) {
-                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1.5, opacity: 0.8, color: '#ffff00' });
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.7, opacity: 0.8, color: '#ffff00' });
                 }
                 if (paths[path].lastused > (Game.time - 6) && paths[path].lastused < (Game.time + 1)) {
-                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 2, opacity: 0.8, color: '#ffff00' });
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1, opacity: 0.8, color: '#ffff00' });
                 }
                 if (paths[path].usedtimes >= 20 && paths[path].lastused < (Game.time - 10)) {
                     new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1, opacity: 0.8, color: 'black' });
