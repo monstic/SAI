@@ -482,18 +482,17 @@ saveTrail =
         var placeCod = creep.pos;
         var placeCodx = creep.pos.x;
         var placeCody = creep.pos.y;
-        if (!Memory.rooms[roomname].mostusedpaths[placeCod] || Memory.rooms[roomname].mostusedpaths[placeCod] === 'undefined') {
-            Memory.rooms[roomname].mostusedpaths[placeCod] = {};
-            Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes = 1;
-            Memory.rooms[roomname].mostusedpaths[placeCod].lastused = Game.time;
-            Memory.rooms[roomname].mostusedpaths[placeCod].x = placeCodx;
-            Memory.rooms[roomname].mostusedpaths[placeCod].y = placeCody;
+        if (!Memory.rooms[roomname].trail[placeCod] || Memory.rooms[roomname].trail[placeCod] === 'undefined') {
+            Memory.rooms[roomname].trail[placeCod] = {};
+            Memory.rooms[roomname].trail[placeCod].usedtimes = 1;
+            Memory.rooms[roomname].trail[placeCod].lastused = Game.time;
+            Memory.rooms[roomname].trail[placeCod].x = placeCodx;
+            Memory.rooms[roomname].trail[placeCod].y = placeCody;
         }
-        if (Memory.rooms[roomname].mostusedpaths[placeCod]) {
-            var oldregister = Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes;
-            var newregister = (Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes+1);
-            Memory.rooms[roomname].mostusedpaths[placeCod].usedtimes = newregister;
-            Memory.rooms[roomname].mostusedpaths[placeCod].lastused = Game.time;
+        if (Memory.rooms[roomname].trail[placeCod]) {
+            var oldregister = Memory.rooms[roomname].trail[placeCod].usedtimes;
+            var newregister = (oldregister+1);
+            Memory.rooms[roomname].trail[placeCod].usedtimes = newregister;
+            Memory.rooms[roomname].trail[placeCod].lastused = Game.time;
         }
-
     };
