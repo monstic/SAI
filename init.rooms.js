@@ -64,19 +64,22 @@ module.exports = function (room) {
                 Memory.rooms[room.name].cron = {};
                 Memory.rooms[room.name].cron[0] = {};
                 Memory.rooms[room.name].cron[0].lastrun = Game.time;
-                Memory.rooms[room.name].cron[0].interval = 100;
+                Memory.rooms[room.name].cron[0].interval = 50;
                 Memory.rooms[room.name].cron[1] = {};
                 Memory.rooms[room.name].cron[1].lastrun = (Game.time+1);
-                Memory.rooms[room.name].cron[1].interval = 5;
+                Memory.rooms[room.name].cron[1].interval = 500;
                 Memory.rooms[room.name].cron[2] = {};
                 Memory.rooms[room.name].cron[2].lastrun = (Game.time+2);
-                Memory.rooms[room.name].cron[2].interval = 50;
+                Memory.rooms[room.name].cron[2].interval = 100;
                 Memory.rooms[room.name].cron[3] = {};
                 Memory.rooms[room.name].cron[3].lastrun = (Game.time+3);
                 Memory.rooms[room.name].cron[3].interval = 5;
                 Memory.rooms[room.name].cron[4] = {};
                 Memory.rooms[room.name].cron[4].lastrun = (Game.time+4);
                 Memory.rooms[room.name].cron[4].interval = 5;
+                Memory.rooms[room.name].cron[5] = {};
+                Memory.rooms[room.name].cron[5].lastrun = (Game.time+4);
+                Memory.rooms[room.name].cron[5].interval = 5;
             }
 
             //END ONE TIME RUN
@@ -202,6 +205,29 @@ module.exports = function (room) {
 
             }
             //END CRON 1
+
+            //START CRON 2
+            // in use by init.spawns
+            //END CRON 2
+
+            //START CRON 3 [AUTO DECREASE ROADS]
+            if (Memory.rooms[room.name].cron[3].lastrun < (Game.time-Memory.rooms[room.name].cron[3].interval)) {
+                decreaseRoads(room);
+                Memory.rooms[room.name].cron[3].lastrun = Game.time;
+            }
+            //END CRON 3
+
+            //START CRON 4 [AUTO DECREASE ROADS]
+            if (Memory.rooms[room.name].cron[4].lastrun < (Game.time-Memory.rooms[room.name].cron[4].interval)) {
+                autoBuildRoads(room);
+                Memory.rooms[room.name].cron[4].lastrun = Game.time;
+            }
+            //END CRON 4
+
+            //START CRON 5 [AUTO DECREASE ROADS]
+            // not in use
+            //END CRON 5
+
         }
 
         //LOAD MODULES

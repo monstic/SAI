@@ -45,11 +45,11 @@ var creepActFunctions = function(creep) {
 
                                     if (Memory.rooms[creep.room.name].structure) {
                                         if (Memory.rooms[creep.room.name].structure.container) {
-                                            var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.controller);
+                                            var targetc = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.controller);
                                         }
                                     }
                                     // if one was found
-                                    if (target !== null && target.store[RESOURCE_ENERGY] < target.storeCapacity) {
+                                    if (targetc !== null && targetc.store[RESOURCE_ENERGY] < targetc.storeCapacity) {
                                         setTarget(creep, Memory.rooms[creep.room.name].structure.container.controller, 'LOWCT', creep.room.name);
                                     }
                                     else {
