@@ -43,17 +43,17 @@ var creepActFunctions = function(creep) {
                                 }
                                 else {
 
-                                    if (Memory.rooms[creep.room.name].containers.nearcontroller) {
-                                        var target = Game.getObjectById(Memory.rooms[creep.room.name].containers.nearcontroller);
+                                    if (Memory.rooms[creep.room.name].containers.controller) {
+                                        var target = Game.getObjectById(Memory.rooms[creep.room.name].containers.controller);
                                     }
                                     // if one was found
                                     if (target !== null && target.store[RESOURCE_ENERGY] < target.storeCapacity) {
-                                        setTarget(creep, Memory.rooms[creep.room.name].containers.nearcontroller, 'LOWCT', creep.room.name);
+                                        setTarget(creep, Memory.rooms[creep.room.name].containers.controller, 'LOWCT', creep.room.name);
                                     }
                                     else {
 
-                                        if (Memory.rooms[creep.room.name].storages.nearmineral) {
-                                            var target = Game.getObjectById(Memory.rooms[creep.room.name].storages.nearmineral);
+                                        if (Memory.rooms[creep.room.name].storages.mineral) {
+                                            var target = Game.getObjectById(Memory.rooms[creep.room.name].storages.mineral);
                                         }
                                         else {
                                             var target = null;
