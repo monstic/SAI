@@ -28,7 +28,7 @@ module.exports = function (room) {
                 Memory.rooms[room.name].config.deleteemptyroomsafter = 500;
             }
 
-            //CREATE SUMMARY
+            //CREATE STRUTURES DATABASE
             if (!Memory.rooms[room.name].structure || Memory.rooms[room.name].structure === 'undefined') {
                 Memory.rooms[room.name].structure = {};
                 Memory.rooms[room.name].structure.container = {};
@@ -72,7 +72,7 @@ module.exports = function (room) {
             //END ONE TIME RUN
 
             //START CRON 0 [REGISTER STRUCTURES]
-            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time-Memory.rooms[room.name].cron[0].interval)) {
+            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time - Memory.rooms[room.name].cron[0].interval)) {
 
 
                 //REGISTER AVAILABLE MINERALS
