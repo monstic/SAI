@@ -10,17 +10,17 @@ module.exports = function (spawn) {
                 //REGISTER NEW SPAWN
                 if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name] || Memory.rooms[spawn.pos.roomName].spawns[spawn.name] === undefined) {
                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name] = {};
-                    console.log('Spawner ' + spawn.name + ' registered in database.');
-                }
-
-                //REGISTER SPAWN DETAILS
-                if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name]) {
                     //get spawn object
                     var spawnObject = Game.getObjectById(spawn.id);
                     //save spawn id
                     if (spawnObject) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name] = spawnObject;
                     }
+                    console.log('Spawner ' + spawn.name + ' registered in database.');
+                }
+
+                //REGISTER SPAWN DETAILS
+                if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name]) {
 
                     //CREATE SPAWN RULES
                     if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner === undefined) {
