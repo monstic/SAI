@@ -310,106 +310,6 @@ spawnProtoCreep =
         }
     };
 
-
-//LINK LINKS
-linkLinks =
-    function (creep) {
-
-if (Memory.rooms[creep.room.name].links.haveLink > 0) {
-    if (!Memory.rooms[creep.room.name].links.default || Memory.rooms[creep.room.name].links.default === undefined) {
-        Memory.rooms[creep.room.name].links.default = {};
-    }
-    if (Memory.rooms[creep.room.name].links.default && !Memory.rooms[creep.room.name].links.default.from) {
-        var source = creep.pos.findClosestByRange(FIND_SOURCES);
-        var rangeToSource = creep.pos.getRangeTo(source);
-        if (rangeToSource < 3) {
-            findLinkOne = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LINK)});
-        Memory.rooms[creep.room.name].links.default.from = findLinkOne.id;
-        log('Link one registered.');
-    }
-}
-}
-if (Memory.rooms[creep.room.name].links.haveLink > 1) {
-    if (Memory.rooms[creep.room.name].links.default && (!Memory.rooms[creep.room.name].links.default.to || Memory.rooms[creep.room.name].links.default.to === undefined)) {
-        rangeToController = creep.pos.getRangeTo(creep.room.controller);
-        if (rangeToController < 2) {
-            findLinkTwo = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LINK)});
-        Memory.rooms[creep.room.name].links.default.to = findLinkTwo.id;
-        log('Link two registered.');
-    }
-    else {
-        creep.moveTo(creep.room.controller);
-    }
-}
-}
-if (Memory.rooms[creep.room.name].links.haveLink > 2) {
-    if (Memory.rooms[creep.room.name].links.default && (!Memory.rooms[creep.room.name].links.default.fromalt || Memory.rooms[creep.room.name].links.default.fromalt === undefined)) {
-        var source = creep.pos.findClosestByRange(FIND_SOURCES);
-        var rangeToSource = creep.pos.getRangeTo(source);
-        if (rangeToSource < 3) {
-            findLinkTree = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LINK)});
-        if (findLinkTree.id !== Memory.rooms[creep.room.name].links.default.from && findLinkTree.id !== Memory.rooms[creep.room.name].links.default.to) {
-            Memory.rooms[creep.room.name].links.default.fromalt = findLinkTree.id;
-            log('Link tree registered.');
-        }
-    }
-    else {
-        creep.moveTo(source);
-    }
-}
-}
-};
-
-//TRANSFER ENERGY LINKS
-enableLinks =
-    function (room) {
-        if (!Memory.rooms[room.name].cron.linktransfer || Memory.rooms[room.name].cron.linktransfer === undefined) {
-            Memory.rooms[room.name].cron.linktransfer = {};
-            Memory.rooms[room.name].cron.linktransfer.lasttransfer = Game.time;
-            Memory.rooms[room.name].cron.linktransfer.transferinterval = 25;
-        }
-        if (Memory.rooms[room.name].cron.linktransfer.lasttransfer < (Game.time-Memory.rooms[room.name].cron.linktransfer.transferinterval)) {
-            if (Memory.rooms[room.name].links) {
-                if (Memory.rooms[room.name].links.default) {
-                    if (Memory.rooms[room.name].links.default.from && Memory.rooms[room.name].links.default.to) {
-                        var linkFromId = Memory.rooms[room.name].links.default.from;
-                        var linkFrom = Game.getObjectById(linkFromId);
-                        var linkToId = Memory.rooms[room.name].links.default.to;
-                        var linkTo = Game.getObjectById(linkToId);
-                        if (linkFrom !== null && linkTo !== null) {
-                            if (linkFrom.energy > 0 && linkTo.energy < linkTo.energyCapacity) {
-                                new RoomVisual(room.name).text('âš¡', (linkFrom.pos.x - 0.5), (linkFrom.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(room.name).text('âš¡', (linkFrom.pos.x + 0.5), (linkFrom.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(room.name).text('âš¡', (linkFrom.pos.x), (linkFrom.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                                new RoomVisual(room.name).text('âš¡', (linkFrom.pos.x), (linkFrom.pos.y + 0.6), {size: 0.4, color: 'gold'});
-                                //log('Transferring ' + linkFrom.energy + 'e from master to slave link container in ' + room.name + ' room.');
-                                linkFrom.transferEnergy(linkTo);
-                                Memory.rooms[room.name].cron.linktransfer.lasttransfer = Game.time;
-                            }
-                        }
-                    }
-                    if (Memory.rooms[room.name].links.default.fromalt && Memory.rooms[room.name].links.default.to) {
-                        var link2FromId = Memory.rooms[room.name].links.default.fromalt;
-                        var link2From = Game.getObjectById(link2FromId);
-                        var linkToId = Memory.rooms[room.name].links.default.to;
-                        var linkTo = Game.getObjectById(linkToId);
-                        if (link2From !== null && linkTo !== null) {
-                            if (link2From.energy > 0 && linkTo.energy < linkTo.energyCapacity) {
-                                new RoomVisual(room.name).text('âš¡', (link2From.pos.x - 0.5), (link2From.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(room.name).text('âš¡', (link2From.pos.x + 0.5), (link2From.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(room.name).text('âš¡', (link2From.pos.x), (link2From.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                                new RoomVisual(room.name).text('âš¡', (link2From.pos.x), (link2From.pos.y + 0.6), {size: 0.4, color: 'gold'});
-                                //log('Transferring ' + linkFrom.energy + 'e from master to slave link container in ' + room.name + ' room.');
-                                link2From.transferEnergy(linkTo);
-                                Memory.rooms[room.name].cron.linktransfer.lasttransfer = Game.time;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 //TOWERS
 enableTowers =
     function (room) {
@@ -417,55 +317,56 @@ enableTowers =
         for (let tower of towers) {
             var hostilesHealer = room.find(FIND_HOSTILE_CREEPS, { filter: function(object) { return object.getActiveBodyparts(HEAL) > 0}});
             if (hostilesHealer.length > 0) {
-                towers.forEach(tower => tower.attack(hostilesHealer[0]));
+               tower.attack(hostilesHealer[0]);
             }
             else {
                 var hostiles = room.find(FIND_HOSTILE_CREEPS, { filter: function(object) { return object.getActiveBodyparts(ATTACK) > 0}});
                 if (hostiles.length > 0) {
                     var towers = room.find(FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}});
-                    towers.forEach(tower => tower.attack(hostiles[0]));
+                    tower.attack(hostiles[0]);
                 }
                 else {
                     var closestWounded = tower.pos.findClosestByRange(FIND_MY_CREEPS, {filter: (w) => w.hits < w.hitsMax});
-                if (closestWounded) {
-                    tower.heal(closestWounded);
-                }
-                else {
-                    var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, {filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax))});
-                if (findConstructionSiteToRepair.length > 0) {
-                    var i = 0;
-                    var b = 0;
-                    while (i < findConstructionSiteToRepair.length) {
-                        if (b === 0) {
-                            var pos = findConstructionSiteToRepair[i].pos;
-                            if (Memory.rooms[room.name].mostusedpaths) {
-                                if (Memory.rooms[room.name].mostusedpaths[pos]) {
-                                    var road = Memory.rooms[room.name].mostusedpaths[pos];
-                                    if (road) {
-                                        if (road.usedtimes > 10) {
-                                            tower.repair(findConstructionSiteToRepair[i]);
-                                            b++;
+                    if (closestWounded) {
+                        tower.heal(closestWounded);
+                    }
+                    else {
+                        var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, {filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax))});
+                        if (findConstructionSiteToRepair.length > 0) {
+                            var i = 0;
+                            var b = 0;
+                            while (i < findConstructionSiteToRepair.length) {
+                                if (b === 0) {
+                                    var pos = findConstructionSiteToRepair[i].pos;
+                                    if (Memory.rooms[room.name].mostusedpaths) {
+                                        if (Memory.rooms[room.name].mostusedpaths[pos]) {
+                                            var road = Memory.rooms[room.name].mostusedpaths[pos];
+                                            if (road) {
+                                                if (road.usedtimes > 10) {
+                                                    tower.repair(findConstructionSiteToRepair[i]);
+                                                    b++;
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                i++;
                             }
                         }
-                        i++;
+                        else {
+                            var totalRepairs = countRepairs(room.name);
+                            if (totalRepairs > 0) {
+                                var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, {filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001))});
+                                tower.repair(findConstructionSiteToRepair[0]);
+                            }
+                        }
                     }
-                }
-                else {
-                    var totalRepairs = countRepairs(room.name);
-                    if (totalRepairs > 0) {
-                        var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, {filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001))});
-                    tower.repair(findConstructionSiteToRepair[0]);
                 }
             }
         }
-    }
-}
-}
-}
+    };
 
+//CHECK IF HAVE HOSTILES
 checkAttacks =
     function (room) {
         //CHECK IF ROOM IS UNDER ATTACK
@@ -480,6 +381,7 @@ checkAttacks =
         }
     };
 
+//CHECK HOTILES IN RANGE
 checkHostilesInRange =
     function (creep) {
         //CHECK IF ROOM IS UNDER ATTACK
@@ -553,261 +455,3 @@ showRoomInfoInScreen =
         }
     };
 
-//AUTO BUILD
-autoBuild =
-    function (room) {
-        if (Memory.rooms[room.name].cron.autobuild) {
-            if (Memory.rooms[room.name].cron.autobuild.lastrun < (Game.time - Memory.rooms[room.name].cron.autobuild.interval)) {
-
-                //PASSO 1 - CRIAR EXTENSIONS PERMITIDAS
-                if (Memory.rooms[room.name].buildprogress === 1) {
-                    if (room.controller.level >= 2) {
-                        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                        if (constructionSites.length === 0) {
-                            var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                        if (extensions.length < 5) {
-                            var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                        if (someroad.length > 0) {
-                            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                            }
-                        }
-                    }
-                    else {
-                        Memory.rooms[room.name].buildprogress = 2;
-                    }
-                }
-            }
-        }
-
-        //PASSO 2 - CRIAR UM CONTAINER NAS PROXIMIDADES DO ROOM CONTROLLER
-        if (Memory.rooms[room.name].buildprogress === 2) {
-            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-            if (constructionSites.length === 0) {
-                var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-                var haveContainer = Memory.rooms[room.name].containers.nearcontroller;
-                if (!haveContainer) {
-                    var sourcePos = room.controller;
-                    var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
-                    if (getFreePos !== 'searching') {
-                        getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
-                    }
-                }
-                else {
-                    Memory.rooms[room.name].buildprogress = 3;
-                }
-            }
-        }
-
-
-        //PASSO 3 - CRIAR UMA TORRE NAS PROXIMIDADES DO SPAWN
-        if (Memory.rooms[room.name].buildprogress === 3) {
-            if (room.controller.level >= 3) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var tower = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER});
-                if (tower.length === 0) {
-                    var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
-                if (spawn.length > 0) {
-                    var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
-                    if (freeSpace) {
-                        freeSpace.createConstructionSite(STRUCTURE_TOWER);
-                    }
-                }
-            }
-            else {
-                Memory.rooms[room.name].buildprogress = 4;
-            }
-        }
-    }
-}
-
-//PASSO 4 - CRIAR EXTENSIONS PERMITIDAS
-if (Memory.rooms[room.name].buildprogress === 4) {
-    if (room.controller.level >= 3) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-        var extensionsLimit = checkExtensionsLimits(room);
-        if (extensions.length < 10) {
-            var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-        if (someroad.length > 0) {
-            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-            if (freeSpace) {
-                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 5;
-    }
-}
-}
-}
-
-//PASSO 5 - CRIAR EXTENSIONS PERMITIDAS
-if (Memory.rooms[room.name].buildprogress === 5) {
-    if (room.controller.level >= 4) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-        var extensionsLimit = checkExtensionsLimits(room);
-        if (extensions.length < 20) {
-            var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-        if (someroad.length > 0) {
-            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-            if (freeSpace) {
-                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 6;
-    }
-}
-}
-}
-
-//PASSO 6 - CRIAR UMA TORRE NAS PROXIMIDADES DO SPAWN
-if (Memory.rooms[room.name].buildprogress === 6) {
-    if (room.controller.level >= 5) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var tower = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER});
-        if (tower.length === 1) {
-            var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
-        if (spawn.length > 0) {
-            var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
-            if (freeSpace) {
-                freeSpace.createConstructionSite(STRUCTURE_TOWER);
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 7;
-    }
-}
-}
-}
-
-//PASSO 7 - CRIAR EXTENSIONS PERMITIDAS
-if (Memory.rooms[room.name].buildprogress === 7) {
-    if (room.controller.level >= 5) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-        var extensionsLimit = checkExtensionsLimits(room);
-        if (extensions.length < 30) {
-            var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-        if (someroad.length > 0) {
-            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-            if (freeSpace) {
-                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 8;
-    }
-}
-}
-}
-
-//PASSO 8 - CRIAR STORAGE
-if (Memory.rooms[room.name].buildprogress === 8) {
-    if (room.controller.level >= 5) {
-        var storage = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
-    if (storage.length === 0) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var mineral = Memory.rooms[room.name].mineral;
-            if (mineral) {
-                var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                if (freeSpace) {
-                    freeSpace.createConstructionSite(STRUCTURE_STORAGE);
-                }
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 9;
-    }
-}
-}
-
-//PASSO 9 - CRIAR EXTENSIONS PERMITIDAS
-if (Memory.rooms[room.name].buildprogress === 9) {
-    if (room.controller.level >= 6) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-        var extensionsLimit = checkExtensionsLimits(room);
-        if (extensions.length < 40) {
-            var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-        if (someroad.length > 0) {
-            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-            if (freeSpace) {
-                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 10;
-    }
-}
-}
-}
-
-//PASSO 10 - CRIAR EXTRACTOR
-if (Memory.rooms[room.name].buildprogress === 10) {
-    if (room.controller.level >= 6) {
-        var extractor = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTRACTOR)});
-    if (extractor.length === 0) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var mineral = Memory.rooms[room.name].mineral;
-            if (mineral) {
-                var mineralPos = new RoomPosition(mineral.pos.x, mineral.pos.y, mineral.pos.roomName);
-                mineralPos.createConstructionSite(STRUCTURE_EXTRACTOR);
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 11;
-    }
-}
-}
-
-//PASSO 11 - CRIAR LAB
-if (Memory.rooms[room.name].buildprogress === 11) {
-    if (room.controller.level >= 6) {
-        var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
-    if (labs.length === 0) {
-        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-        if (constructionSites.length === 0) {
-            var mineral = Memory.rooms[room.name].mineral;
-            if (mineral) {
-                var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                if (freeSpace) {
-                    freeSpace.createConstructionSite(STRUCTURE_LAB);
-                }
-            }
-        }
-    }
-    else {
-        Memory.rooms[room.name].buildprogress = 1;
-    }
-}
-}
-
-
-Memory.rooms[room.name].cron.autobuild.lastrun = Game.time;
-}
-}
-};

@@ -18,6 +18,13 @@ if (!Memory.system.config || Memory.system.config === undefined) {
     console.log('Configs database created.');
 }
 
+//CREATE SIGN MSGS
+if (!Memory.system.signmsg || Memory.system.signmsg === undefined) {
+    Memory.system.signmsg = {};
+    console.log('Sign messages created.');
+    Memory.system.signmsg = 'Territory of Screepting Artificial Intelligence (SAI).';
+}
+
 //CREATE ROOMS DATABASE
 if (!Memory.rooms || Memory.rooms === undefined) {
     Memory.rooms = {};

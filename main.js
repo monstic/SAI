@@ -34,11 +34,16 @@ if (FORCE_PAUSE !== true) {
 
         //PULSE ALL CREEPS
         for (var creepName in Game.creeps) {
-            initCreeps(Game.creeps[creepName]);
-            //load types
+            //load creep
             var creep = Game.creeps[creepName];
+            //load main
+            initCreeps(creep);
+            //load types
             var initCreepType = require('creeps.type.' + creep.memory.type);
             initCreepType(creep);
+            //load actions
+            var initCreepAction = require('creeps.action.' + creep.memory.action);
+            initCreepAction(creep);
         }
 
         //PULSE ALL ROOMS
