@@ -77,8 +77,7 @@ module.exports = function (room) {
 
                 //REGISTER AVAILABLE MINERALS
                 if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
-                    var findMinerals;
-                    findMinerals = room.find(FIND_MINERALS);
+                    var findMinerals = room.find(FIND_MINERALS);
                     if (findMinerals.length > 0) {
                         Memory.rooms[room.name].mineral = {};
                         Memory.rooms[room.name].mineral.id = findMinerals[0].id;
@@ -88,8 +87,7 @@ module.exports = function (room) {
 
                 //REGISTER AVAILABLE SOURCES
                 if (!Memory.rooms[room.name].sources || Memory.rooms[room.name].sources === 'undefined') {
-                    var findSources;
-                    findSources = room.find(FIND_SOURCES);
+                    var findSources = room.find(FIND_SOURCES);
                     if (findSources.length > 0) {
                         Memory.rooms[room.name].sources = {};
                         Memory.rooms[room.name].sources.total = findSources.length;
@@ -109,8 +107,7 @@ module.exports = function (room) {
                     //REGISTER EXTRACTOR
                     if (Memory.rooms[room.name].mineral) {
                         if (!Memory.rooms[room.name].mineral.extractor || Memory.rooms[room.name].mineral.extractor === 'undefined') {
-                            var extractor;
-                            extractor = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_EXTRACTOR)});
+                            var extractor = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_EXTRACTOR)});
                             if (extractor.length > 0) {
                                 Memory.rooms[room.name].mineral.extractor = extractor[0].id;
                             }
@@ -120,10 +117,8 @@ module.exports = function (room) {
                     //REGISTER CONTAINER NEAR CONTROLLER
                     if (Memory.rooms[room.name].structure.container) {
                         if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
-                            var controller;
-                            var container;
-                            controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-                            container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
+                            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
+                            var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
                             if (container[0]) {
                                 Memory.rooms[room.name].structure.container.controller = container[0].id;
                             }
@@ -134,12 +129,9 @@ module.exports = function (room) {
                     if (Memory.rooms[room.name].structure.storage) {
                         if (!Memory.rooms[room.name].structure.storage.mineral || Memory.rooms[room.name].structure.storage.mineral === 'undefined') {
                             if (Memory.rooms[room.name].mineral) {
-                                var mineral;
-                                var mineralpos;
-                                var storage;
-                                mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
-                                mineralpos = new RoomPosition(mineral.pos.x, mineral.pos.y, room.name);
-                                storage = mineralpos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
+                                var mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
+                                var mineralpos = new RoomPosition(mineral.pos.x, mineral.pos.y, room.name);
+                                var storage = mineralpos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
                                 if (storage[0]) {
                                     Memory.rooms[room.name].structure.storage.mineral = storage[0].id;
                                 }
@@ -149,8 +141,7 @@ module.exports = function (room) {
 
                     //REGISTER TOWERS
                     if (!Memory.rooms[room.name].structure.tower || Memory.rooms[room.name].structure.tower === 'undefined') {
-                        var towers;
-                        towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
+                        var towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
                         if (towers.length > 0) {
                             Memory.rooms[room.name].structure.tower.total = towers.length;
                             var i = 0;
