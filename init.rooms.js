@@ -212,7 +212,7 @@ module.exports = function (room) {
                             var exits = room.find(FIND_EXIT_TOP);
                             if (exits.length > 0) {
                                 for (var exit in exits) {
-                                    Memory.rooms[room.name].exit.top[exits[exit].y] = exits[exit].y;
+                                    Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
                                 }
                             }
                         }
@@ -220,7 +220,7 @@ module.exports = function (room) {
                             var exits = room.find(FIND_EXIT_BOTTOM);
                             if (exits.length > 0) {
                                 for (var exit in exits) {
-                                    Memory.rooms[room.name].exit.bot[exits[exit].y] = exits[exit].y;
+                                    Memory.rooms[room.name].exit.bot[exits[exit].x] = exits[exit].x;
                                 }
                             }
                         }
