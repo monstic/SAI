@@ -244,6 +244,10 @@ module.exports = function (room) {
         enableTowers(room);
         showRoomInfoInScreen(room);
 
+        var leftexit = room.find(FIND_EXIT_LEFT);
+        log(leftexit);
+
+
     }
 
 };
