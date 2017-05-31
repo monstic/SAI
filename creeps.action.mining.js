@@ -57,5 +57,5 @@ var creepActFunctions = function(creep) {
 };
 
 
-//END
+
 module.exports = creepActFunctions;
