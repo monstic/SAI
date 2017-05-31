@@ -245,7 +245,9 @@ module.exports = function (room) {
         showRoomInfoInScreen(room);
 
         var leftexit = room.find(FIND_EXIT_LEFT);
-        log(leftexit);
+        for (var exit in leftexit) {
+            log(leftexit.pos.y);
+        }
 
 
     }
