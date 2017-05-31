@@ -59,6 +59,15 @@ module.exports = function (room) {
 
 
 
+            //CREATE SUMMARY
+            if (!Memory.rooms[room.name].exit || Memory.rooms[room.name].exit === 'undefined') {
+                Memory.rooms[room.name].exit = {};
+                Memory.rooms[room.name].exit.left = {};
+                Memory.rooms[room.name].exit.right = {};
+                Memory.rooms[room.name].exit.top = {};
+                Memory.rooms[room.name].exit.bot = {};
+            }
+
             //CREATE CRONJOBS
             if (!Memory.rooms[room.name].cron || Memory.rooms[room.name].cron === 'undefined') {
                 Memory.rooms[room.name].cron = {};
@@ -181,6 +190,43 @@ module.exports = function (room) {
 
                     }
 
+                    //REGISTER EXIT POSITIONS
+                    if (Memory.rooms[room.name].exit) {
+                        if (Memory.rooms[room.name].exit.left) {
+                            var exits = room.find(FIND_EXIT_LEFT);
+                            if (exits.length > 0) {
+                                for (var exit in exits) {
+                                    Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
+                                }
+                            }
+                        }
+                        if (Memory.rooms[room.name].exit.right) {
+                            var exits = room.find(FIND_EXIT_RIGHT);
+                            if (exits.length > 0) {
+                                for (var exit in exits) {
+                                    Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
+                                }
+                            }
+                        }
+                        if (Memory.rooms[room.name].exit.top) {
+                            var exits = room.find(FIND_EXIT_TOP);
+                            if (exits.length > 0) {
+                                for (var exit in exits) {
+                                    Memory.rooms[room.name].exit.top[exits[exit].y] = exits[exit].y;
+                                }
+                            }
+                        }
+                        if (Memory.rooms[room.name].exit.bot) {
+                            var exits = room.find(FIND_EXIT_BOTTOM);
+                            if (exits.length > 0) {
+                                for (var exit in exits) {
+                                    Memory.rooms[room.name].exit.bot[exits[exit].y] = exits[exit].y;
+                                }
+                            }
+                        }
+                    }
+                    
+
                 }
 
 
@@ -243,12 +289,6 @@ module.exports = function (room) {
         //LOAD MODULES
         enableTowers(room);
         showRoomInfoInScreen(room);
-
-        var leftexit = room.find(FIND_EXIT_LEFT);
-        for (var exit in leftexit) {
-            log(leftexit[exit].y);
-        }
-
 
     }
 
