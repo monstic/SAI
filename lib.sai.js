@@ -377,44 +377,49 @@ enableTowers =
                 tower.attack(hostilesHealer[0]);
             }
             else {
-                var hostiles = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
-                if (hostiles.length > 0) {
-                    var towers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
-                    tower.attack(hostiles[0]);
+                var hostilesArmed = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
+                if (hostilesArmed.length > 0) {
+                    tower.attack(hostilesArmed[0]);
                 }
                 else {
-                    var closestWounded = tower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (w) => w.hits < w.hitsMax });
-                    if (closestWounded) {
-                        tower.heal(closestWounded);
+                    var hostiles = room.find(FIND_HOSTILE_CREEPS);
+                    if (hostiles.length > 0) {
+                        tower.attack(hostiles[0]);
                     }
                     else {
-                        var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
-                        if (findConstructionSiteToRepair.length > 0) {
-                            var i = 0;
-                            var b = 0;
-                            while (i < findConstructionSiteToRepair.length) {
-                                if (b === 0) {
-                                    var pos = findConstructionSiteToRepair[i].pos;
-                                    if (Memory.rooms[room.name].trail) {
-                                        if (Memory.rooms[room.name].trail[pos]) {
-                                            var road = Memory.rooms[room.name].trail[pos];
-                                            if (road) {
-                                                if (road.usedtimes > 10) {
-                                                    tower.repair(findConstructionSiteToRepair[i]);
-                                                    b++;
+                        var closestWounded = tower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (w) => w.hits < w.hitsMax });
+                        if (closestWounded) {
+                            tower.heal(closestWounded);
+                        }
+                        else {
+                            var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
+                            if (findConstructionSiteToRepair.length > 0) {
+                                var i = 0;
+                                var b = 0;
+                                while (i < findConstructionSiteToRepair.length) {
+                                    if (b === 0) {
+                                        var pos = findConstructionSiteToRepair[i].pos;
+                                        if (Memory.rooms[room.name].trail) {
+                                            if (Memory.rooms[room.name].trail[pos]) {
+                                                var road = Memory.rooms[room.name].trail[pos];
+                                                if (road) {
+                                                    if (road.usedtimes > 10) {
+                                                        tower.repair(findConstructionSiteToRepair[i]);
+                                                        b++;
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+                                    i++;
                                 }
-                                i++;
                             }
-                        }
-                        else {
-                            var totalRepairs = countRepairs(room.name);
-                            if (totalRepairs > 0) {
-                                var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001)) });
-                                tower.repair(findConstructionSiteToRepair[0]);
+                            else {
+                                var totalRepairs = countRepairs(room.name);
+                                if (totalRepairs > 0) {
+                                    var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001)) });
+                                    tower.repair(findConstructionSiteToRepair[0]);
+                                }
                             }
                         }
                     }
