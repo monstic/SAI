@@ -200,10 +200,10 @@ module.exports = function (room) {
                                     Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
                                 }
                                 for (var exit in exits) {
-                                    if (i === ((exits.length / 2) + 1)) { 
+                                    if (i === ((exits.length/2)+1)) { 
                                         delete Memory.rooms[room.name].exit.left[exits[exit].y];
-                                        i++;
                                     }
+                                    i++;
                                 }
 
                             }
@@ -216,10 +216,10 @@ module.exports = function (room) {
                                     Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
                                 }
                                 for (var exit in exits) {
-                                    if (i === ((exits.length / 2) + 1)) { 
+                                    if (i === ((exits.length/2)+1)) { 
                                         delete Memory.rooms[room.name].exit.left[exits[exit].y];
-                                        i++;
                                     }
+                                    i++;
                                 }
                             }
                         }
@@ -231,10 +231,10 @@ module.exports = function (room) {
                                     Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
                                 }
                                 for (var exit in exits) {
-                                    if (i === ((exits.length / 2) + 1)) { 
+                                    if (i === ((exits.length/2)+1)) { 
                                         delete Memory.rooms[room.name].exit.left[exits[exit].y];
-                                        i++;
                                     }
+                                    i++;
                                 }
                             }
                         }
@@ -246,10 +246,10 @@ module.exports = function (room) {
                                     Memory.rooms[room.name].exit.bot[exits[exit].x] = exits[exit].x;
                                 }
                                 for (var exit in exits) {
-                                    if (i === ((exits.length / 2) + 1)) { 
+                                    if (i === ((exits.length/2)+1)) { 
                                         delete Memory.rooms[room.name].exit.left[exits[exit].y];
-                                        i++;
                                     }
+                                    i++;
                                 }
                             }
                         }
