@@ -202,7 +202,7 @@ module.exports = function (room) {
                             var i = 0;
                             for (var exit in rexits) {
                                 if (i === (countExits.length/2)) {
-                                    delete Memory.rooms[room.name].exit.left[exit].y;
+                                    delete Memory.rooms[room.name].exit.left[exit];
                                 }
                                 i++;
                             }
@@ -222,7 +222,7 @@ module.exports = function (room) {
                             var i = 0;
                             for (var exit in rexits) {
                                 if (i === (countExits.length/2)) { 
-                                    delete Memory.rooms[room.name].exit.right[exit].y;
+                                    delete Memory.rooms[room.name].exit.right[exit];
                                 }
                                 i++;
                             }
@@ -242,7 +242,7 @@ module.exports = function (room) {
                             var i = 0;
                             for (var exit in rexits) {
                                 if (i === (countExits.length/2)) { 
-                                    delete Memory.rooms[room.name].exit.top[exit].x;
+                                    delete Memory.rooms[room.name].exit.top[exit];
                                 }
                                 i++;
                             }
@@ -262,7 +262,7 @@ module.exports = function (room) {
                             var i = 0;
                             for (var exit in rexits) {
                                 if (i === (countExits.length/2)) { 
-                                    delete Memory.rooms[room.name].exit.bottom[exit].x;
+                                    delete Memory.rooms[room.name].exit.bottom[exit];
                                 }
                                 i++;
                             }
