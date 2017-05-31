@@ -38,10 +38,6 @@ var creepActFunctions = function(creep) {
                     cleanTarget(creep);
                     creep.say('?');
                 }
-                else {
-                //VISUALS
-                new RoomVisual(creep.room.name).text('upgr', (creep.pos.x - 0.5), (creep.pos.y), {size: 0.4});
-                }
             }
         }
 
