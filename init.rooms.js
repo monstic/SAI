@@ -98,7 +98,7 @@ module.exports = function (room) {
             //START CRONJOBS
 
             //START CRON 0 [REGISTER STRUCTURES]
-            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time - Memory.rooms[room.name].cron[0].interval)) {
+            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time-Memory.rooms[room.name].cron[0].interval)) {
 
                 //REGISTER AVAILABLE MINERALS
                 if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
@@ -232,7 +232,6 @@ module.exports = function (room) {
 
                 //SAVE LAST RUN
                 Memory.rooms[room.name].cron[0].lastrun = Game.time;
-
 
             }
             //END CRON 0
