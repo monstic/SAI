@@ -4,15 +4,12 @@ module.exports = function (spawn) {
         if (Memory.rooms[spawn.pos.roomName]) {
             if (Memory.rooms[spawn.pos.roomName].spawns) {
 
-                //LOAD MODULES
-                spawnProgress(spawn);
-
                 //REGISTER NEW SPAWN
                 if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name] || Memory.rooms[spawn.pos.roomName].spawns[spawn.name] === undefined) {
                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name] = {};
-                    //get spawn object
+                    //get spawn
                     var spawnObject = Game.getObjectById(spawn.id);
-                    //save spawn id
+                    //save spawn
                     if (spawnObject) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name] = spawnObject;
                     }
@@ -41,6 +38,8 @@ module.exports = function (spawn) {
                     }
 
 
+                    //START CRONJOBS
+                    
                     //START CRON 2 [SPAWNER]
                     if (Memory.rooms[spawn.pos.roomName].cron[2].lastrun < (Game.time-Memory.rooms[spawn.pos.roomName].cron[2].interval)) {
 
@@ -159,7 +158,12 @@ module.exports = function (spawn) {
                     }
                     //END CRON 2
 
+                //END CRONJOBS
                 }
+
+                //LOAD MODULES
+                spawnProgress(spawn);
+
             }
         }
     }

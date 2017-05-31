@@ -578,7 +578,7 @@ autoBuild =
 function (room) {
     if (Memory.rooms[room.name].cron[5].lastrun < (Game.time - Memory.rooms[room.name].cron[5].interval)) {
 
-        //PASSO 1 - CRIAR EXTENSIONS PERMITIDAS
+        //PASSO 1 - EXTENSIONS
         if (Memory.rooms[room.name].info.constructionslevel === 1) {
             if (room.controller.level >= 2) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -601,7 +601,7 @@ function (room) {
             }
         }
 
-        //PASSO 2 - CRIAR UM CONTAINER NAS PROXIMIDADES DO ROOM CONTROLLER
+        //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER
         if (Memory.rooms[room.name].info.constructionslevel === 2) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -621,7 +621,7 @@ function (room) {
         }
 
 
-        //PASSO 3 - CRIAR UMA TORRE NAS PROXIMIDADES DO SPAWN
+        //PASSO 3 - TOWER NEAR SPAWN
         if (Memory.rooms[room.name].info.constructionslevel === 3) {
             if (room.controller.level >= 3) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -643,7 +643,7 @@ function (room) {
             }
         }
 
-        //PASSO 4 - CRIAR EXTENSIONS PERMITIDAS
+        //PASSO 4 - EXTENSIONS
         if (Memory.rooms[room.name].info.constructionslevel === 4) {
             if (room.controller.level >= 3) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -667,7 +667,7 @@ function (room) {
             }
         }
 
-        //PASSO 5 - CRIAR EXTENSIONS PERMITIDAS
+        //PASSO 5 - EXTENSIONS
         if (Memory.rooms[room.name].info.constructionslevel === 5) {
             if (room.controller.level >= 4) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -691,7 +691,7 @@ function (room) {
             }
         }
 
-        //PASSO 6 - CRIAR UMA TORRE NAS PROXIMIDADES DO SPAWN
+        //PASSO 6 - TOWER NEAR SPAWN
         if (Memory.rooms[room.name].info.constructionslevel === 6) {
             if (room.controller.level >= 5) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -713,7 +713,7 @@ function (room) {
             }
         }
 
-        //PASSO 7 - CRIAR EXTENSIONS PERMITIDAS
+        //PASSO 7 - EXTENSIONS
         if (Memory.rooms[room.name].info.constructionslevel === 7) {
             if (room.controller.level >= 5) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -737,7 +737,7 @@ function (room) {
             }
         }
 
-        //PASSO 8 - CRIAR STORAGE
+        //PASSO 8 - STORAGE NEAR MINERAL
         if (Memory.rooms[room.name].info.constructionslevel === 8) {
             if (room.controller.level >= 5) {
                 var storage = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
@@ -759,7 +759,7 @@ function (room) {
             }
         }
 
-        //PASSO 9 - CRIAR EXTENSIONS PERMITIDAS
+        //PASSO 9 - EXTENSIONS
         if (Memory.rooms[room.name].info.constructionslevel === 9) {
             if (room.controller.level >= 6) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -783,7 +783,7 @@ function (room) {
             }
         }
 
-        //PASSO 10 - CRIAR EXTRACTOR
+        //PASSO 10 - EXTRACTOR
         if (Memory.rooms[room.name].info.constructionslevel === 10) {
             if (room.controller.level >= 6) {
                 var extractor = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTRACTOR)});
@@ -803,8 +803,30 @@ function (room) {
             }
         }
 
-        //PASSO 11 - CRIAR LAB
+        //PASSO 11 - CRIAR MUROS
         if (Memory.rooms[room.name].info.constructionslevel === 11) {
+            if (room.controller.level >= 6) {
+                var exitLeft = creep.room.find();
+                if (labs.length === 0) {
+                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+                    if (constructionSites.length === 0) {
+                        var mineral = Memory.rooms[room.name].mineral;
+                        if (mineral) {
+                            var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
+                            if (freeSpace) {
+                                freeSpace.createConstructionSite(STRUCTURE_LAB);
+                            }
+                        }
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 12;
+                }
+            }
+        }
+
+        //PASSO 12 - LAB
+        if (Memory.rooms[room.name].info.constructionslevel === 12) {
             if (room.controller.level >= 6) {
                 var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
                 if (labs.length === 0) {
@@ -824,5 +846,10 @@ function (room) {
                 }
             }
         }
+
+
+
+
+
     }
 };

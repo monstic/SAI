@@ -1,7 +1,8 @@
 module.exports = function (room) {
 
-    //START ONE TIME RUN
     if (Memory.rooms) {
+
+        //START ONE TIME RUN
 
         //REGISTER NEW ROOM
         if (!Memory.rooms[room.name] || Memory.rooms[room.name] === 'undefined') {
@@ -9,7 +10,6 @@ module.exports = function (room) {
             console.log('Room ' + room.name + ' registered in database.');
         }
 
-        //SCAN ROOM
         if (Memory.rooms[room.name]) {
 
             //CREATE SPAWNS DATABASE
@@ -82,7 +82,11 @@ module.exports = function (room) {
                 Memory.rooms[room.name].cron[5].interval = 25;
             }
 
-            //END ONE TIME RUN
+        //END ONE TIME RUN
+
+        //START SCAN ROOM
+
+            //START CRONJOBS
 
             //START CRON 0 [REGISTER STRUCTURES]
             if (Memory.rooms[room.name].cron[0].lastrun < (Game.time - Memory.rooms[room.name].cron[0].interval)) {
@@ -231,7 +235,10 @@ module.exports = function (room) {
             }
             //END CRON 5
 
+            //END CRONJOBS
+
         }
+        //END SCAN ROOM
 
         //LOAD MODULES
         enableTowers(room);

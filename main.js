@@ -12,8 +12,10 @@ if (FORCE_PAUSE !== true) {
     var gc = require('lib.gc');
     var gf = require('lib.gf');
     var _ = require('lib.lodash');
+    var lib = ('autocomplete/*.js');
     require('lib.sai');
 
+    
 
     //INIT
     require('init.system');
