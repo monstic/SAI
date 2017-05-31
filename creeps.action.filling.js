@@ -90,7 +90,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target && target.energy !== null) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('fill', (target.pos.x), (target.pos.y));
+                    new RoomVisual(creep.room.name).text('+', (target.pos.x - 1), (target.pos.y));
                     if (target.energy < target.energyCapacity) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
@@ -128,7 +128,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('fill', (target.pos.x), (target.pos.y));
+                    new RoomVisual(creep.room.name).text('+', (target.pos.x - 1), (target.pos.y));
                     if ((_.sum(target.store) < 2000)) {
                         
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -170,7 +170,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('fill', (target.pos.x), (target.pos.y));
+                    new RoomVisual(creep.room.name).text('+', (target.pos.x - 1), (target.pos.y));
                     if ((_.sum(target.store) < 1000000)) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);

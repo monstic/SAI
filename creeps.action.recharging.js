@@ -43,7 +43,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('fuel', (target.pos.x), (target.pos.y));
+                    new RoomVisual(creep.room.name).text('-', (target.pos.x), (target.pos.y + 1));
                     if ((_.sum(target.store) > 0)) {
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
@@ -82,7 +82,7 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     if (target.store.energy > 0) {
                         //VISUALS
-                        new RoomVisual(creep.room.name).text('fuel', (target.pos.x + 0.1), (target.pos.y + 0.2), {opacity: 0.8});
+                        new RoomVisual(creep.room.name).text('-', (target.pos.x), (target.pos.y + 1));
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target, {reusePath: true});
                         }
@@ -114,7 +114,7 @@ var creepActFunctions = function(creep) {
                 if (dropToGet) {
                     if (dropToGet.energy > 0 && dropToGet.energy !== null) {
                         //VISUALS
-                        new RoomVisual(creep.room.name).text('get', (dropToGet.pos.x + 0.1), (dropToGet.pos.y - 0.5), {opacity: 0.5, size: 0.5, color: 'green'});
+                        new RoomVisual(creep.room.name).text('-', (dropToGet.pos.x), (dropToGet.pos.y + 1));
                         if (creep.pickup(dropToGet, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(dropToGet);
                         }
