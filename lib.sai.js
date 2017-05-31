@@ -183,6 +183,37 @@ showTarget =
         new RoomVisual(room).circle(creep).line(target);
     };
 
+//EXTENSIONS LIMITS
+checkExtensionsLimits =
+function (room) {
+    if (room.controller) {
+        if (room.controller.level === 1) {
+            return 0;
+        }
+        else if (room.controller.level === 2) {
+            return 5;
+        }
+        else if (room.controller.level === 3) {
+            return 10;
+        }
+        else if (room.controller.level === 4) {
+            return 20;
+        }
+        else if (room.controller.level === 5) {
+            return 30;
+        }
+        else if (room.controller.level === 6) {
+            return 40;
+        }
+        else if (room.controller.level === 7) {
+            return 50;
+        }
+        else if (room.controller.level === 8) {
+            return 60;
+        }
+    }
+};
+
 //ADD CREEP IN QUEUE
 addToQueue =
     function (type, spawnname, goto) {
