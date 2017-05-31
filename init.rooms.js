@@ -194,33 +194,62 @@ module.exports = function (room) {
                     if (Memory.rooms[room.name].exit) {
                         if (Memory.rooms[room.name].exit.left) {
                             var exits = room.find(FIND_EXIT_LEFT);
+                            var i = 0;
                             if (exits.length > 0) {
                                 for (var exit in exits) {
                                     Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
                                 }
+                                for (var exit in exits) {
+                                    if (i === (1 + (exits.length / 2))) { 
+                                        delete Memory.rooms[room.name].exit.left[exits[exit].y];
+                                        i++;
+                                    }
+                                }
+
                             }
                         }
                         if (Memory.rooms[room.name].exit.right) {
                             var exits = room.find(FIND_EXIT_RIGHT);
+                            var i = 0;
                             if (exits.length > 0) {
                                 for (var exit in exits) {
                                     Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
+                                }
+                                for (var exit in exits) {
+                                    if (i === (1 + (exits.length / 2))) { 
+                                        delete Memory.rooms[room.name].exit.left[exits[exit].y];
+                                        i++;
+                                    }
                                 }
                             }
                         }
                         if (Memory.rooms[room.name].exit.top) {
                             var exits = room.find(FIND_EXIT_TOP);
+                            var i = 0;
                             if (exits.length > 0) {
                                 for (var exit in exits) {
                                     Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
+                                }
+                                for (var exit in exits) {
+                                    if (i === (1 + (exits.length / 2))) { 
+                                        delete Memory.rooms[room.name].exit.left[exits[exit].y];
+                                        i++;
+                                    }
                                 }
                             }
                         }
                         if (Memory.rooms[room.name].exit.bot) {
                             var exits = room.find(FIND_EXIT_BOTTOM);
+                            var i = 0;
                             if (exits.length > 0) {
                                 for (var exit in exits) {
                                     Memory.rooms[room.name].exit.bot[exits[exit].x] = exits[exit].x;
+                                }
+                                for (var exit in exits) {
+                                    if (i === (1 + (exits.length / 2))) { 
+                                        delete Memory.rooms[room.name].exit.left[exits[exit].y];
+                                        i++;
+                                    }
                                 }
                             }
                         }

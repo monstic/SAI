@@ -811,21 +811,107 @@ function (room) {
         //PASSO 11 - CRIAR MUROS
         if (Memory.rooms[room.name].info.constructionslevel === 11) {
             if (room.controller.level >= 6) {
-                var exitLeft = creep.room.find();
-                if (labs.length === 0) {
-                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                    if (constructionSites.length === 0) {
-                        var mineral = Memory.rooms[room.name].mineral;
-                        if (mineral) {
-                            var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_LAB);
+                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+                if (constructionSites.length === 0) {
+                    if (Memory.rooms[room.name].exit) {
+                        var top = Memory.rooms[room.name].exit.top;
+                        var bot = Memory.rooms[room.name].exit.bot;
+                        var left = Memory.rooms[room.name].exit.left;
+                        var right = Memory.rooms[room.name].exit.right;
+                        //CREATE CS WALLS
+                        if (top) {
+                            for (var pos in top) {
+                                var wall = top[pos];
+                                if (wall) {
+                                    var place = new RoomPosition(wall, 1)
+                                    place.createConstructionSite(STRUCTURE_WALL);
+                                }
+                            }
+                        }
+                        if (bot) {
+                            for (var pos in bot) {
+                                var wall = bot[pos];
+                                if (wall) {
+                                    var place = new RoomPosition(wall, 48)
+                                    place.createConstructionSite(STRUCTURE_WALL);
+                                }
+                            }
+                        }
+                        if (left) {
+                            for (var pos in left) {
+                                var wall = left[pos];
+                                if (wall) {
+                                    var place = new RoomPosition(1, wall)
+                                    place.createConstructionSite(STRUCTURE_WALL);
+                                }
+                            }
+                        }
+                        if (right) {
+                            for (var pos in right) {
+                                var wall = right[pos];
+                                if (wall) {
+                                    var place = new RoomPosition(48, wall)
+                                    place.createConstructionSite(STRUCTURE_WALL);
+                                }
+                            }
+                        }
+                        //CHECK IF IS DONE
+                        if (top) {
+                            for (var pos in top) {
+                                var wall = top[pos];
+                                if (wall) {
+                                    var look = new RoomPosition(wall, 1)
+                                    look.forEach(function(lookObject) {
+                                        if(lookObject.type == wall) {
+                                            log(lookObject.type);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        if (bot) {
+                            for (var pos in bot) {
+                                var wall = bot[pos];
+                                if (wall) {
+                                    var look = new RoomPosition(wall, 48)
+                                    look.forEach(function(lookObject) {
+                                        if(lookObject.type == wall) {
+                                            log(lookObject.type);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        if (left) {
+                            for (var pos in left) {
+                                var wall = left[pos];
+                                if (wall) {
+                                    var look = new RoomPosition(1, wall)
+                                    look.forEach(function(lookObject) {
+                                        if(lookObject.type == wall) {
+                                            log(lookObject.type);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        if (right) {
+                            for (var pos in right) {
+                                var wall = right[pos];
+                                if (wall) {
+                                    var look = new RoomPosition(48, wall)
+                                    look.forEach(function(lookObject) {
+                                        if(lookObject.type == wall) {
+                                            log(lookObject.type);
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
-                }
-                else {
+                    else {
                     Memory.rooms[room.name].info.constructionslevel = 12;
+                    }
                 }
             }
         }
