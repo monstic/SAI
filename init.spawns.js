@@ -52,6 +52,12 @@ module.exports = function (spawn) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
                             }
 
+                            //HARVESTERS
+                            var room = Game.rooms[spawn.pos.roomName];
+                            if (room.controller.level > 4 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader < 2) {
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                            }
+
                             //ENGINEER
                             var repairs = countRepairs(spawn.pos.roomName);
                             var builds = countConstructions(spawn.pos.roomName);
