@@ -246,7 +246,7 @@ module.exports = function (room) {
 
         var leftexit = room.find(FIND_EXIT_LEFT);
         for (var exit in leftexit) {
-            log(leftexit.y);
+            log(leftexit[exit].pos.y);
         }
 
 
