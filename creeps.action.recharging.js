@@ -39,12 +39,12 @@ var creepActFunctions = function(creep) {
     if (creep.memory.targetId) {
 
         if (creep.memory.action === 'recharging') {
-            if (creep.memory.targetType === 'LOWSTO') {
+            if (creep.memory.targetType === 'HIGSTO') {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     //VISUALS
                     new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
-                    if ((_.sum(target.store) > 0)) {
+                    if ((_.sum(target.store[RESOURCE_ENERGY]) > 0)) {
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
                         }
