@@ -200,7 +200,9 @@ module.exports = function (room) {
                                     Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
                                 }
                                 for (var exit in exits) {
-                                    if (i === (exits.length/2)) { 
+                                    if (i === (exits.length/2)) {
+                                        log('i = ' + i);
+                                        log('pos = ' + Memory.rooms[room.name].exit.left[exits[exit].y);
                                         delete Memory.rooms[room.name].exit.left[exits[exit].y];
                                     }
                                     i++;
