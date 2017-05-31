@@ -17,17 +17,16 @@ DONE
 - Creep trail
 - Creep actions
 - Towers
- -> Basic defend functions (priorizing hostile healers and defend functions)
- -> Heal functions
- -> Structure repair functions
- -> Road repair functions (repair only used roads)
-- Towers
+- -> Basic defend functions (priorizing hostile healers and defend functions)
+- -> Heal functions
+- -> Structure repair functions
+- -> Road repair functions (repair only used roads)
 - Auto build
- -> Roads (on most used paths)
- -> Container (near controller)
- -> Storage (near mineral)
- -> 02 Towers
- -> 40 Extensions
+- -> Roads (on most used paths)
+- -> Container (near controller)
+- -> Storage (near mineral)
+- -> 02 Towers
+- -> 40 Extensions
 - Auto re-build structures
 
 
