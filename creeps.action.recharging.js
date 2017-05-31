@@ -81,11 +81,12 @@ var creepActFunctions = function(creep) {
             if (creep.memory.targetType === 'HIGCT') {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
-                    if (target.store.energy > 0) {
+                    console.log(_.sum(target.store[RESOURCE_ENERGY]));
+                    if ((_.sum(target.store[RESOURCE_ENERGY]) > 0)) {
                         //VISUALS
                         new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target, {reusePath: true});
+                            creep.moveTo(target);
                         }
                         else if (creep.transfer(target) === ERR_BUSY) {
                             creep.say('!');

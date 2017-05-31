@@ -28,7 +28,7 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     if (target.hits < target.hitsMax) {
                         //VISUALS
-                        new RoomVisual(creep.room.name).text('repair', (target.pos.x), (target.pos.y + 0.2));
+                        new RoomVisual(creep.room.name).text('R', (target.pos.x), (target.pos.y + 0.2));
 
                         if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
