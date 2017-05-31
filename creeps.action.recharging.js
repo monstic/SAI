@@ -29,7 +29,7 @@ var creepActFunctions = function(creep) {
                         creep.memory.targetRoom = creep.room.name;
                     }
                     else {
-                        creep.say('⚡?');
+                        creep.say('?');
                     }
                 }
             }
@@ -43,30 +43,30 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('✅⛽', (target.pos.x), (target.pos.y));
+                    new RoomVisual(creep.room.name).text('fuel', (target.pos.x), (target.pos.y));
                     if ((_.sum(target.store) > 0)) {
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
                         }
                         else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
-                            creep.say('❗');
+                            creep.say('!');
                         }
                         else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_FULL) {
-                            creep.say('❗');
+                            creep.say('!!');
                         }
                         else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_TIRED) {
-                            creep.say('❗');
+                            creep.say('!!!');
                         }
                         else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_INVALID_TARGET) {
                             cleanTarget(creep);
-                            creep.say('❔');
+                            creep.say('?');
                         }
                         else {
                             //VISUALS
-                            new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                            new RoomVisual(creep.room.name).text('|', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                            new RoomVisual(creep.room.name).text('-', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                            new RoomVisual(creep.room.name).text('|', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('.', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('.', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
+                            new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
                         }
                     }
                     else {
@@ -82,22 +82,22 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     if (target.store.energy > 0) {
                         //VISUALS
-                        new RoomVisual(creep.room.name).text('✅⛽', (target.pos.x + 0.1), (target.pos.y + 0.2), {opacity: 0.8});
+                        new RoomVisual(creep.room.name).text('fuel', (target.pos.x + 0.1), (target.pos.y + 0.2), {opacity: 0.8});
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target, {reusePath: true});
                         }
                         else if (creep.transfer(target) === ERR_BUSY) {
-                            creep.say('❗');
+                            creep.say('!');
                         }
                         else if (creep.transfer(target) === ERR_FULL) {
-                            creep.say('❗');
+                            creep.say('!!');
                         }
                         else if (creep.transfer(target) === ERR_TIRED) {
-                            creep.say('❗');
+                            creep.say('!!!');
                         }
                         else if (creep.transfer(target) === ERR_INVALID_TARGET) {
                             cleanTarget(creep);
-                            creep.say('❔');
+                            creep.say('?');
                         }
                     }
                     else {
@@ -114,22 +114,22 @@ var creepActFunctions = function(creep) {
                 if (dropToGet) {
                     if (dropToGet.energy > 0 && dropToGet.energy !== null) {
                         //VISUALS
-                        new RoomVisual(creep.room.name).text('✅⛽🔋', (dropToGet.pos.x + 0.1), (dropToGet.pos.y - 0.5), {opacity: 0.5, size: 0.5, color: 'green'});
+                        new RoomVisual(creep.room.name).text('get', (dropToGet.pos.x + 0.1), (dropToGet.pos.y - 0.5), {opacity: 0.5, size: 0.5, color: 'green'});
                         if (creep.pickup(dropToGet, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(dropToGet);
                         }
                         else if (creep.pickup(dropToGet) === ERR_BUSY) {
-                            creep.say('❗');
+                            creep.say('!');
                         }
                         else if (creep.pickup(dropToGet) === ERR_FULL) {
-                            creep.say('❗');
+                            creep.say('!!');
                         }
                         else if (creep.pickup(dropToGet) === ERR_TIRED) {
-                            creep.say('❗');
+                            creep.say('!!!');
                         }
                         else if (creep.pickup(dropToGet) === ERR_INVALID_TARGET) {
                         cleanTarget(creep);
-                        creep.say('❔');
+                        creep.say('?');
                         }
                     }
                     else {

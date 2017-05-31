@@ -21,26 +21,26 @@ var creepActFunctions = function(creep) {
             if (creep.memory.targetType === 'RMCT') {
                 targetController = Game.getObjectById(creep.memory.targetId);
                 //VISUALS
-                new RoomVisual(creep.room.name).text('🖥', (targetController.pos.x - 0.5), (targetController.pos.y + 0.1));
+                new RoomVisual(creep.room.name).text('+', (targetController.pos.x - 0.5), (targetController.pos.y + 0.1));
                 if (creep.upgradeController(targetController) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.controller);
                 }
                 else if (creep.upgradeController(targetController) === ERR_BUSY) {
-                    creep.say('❗');
+                    creep.say('!');
                 }
                 else if (creep.upgradeController(targetController) === ERR_FULL) {
-                    creep.say('❗');
+                    creep.say('!!');
                 }
                 else if (creep.upgradeController(targetController) === ERR_TIRED) {
-                    creep.say('❗');
+                    creep.say('!!!');
                 }
                 else if (creep.upgradeController(targetController) === ERR_INVALID_TARGET) {
                     cleanTarget(creep);
-                    creep.say('❔');
+                    creep.say('?');
                 }
                 else {
                 //VISUALS
-                new RoomVisual(creep.room.name).text('💻', (creep.pos.x - 0.5), (creep.pos.y), {size: 0.4});
+                new RoomVisual(creep.room.name).text('upgr', (creep.pos.x - 0.5), (creep.pos.y), {size: 0.4});
                 }
             }
         }

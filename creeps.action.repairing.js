@@ -28,23 +28,23 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     if (target.hits < target.hitsMax) {
                         //VISUALS
-                        new RoomVisual(creep.room.name).text('🛠', (target.pos.x), (target.pos.y + 0.2));
+                        new RoomVisual(creep.room.name).text('repair', (target.pos.x), (target.pos.y + 0.2));
 
                         if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                             creep.moveTo(target);
                         }
                         else if (creep.repair(target) === ERR_BUSY) {
-                            creep.say('❗');
+                            creep.say('!');
                         }
                         else if (creep.repair(target) === ERR_FULL) {
-                            creep.say('❗');
+                            creep.say('!!');
                         }
                         else if (creep.repair(target) === ERR_TIRED) {
-                            creep.say('❗');
+                            creep.say('!!!');
                         }
                         else if (creep.repair(target) === ERR_INVALID_TARGET) {
                             cleanTarget(creep);
-                            creep.say('❔');
+                            creep.say('?');
                         }
                     }
                     else {

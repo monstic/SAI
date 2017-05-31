@@ -5,9 +5,9 @@ var creepActFunctions = function(creep) {
             if (creep.carry[RESOURCE_ENERGY] > 0) {
                 creep.drop(RESOURCE_ENERGY);
             }
-            if (creep.carry[RESOURCE_GHODIUM_OXIDE] > 0) {
-                creep.drop(RESOURCE_GHODIUM_OXIDE);
-            }
+            //if (creep.carry[RESOURCE_GHODIUM_OXIDE] > 0) {
+                //creep.drop(RESOURCE_GHODIUM_OXIDE);
+            //}
         }
 
 };

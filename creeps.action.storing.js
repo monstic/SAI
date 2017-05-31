@@ -5,10 +5,10 @@ var creepActFunctions = function(creep) {
 
         //storing
         if (creep.memory.action === 'storing') {
-            if (Memory.rooms[creep.room.name].storages.nearmineral) {
+            if (Memory.rooms[creep.room.name].structure.storage.mineral) {
                 /** @type {StructureContainer} */
                 let container;
-                container = Game.getObjectById(Memory.rooms[creep.room.name].storages.nearmineral);
+                container = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
                 if (container !== 'undefined' && container) {
                     setTarget(creep, container.id, 'LOWSTO', creep.room.name);
                     
@@ -23,7 +23,7 @@ var creepActFunctions = function(creep) {
             target = Game.getObjectById(creep.memory.targetId);
             if (target) {
                 //VISUALS
-                new RoomVisual(creep.room.name).text('🔌', (target.pos.x), (target.pos.y));
+                new RoomVisual(creep.room.name).text('store', (target.pos.x), (target.pos.y));
                 if (Memory.rooms[creep.room.name].mineral.mineralType === 'H') {
                     if (creep.transfer(target, RESOURCE_HYDROGEN) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(target);
