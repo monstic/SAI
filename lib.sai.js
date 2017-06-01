@@ -1122,7 +1122,7 @@ function (creep, target) {
             }
         );
 
-        pos = ret.path[0];
+        var pos = ret.path[0];
 
     }
 
