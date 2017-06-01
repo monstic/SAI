@@ -22,7 +22,7 @@ var creepActFunctions = function(creep) {
                     //VISUALS
                     new RoomVisual(creep.room.name).text('get', (dropToGet.pos.x + 0.1), (dropToGet.pos.y - 0.5), {opacity: 0.5, size: 0.5, color: 'green'});
                     if (creep.pickup(dropToGet) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(dropToGet);
+                        creep.moveByPath(creep.memory.path);
                     }
                     else if (creep.pickup(dropToGet) === ERR_BUSY) {
                         creep.say('!');

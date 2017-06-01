@@ -46,7 +46,7 @@ var creepActFunctions = function(creep) {
                     new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                     if ((_.sum(target.store) > 0)) {
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             creep.say('!');
@@ -84,7 +84,7 @@ var creepActFunctions = function(creep) {
                         //VISUALS
                         new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.transfer(target) === ERR_BUSY) {
                             creep.say('!');
@@ -116,7 +116,7 @@ var creepActFunctions = function(creep) {
                         //VISUALS
                         new RoomVisual(creep.room.name).text('-', (dropToGet.pos.x - 0.01), (dropToGet.pos.y + 0.3));
                         if (creep.pickup(dropToGet, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(dropToGet);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.pickup(dropToGet) === ERR_BUSY) {
                             creep.say('!');
