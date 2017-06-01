@@ -6,9 +6,10 @@ var creepType = function(creep) {
             moveToByPath(creep, flag.pos);
         }
         else {
-            console.log(creep.room.controller.pos);
-            if (creep.claimController(creep.room.controller) === ERR_NOT_IN_RANGE) {
-                moveToByPath(creep, creep.room.controller.pos);
+            if(creep.room.controller) {
+                if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                   moveToByPath(creep, creep.room.controller.pos);
+                }
             }
         }
     }
