@@ -918,7 +918,7 @@ function (room) {
                     var i = 0;
                     for (var exit in rexits) {
                         if (i === parseInt(countExits.length/2)) { 
-                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit], room.name)
+                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.right[exit], room.name)
                             place.createConstructionSite(STRUCTURE_RAMPART);
                         }
                         i++;
@@ -929,7 +929,7 @@ function (room) {
                     var i = 0;
                     for (var exit in rexits) {
                         if (i === parseInt(countExits.length/2)) { 
-                            var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit], 1, room.name)
+                            var place = new RoomPosition(1, Memory.rooms[room.name].exit.top[exit], 1, room.name)
                             place.createConstructionSite(STRUCTURE_RAMPART);
                         }
                         i++;
@@ -940,7 +940,7 @@ function (room) {
                     var i = 0;
                     for (var exit in rexits) {
                         if (i === parseInt(countExits.length/2)) { 
-                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit], 48, room.name)
+                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.bottom[exit], 48, room.name)
                             place.createConstructionSite(STRUCTURE_RAMPART);
                         }
                         i++;
