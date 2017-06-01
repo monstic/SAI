@@ -646,6 +646,9 @@ function (room) {
                     }
                 }
             }
+            else {
+                Memory.rooms[room.name].info.constructionslevel = 1;
+            }
         }
 
         //PASSO 4 - EXTENSIONS
@@ -694,6 +697,9 @@ function (room) {
                     }
                 }
             }
+            else {
+                Memory.rooms[room.name].info.constructionslevel = 3;
+            }
         }
 
         //PASSO 6 - TOWER NEAR SPAWN
@@ -716,6 +722,10 @@ function (room) {
                     }
                 }
             }
+            else {
+                Memory.rooms[room.name].info.constructionslevel = 5;
+            }
+
         }
 
         //PASSO 7 - EXTENSIONS
@@ -786,6 +796,9 @@ function (room) {
                     }
                 }
             }
+            else {
+                Memory.rooms[room.name].info.constructionslevel = 1;
+            }
         }
 
         //PASSO 10 - EXTRACTOR
@@ -808,35 +821,39 @@ function (room) {
             }
         }
 
-        //PASSO 11 - CRIAR MUROS
+        //PASSO 11 - LAB
         if (Memory.rooms[room.name].info.constructionslevel === 11) {
+            if (room.controller.level >= 6) {
+                var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
+                if (labs.length === 0) {
+                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+                    if (constructionSites.length === 0) {
+                        var mineral = Memory.rooms[room.name].mineral;
+                        if (mineral) {
+                            var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
+                            if (freeSpace) {
+                                freeSpace.createConstructionSite(STRUCTURE_LAB);
+                            }
+                        }
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 12;
+                }
+            }
+        }
+
+        //PASSO 12 - CRIAR MUROS
+        if (Memory.rooms[room.name].info.constructionslevel === 12) {
             if (room.controller.level >= 6) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
                 if (constructionSites.length === 0) {
                     if (Memory.rooms[room.name].exit) {
                         var top = Memory.rooms[room.name].exit.top;
-                        var bot = Memory.rooms[room.name].exit.bot;
+                        var bot = Memory.rooms[room.name].exit.bottom;
                         var left = Memory.rooms[room.name].exit.left;
                         var right = Memory.rooms[room.name].exit.right;
                         //CREATE CS WALLS
-                        if (top) {
-                            for (var pos in top) {
-                                var wall = top[pos];
-                                if (wall) {
-                                    var place = new RoomPosition(wall, 1)
-                                    place.createConstructionSite(STRUCTURE_WALL);
-                                }
-                            }
-                        }
-                        if (bot) {
-                            for (var pos in bot) {
-                                var wall = bot[pos];
-                                if (wall) {
-                                    var place = new RoomPosition(wall, 48)
-                                    place.createConstructionSite(STRUCTURE_WALL);
-                                }
-                            }
-                        }
                         if (left) {
                             for (var pos in left) {
                                 var wall = left[pos];
@@ -855,17 +872,12 @@ function (room) {
                                 }
                             }
                         }
-                        //CHECK IF IS DONE
                         if (top) {
                             for (var pos in top) {
                                 var wall = top[pos];
                                 if (wall) {
-                                    var look = new RoomPosition(wall, 1)
-                                    look.forEach(function(lookObject) {
-                                        if(lookObject.type == wall) {
-                                            log(lookObject.type);
-                                        }
-                                    });
+                                    var place = new RoomPosition(wall, 1)
+                                    place.createConstructionSite(STRUCTURE_WALL);
                                 }
                             }
                         }
@@ -873,74 +885,59 @@ function (room) {
                             for (var pos in bot) {
                                 var wall = bot[pos];
                                 if (wall) {
-                                    var look = new RoomPosition(wall, 48)
-                                    look.forEach(function(lookObject) {
-                                        if(lookObject.type == wall) {
-                                            log(lookObject.type);
-                                        }
-                                    });
+                                    var place = new RoomPosition(wall, 48)
+                                    place.createConstructionSite(STRUCTURE_WALL);
                                 }
                             }
                         }
-                        if (left) {
-                            for (var pos in left) {
-                                var wall = left[pos];
-                                if (wall) {
-                                    var look = new RoomPosition(1, wall)
-                                    look.forEach(function(lookObject) {
-                                        if(lookObject.type == wall) {
-                                            log(lookObject.type);
-                                        }
-                                    });
-                                }
+                        //REGISTER RAMPART POSITION
+                        var countExits = room.find(FIND_EXIT_LEFT);
+                        var rexits = Memory.rooms[room.name].exit.left;
+                        var i = 0;
+                        for (var exit in rexits) {
+                            if (i === parseInt(countExits.length/2)) {
+                                var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit])
+                                place.createConstructionSite(STRUCTURE_RAMPART);
                             }
+                            i++;
                         }
-                        if (right) {
-                            for (var pos in right) {
-                                var wall = right[pos];
-                                if (wall) {
-                                    var look = new RoomPosition(48, wall)
-                                    look.forEach(function(lookObject) {
-                                        if(lookObject.type == wall) {
-                                            log(lookObject.type);
-                                        }
-                                    });
-                                }
+                        //REGISTER RAMPART POSITION
+                        var countExits = room.find(FIND_EXIT_RIGHT);
+                        var rexits = Memory.rooms[room.name].exit.right;
+                        var i = 0;
+                        for (var exit in rexits) {
+                            if (i === parseInt(countExits.length/2)) { 
+                                var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit])
+                                place.createConstructionSite(STRUCTURE_RAMPART);
                             }
+                            i++;
                         }
-                    }
-                    else {
-                    Memory.rooms[room.name].info.constructionslevel = 12;
+                        //REGISTER RAMPART POSITION
+                        var countExits = room.find(FIND_EXIT_TOP);
+                        var rexits = Memory.rooms[room.name].exit.top;
+                        var i = 0;
+                        for (var exit in rexits) {
+                            if (i === parseInt(countExits.length/2)) { 
+                                var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit], 1)
+                                place.createConstructionSite(STRUCTURE_RAMPART);
+                            }
+                            i++;
+                        }
+                        //REGISTER RAMPART POSITION
+                        var countExits = room.find(FIND_EXIT_BOTTOM);
+                        var rexits = Memory.rooms[room.name].exit.bottom;
+                        var i = 0;
+                        for (var exit in rexits) {
+                            if (i === parseInt(countExits.length/2)) { 
+                                var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit], 48)
+                                place.createConstructionSite(STRUCTURE_RAMPART);
+                            }
+                            i++;
+                        }
                     }
                 }
             }
         }
-
-        //PASSO 12 - LAB
-        if (Memory.rooms[room.name].info.constructionslevel === 12) {
-            if (room.controller.level >= 6) {
-                var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
-                if (labs.length === 0) {
-                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                    if (constructionSites.length === 0) {
-                        var mineral = Memory.rooms[room.name].mineral;
-                        if (mineral) {
-                            var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_LAB);
-                            }
-                        }
-                    }
-                }
-                else {
-                    Memory.rooms[room.name].info.constructionslevel = 1;
-                }
-            }
-        }
-
-
-
-
 
     }
 };
