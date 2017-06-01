@@ -114,6 +114,7 @@ cleanTarget =
         delete creep.memory.targetId;
         delete creep.memory.targetRoom;
         delete creep.memory.targetType;
+        delete creep.memory.path;
         return 1;
     };
 
@@ -123,6 +124,8 @@ setTarget =
         creep.memory.targetId = targetid;
         creep.memory.targetType = type;
         creep.memory.targetRoom = roomname;
+        var target = Game.getObjectById(targetid);
+        creep.memory.path = creep.pos.findPathTo(target);
         return 1;
     };
 
