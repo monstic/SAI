@@ -30,6 +30,7 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].config || Memory.rooms[room.name].config === 'undefined') {
                 Memory.rooms[room.name].config = {};
                 Memory.rooms[room.name].config.deleteemptyroomsafter = 500;
+                Memory.rooms[room.name].config.display = 'on';
             }
 
             //CREATE SUMMARY
