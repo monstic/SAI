@@ -9,7 +9,6 @@ var creepType = function(creep) {
             if (creep.claimController(creep.room.controller) === ERR_NOT_IN_RANGE) {
                 moveToByPath(creep, creep.room.controller.pos);
             }
-            creep.claimController(Game.rooms.controller);
         }
     }
 
