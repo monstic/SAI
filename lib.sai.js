@@ -909,6 +909,7 @@ function (room) {
                 }
                 //CREATE CS RAMPART AND BORDERS
                 var countExits = room.find(FIND_EXIT_LEFT);
+                console.log(countExits);
                 var rexits = Memory.rooms[room.name].exit.left;
                 var i = 0;
                 for (var exit in rexits) {
