@@ -926,10 +926,13 @@ function (room) {
                     }
                     if (i === (countExits.length)) {
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
+                        new RoomVisual(roomName).text('+', 2, (Memory.rooms[room.name].exit.left[exit]+1));
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
+                        new RoomVisual(roomName).text('+', 2, (Memory.rooms[room.name].exit.left[exit]+2));
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
+                        new RoomVisual(roomName).text('+', 2, (Memory.rooms[room.name].exit.left[exit]+2));
                         place.createConstructionSite(STRUCTURE_WALL);
                     }
                     i++;
