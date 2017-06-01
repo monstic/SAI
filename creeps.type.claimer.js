@@ -4,6 +4,7 @@ var creepType = function(creep) {
         var flag = Game.flags.claim;
         if (creep.memory.goto !== creep.room.name) {
             moveToByPath(creep, flag.pos);
+            console.log(flag.pos);
         }
     }
 
