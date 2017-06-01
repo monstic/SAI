@@ -49,3 +49,8 @@ Temporary Items
 #WEBSTORM
 .idea
 
+#VCODE
+.vscode
+
+#autocomplete
+autocomplete
