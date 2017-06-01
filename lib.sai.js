@@ -312,16 +312,13 @@ spawnProtoCreep =
                             }
                         }
                         else if (creeptype === 'claimer') {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2) - 1);
+                            numberOfParts = Math.min(numberOfParts, Math.floor(4) - 1);
                             var body = [];
-                            for (let i = 0; i < 1; i++) {
-                                body.push(CLAIM);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(CLAIM);
-                            }
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(MOVE);
+                            }
+                            for (let i = 0; i < numberOfParts; i++) {
+                                body.push(CLAIM);
                             }
                         }
                         else if (creeptype === 'upgrader') {
