@@ -93,7 +93,7 @@ var creepActFunctions = function(creep) {
                     new RoomVisual(creep.room.name).text('+', (target.pos.x - 0.01), (target.pos.y + 0.3));
                     if (target.energy < target.energyCapacity) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             cleanTarget(creep);
@@ -132,7 +132,7 @@ var creepActFunctions = function(creep) {
                     if ((_.sum(target.store) < 2000)) {
                         
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             cleanTarget(creep);
@@ -173,7 +173,7 @@ var creepActFunctions = function(creep) {
                     new RoomVisual(creep.room.name).text('+', (target.pos.x - 0.01), (target.pos.y + 0.3));
                     if ((_.sum(target.store) < 1000000)) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(target);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             creep.say('!');
