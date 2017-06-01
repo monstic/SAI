@@ -148,7 +148,7 @@ module.exports = function (spawn) {
                             var totalSpawnedClaimers = countCreeps('claimer', spawn.pos.roomName);
                             var totalQueuedClaimers = countQueue('claimer', spawn.name);
                             var totalClaimers = (totalSpawnedClaimers+totalQueuedClaimers);
-                            if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer && totalGuards >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
+                            if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer) {
                                 var flagColor = Game.flags.claim;
                                 if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
                                     var flag = Game.flags.claim;
