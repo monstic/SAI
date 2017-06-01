@@ -357,7 +357,7 @@ module.exports = function (room) {
         showTrails(room);
 
 
-        var flag = Game.flags[claim];
+        var flag = Game.flags.claim;
         console.log(flag);
 
 
