@@ -1080,6 +1080,7 @@ function (room) {
 
 moveToByPath = 
 function (creep, target) {
+  let roomName = creep.pos.roomName;
   let ret = PathFinder.search(
     creep.pos, target,
     {
@@ -1122,3 +1123,4 @@ function (creep, target) {
   let pos = ret.path[0];
   creep.move(creep.pos.getDirectionTo(pos));
 };
+
