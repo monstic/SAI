@@ -27,7 +27,7 @@ var creepActFunctions = function(creep) {
                 var target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('build', (target.pos.x), (target.pos.y + 0.2));
+                    new RoomVisual(creep.room.name).text('b', (target.pos.x), (target.pos.y + 0.2));
 
                     if (creep.build(target) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(target);

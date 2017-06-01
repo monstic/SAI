@@ -385,26 +385,51 @@ enableTowers =
             var hostilesHealer = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(HEAL) > 0 } });
             if (hostilesHealer.length > 0) {
                 tower.attack(hostilesHealer[0]);
+                //VISUALS
+                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x - 0.5), (hostilesHealer[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x + 0.5), (hostilesHealer[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x), (hostilesHealer[0].pos.y - 0.4), {size: 0.4, color: 'red'});
+                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x), (hostilesHealer[0].pos.y + 0.6), {size: 0.4, color: 'red'});
             }
             else {
                 var hostilesArmed = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
                 if (hostilesArmed.length > 0) {
                     tower.attack(hostilesArmed[0]);
+                    //VISUALS
+                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x - 0.5), (hostilesArmed[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x + 0.5), (hostilesArmed[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x), (hostilesArmed[0].pos.y - 0.4), {size: 0.4, color: 'red'});
+                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x), (hostilesArmed[0].pos.y + 0.6), {size: 0.4, color: 'red'});
                 }
                 else {
                     var hostiles = room.find(FIND_HOSTILE_CREEPS);
                     if (hostiles.length > 0) {
                         tower.attack(hostiles[0]);
+                        //VISUALS
+                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x - 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x + 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y - 0.4), {size: 0.4, color: 'red'});
+                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y + 0.6), {size: 0.4, color: 'red'});
                     }
                     else {
                         var closestWounded = tower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (w) => w.hits < w.hitsMax });
                         if (closestWounded) {
                             tower.heal(closestWounded);
+                            //VISUALS
+                            new RoomVisual(room.name).text('.', (closestWounded.pos.x - 0.5), (closestWounded.pos.y + 0.1), {size: 0.4, color: 'green'});
+                            new RoomVisual(room.name).text('.', (closestWounded.pos.x + 0.5), (closestWounded.pos.y + 0.1), {size: 0.4, color: 'green'});
+                            new RoomVisual(room.name).text('.', (closestWounded.pos.x), (closestWounded.pos.y - 0.4), {size: 0.4, color: 'green'});
+                            new RoomVisual(room.name).text('.', (closestWounded.pos.x), (closestWounded.pos.y + 0.6), {size: 0.4, color: 'green'});
                         }
                         else {
                             var repairs = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) && (s.hits < 1000)) });
                             if (repairs.length > 0) {
                                 tower.repair(repairs[0]);
+                                //VISUALS
+                                new RoomVisual(room.name).text('.', (repairs[0].pos.x - 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                new RoomVisual(room.name).text('.', (repairs[0].pos.x + 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y - 0.4), {size: 0.4, color: 'blue'});
+                                new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y + 0.6), {size: 0.4, color: 'blue'});
                             }
                             else {
                                 var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
@@ -420,6 +445,11 @@ enableTowers =
                                                     if (road) {
                                                         if (road.usedtimes > 10) {
                                                             tower.repair(findConstructionSiteToRepair[i]);
+                                                            //VISUALS
+                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x - 0.5), (findConstructionSiteToRepair[i].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x + 0.5), (findConstructionSiteToRepair[i].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x), (findConstructionSiteToRepair[i].pos.y - 0.4), {size: 0.4, color: 'blue'});
+                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x), (findConstructionSiteToRepair[i].pos.y + 0.6), {size: 0.4, color: 'blue'});
                                                             b++;
                                                         }
                                                     }
@@ -877,7 +907,7 @@ function (room) {
 //AUTO BUILD WALLS AND RAMPARTS
 autoBuildWalls = 
 function (room) {
-    if (room.controller.level >= 5) {
+    if (room.controller.level >= 4) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
             if (Memory.rooms[room.name].exit) {
