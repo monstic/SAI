@@ -584,6 +584,7 @@ function (room) {
 
     //PASSO 1 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 1) {
+        console.log('1');
         if (room.controller.level >= 2) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -607,6 +608,7 @@ function (room) {
 
     //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER
     if (Memory.rooms[room.name].info.constructionslevel === 2) {
+        console.log('2');
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
             var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
@@ -627,6 +629,7 @@ function (room) {
 
     //PASSO 3 - TOWER NEAR SPAWN
     if (Memory.rooms[room.name].info.constructionslevel === 3) {
+        console.log('3');
         if (room.controller.level >= 3) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -652,6 +655,7 @@ function (room) {
 
     //PASSO 4 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 4) {
+        console.log('4');
         if (room.controller.level >= 3) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -676,6 +680,7 @@ function (room) {
 
     //PASSO 5 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 5) {
+        console.log('5');
         if (room.controller.level >= 4) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -703,6 +708,7 @@ function (room) {
 
     //PASSO 6 - TOWER NEAR SPAWN
     if (Memory.rooms[room.name].info.constructionslevel === 6) {
+        console.log('6');
         if (room.controller.level >= 5) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -729,6 +735,7 @@ function (room) {
 
     //PASSO 7 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 7) {
+        console.log('7');
         if (room.controller.level >= 5) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -753,6 +760,7 @@ function (room) {
 
     //PASSO 8 - STORAGE NEAR MINERAL
     if (Memory.rooms[room.name].info.constructionslevel === 8) {
+        console.log('8');
         if (room.controller.level >= 5) {
             var storage = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
             if (storage.length === 0) {
@@ -775,6 +783,7 @@ function (room) {
 
     //PASSO 9 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 9) {
+        console.log('9');
         if (room.controller.level >= 6) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -802,6 +811,7 @@ function (room) {
 
     //PASSO 10 - EXTRACTOR
     if (Memory.rooms[room.name].info.constructionslevel === 10) {
+        console.log('10');
         if (room.controller.level >= 6) {
             var extractor = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTRACTOR)});
             if (extractor.length === 0) {
@@ -822,6 +832,7 @@ function (room) {
 
     //PASSO 11 - LAB
     if (Memory.rooms[room.name].info.constructionslevel === 11) {
+        console.log('11');
         if (room.controller.level >= 6) {
             var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
             if (labs.length === 0) {
@@ -844,6 +855,7 @@ function (room) {
 
     //PASSO 12 - CRIAR MUROS
     if (Memory.rooms[room.name].info.constructionslevel === 12) {
+        console.log('12');
         if (room.controller.level >= 6) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
