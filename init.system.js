@@ -17,6 +17,7 @@ if (!Memory.system.summary || Memory.system.summary === undefined) {
 //CREATE CONFIG DATABASE
 if (!Memory.system.config || Memory.system.config === undefined) {
     Memory.system.config = {};
+    Memory.system.config.display = 'on';
     console.log('Configs database created.');
 }
 

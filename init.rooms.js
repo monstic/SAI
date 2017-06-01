@@ -26,7 +26,7 @@ module.exports = function (room) {
                 Memory.rooms[room.name].info.constructionslevel = 1;
             }
 
-            //CREATE CONFIG
+            //CREATE ROOM CONFIG
             if (!Memory.rooms[room.name].config || Memory.rooms[room.name].config === 'undefined') {
                 Memory.rooms[room.name].config = {};
                 Memory.rooms[room.name].config.deleteemptyroomsafter = 500;

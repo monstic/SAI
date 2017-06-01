@@ -34,11 +34,11 @@ countRepairs =
 //TURN ON/OFF DISPLAY
 showDisplay = 
 function () {
-    Memory.rooms[room.name].config.display = 'on';
+    Memory.system.config.display = 'on';
 };
 hideDisplay = 
 function () {
-    Memory.rooms[room.name].config.display = 'on';
+    Memory.system.config.display = 'off';
 };
 
 //COUNT CREEPS
@@ -479,7 +479,7 @@ showRoomInfoInScreen =
         if (Memory.rooms[roomName]) {
             if (Memory.rooms[roomName].config) {
                 if (Memory.rooms[roomName].config.display) {
-                    if (Memory.rooms[roomName].config.display === 'on') {
+                    if (Memory.system.config.display === 'on') {
                         //VISUAL ROADS
                         var paths = Memory.rooms[room.name].trail;
                         for (var path in paths) {
