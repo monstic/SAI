@@ -488,7 +488,7 @@ showRoomInfoInScreen =
                     // cannot add more visuals in this tick
                     var room = Game.rooms[roomName];
                     //ROOM STATS
-                    new RoomVisual(roomName).text('MAP ' + roomName, 1, 1, { align: 'left' });
+                    new RoomVisual(roomName).text('ROOM ' + roomName, 1, 1, { align: 'left' });
                     new RoomVisual(roomName).text('LVL ' + room.controller.level, 6, 1, { align: 'left' });
                     //ENERGY STATS
                     new RoomVisual(roomName).text('ENERGY: ' + parseInt((100 / Game.rooms[roomName].energyCapacityAvailable) * Game.rooms[roomName].energyAvailable) + '% [' + Game.rooms[roomName].energyAvailable + '/' + Game.rooms[roomName].energyCapacityAvailable + 'W]', 1, 2, { align: 'left' });
