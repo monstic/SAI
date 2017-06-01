@@ -6,7 +6,6 @@ var creepActFunctions = function(creep) {
         setTarget(creep, flag.id, 'LOWSTO', target.room.name);
         delete creep.memory.path;
         creep.memory.path = creep.pos.findPathTo(flag);
-        }
     }
 
     //CLAIM CONTROLLER
