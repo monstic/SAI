@@ -1,6 +1,6 @@
 var creepType = function(creep) {
 
-
+    if (creep.memory.)
 
 
 

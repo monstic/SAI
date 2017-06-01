@@ -356,6 +356,11 @@ module.exports = function (room) {
         showRoomInfoInScreen(room);
         showTrails(room);
 
+
+        var flag = Game.flags[claim];
+        console.log(flag);
+
+
     }
 
 };

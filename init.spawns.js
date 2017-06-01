@@ -152,10 +152,10 @@ module.exports = function (spawn) {
                                     //LOAD VARIABLES
                                     var queue_spawn = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].spawnname;
                                     var queue_type = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].type;
-                                    var queue_firstaction = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].firstaction;
+                                    var queue_goto = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].goto;
                                     var removeFromQueue = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].registertime;
                                     //SPAWN
-                                    var result = spawnProtoCreep(queue_spawn, queue_type, queue_firstaction, removeFromQueue);
+                                    var result = spawnProtoCreep(queue_spawn, queue_type, queue_goto, removeFromQueue);
                                     //SHOW RESULT
                                     if (result) {
                                         console.log(result);
