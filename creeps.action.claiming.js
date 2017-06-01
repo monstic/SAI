@@ -1,20 +1,28 @@
 var creepActFunctions = function(creep) {
 
-    //SET TARGET FOR EACH ACTION
-    if (creep.memory.goto) {
+    //SET TARGET
+    if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         var flag = Game.flags.claim;
-        if (creep.memory.goto !== creep.room.name) {
-            moveToByPath(creep, flag.pos);
+        setTarget(creep, flag.id, 'LOWSTO', target.room.name);
+        delete creep.memory.path;
+        creep.memory.path = creep.pos.findPathTo(flag);
+        }
+    }
+
+    //CLAIM CONTROLLER
+    if (creep.memory.targetId) {
+        var target = Game.getObjectById(creep.memory.targetId);
+        if (target.room.name !== creep.room.name) {
+            moveToByPath(creep, target.pos);
         }
         else {
             if(creep.room.controller) {
                 if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                   moveToByPath(creep, creep.room.controller.pos);
+                    creep.moveByPath(creep.memory.path);
                 }
             }
         }
     }
-
 
 
 };

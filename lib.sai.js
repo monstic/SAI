@@ -1122,12 +1122,12 @@ function (creep, target) {
             }
         );
 
-        creep.memory.path = ret.path[0];
+        pos = ret.path[0];
 
     }
 
-    if (creep.memory.path) {
-        creep.move(creep.pos.getDirectionTo(creep.memory.path));
+    if (pos) {
+        creep.move(creep.pos.getDirectionTo(pos));
     }
 };
 
