@@ -52,10 +52,13 @@ module.exports = function (spawn) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
                             }
 
-                            //HARVESTERS
+                            //UPGRADERS
                             var room = Game.rooms[spawn.pos.roomName];
-                            if (room.controller.level > 4 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader < 2) {
+                            if (room.controller.level > 4 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader < 2 && (builds < 40 || repairs < 40)) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                            }
+                            if (builds >= 40 || repairs >= 40) {
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
                             }
 
                             //ENGINEER
