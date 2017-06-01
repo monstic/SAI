@@ -358,7 +358,7 @@ module.exports = function (room) {
 
 
         var flag = Game.flags.claim;
-        console.log(flag);
+        console.log(flag.pos.roomName);
 
 
     }
