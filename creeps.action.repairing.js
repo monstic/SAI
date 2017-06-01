@@ -5,19 +5,49 @@ var creepActFunctions = function(creep) {
 
         //repairing
         if (creep.memory.action === 'repairing') {
-            let repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < s.hitsMax && s.structureType !== STRUCTURE_ROAD)});
-            
+            var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.structureType !== STRUCTURE_ROAD)});
             if (repairs.length > 0) {
                 creep.memory.targetId = repairs[0].id;
                 creep.memory.targetType = 'STDMG';
                 creep.memory.targetRoom = creep.room.name;
             }
             else {
-                creep.memory.action = 'building';
-                cleanTarget(creep);
+                var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 5000 && s.structureType !== STRUCTURE_ROAD)});
+                if (repairs.length > 0) {
+                    creep.memory.targetId = repairs[0].id;
+                    creep.memory.targetType = 'STDMG';
+                    creep.memory.targetRoom = creep.room.name;
+                }
+                else {
+                    var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 10000 && s.structureType !== STRUCTURE_ROAD)});
+                    if (repairs.length > 0) {
+                        creep.memory.targetId = repairs[0].id;
+                        creep.memory.targetType = 'STDMG';
+                        creep.memory.targetRoom = creep.room.name;
+                    }
+                    else {
+                        var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 100000 && s.structureType !== STRUCTURE_ROAD)});
+                        if (repairs.length > 0) {
+                            creep.memory.targetId = repairs[0].id;
+                            creep.memory.targetType = 'STDMG';
+                            creep.memory.targetRoom = creep.room.name;
+                        }
+                        else {
+                            var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < s.hitsMax && s.structureType !== STRUCTURE_ROAD)});
+                            if (repairs.length > 0) {
+                                creep.memory.targetId = repairs[0].id;
+                                creep.memory.targetType = 'STDMG';
+                                creep.memory.targetRoom = creep.room.name;
+                            }
+                            else {
+                                creep.memory.action = 'building';
+                                cleanTarget(creep);
+                            }
+                        }
+                    }
+                }
             }
         }
-
     }
 
     if (creep.memory.targetId) {
