@@ -471,6 +471,29 @@ spawnProgress =
         }
     };
 
+//VISUAL TRAIL
+showTrails = 
+    function (room) {
+
+        //SHOW CREEP TRAIL
+        var paths = Memory.rooms[room.name].trail;
+        for (var path in paths) {
+            if (paths[path].lastused > (Game.time - 16) && paths[path].lastused < (Game.time - 10)) {
+                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.3, opacity: 0.8, color: '#ffff00' });
+            }
+            if (paths[path].lastused > (Game.time - 11) && paths[path].lastused < (Game.time - 5)) {
+                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.6, opacity: 0.8, color: '#ffff00' });
+            }
+            if (paths[path].lastused > (Game.time - 6) && paths[path].lastused < (Game.time + 1)) {
+                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1, opacity: 0.8, color: '#ffff00' });
+            }
+            if (paths[path].usedtimes >= 20 && paths[path].lastused < (Game.time - 10)) {
+                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1, opacity: 0.8, color: 'black' });
+            }
+        }
+
+    };
+
 
 //VISUAL SCREEN
 showRoomInfoInScreen =
@@ -480,22 +503,6 @@ showRoomInfoInScreen =
             if (Memory.rooms[roomName].config) {
                 if (Memory.rooms[roomName].config.display) {
                     if (Memory.system.config.display === 'on') {
-                        //VISUAL ROADS
-                        var paths = Memory.rooms[room.name].trail;
-                        for (var path in paths) {
-                            if (paths[path].lastused > (Game.time - 16) && paths[path].lastused < (Game.time - 10)) {
-                                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.3, opacity: 0.8, color: '#ffff00' });
-                            }
-                            if (paths[path].lastused > (Game.time - 11) && paths[path].lastused < (Game.time - 5)) {
-                                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.6, opacity: 0.8, color: '#ffff00' });
-                            }
-                            if (paths[path].lastused > (Game.time - 6) && paths[path].lastused < (Game.time + 1)) {
-                                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1, opacity: 0.8, color: '#ffff00' });
-                            }
-                            if (paths[path].usedtimes >= 20 && paths[path].lastused < (Game.time - 10)) {
-                                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 1, opacity: 0.8, color: 'black' });
-                            }
-                        }
                         if (Game.rooms[roomName].controller) {
                             if (Game.rooms[roomName].visual.getSize() < 512000) {
                                 // cannot add more visuals in this tick

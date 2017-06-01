@@ -354,6 +354,7 @@ module.exports = function (room) {
         //LOAD MODULES
         enableTowers(room);
         showRoomInfoInScreen(room);
+        showTrails(room);
 
     }
 
