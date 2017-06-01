@@ -407,7 +407,7 @@ enableTowers =
                                 tower.repair(repairs[0]);
                             }
                             else {
-                                var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
+                                var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_RAMPART) && (s.hits < s.hitsMax)) });
                                 if (findConstructionSiteToRepair.length > 0) {
                                     var i = 0;
                                     var b = 0;
