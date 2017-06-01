@@ -402,33 +402,39 @@ enableTowers =
                             tower.heal(closestWounded);
                         }
                         else {
-                            var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
-                            if (findConstructionSiteToRepair.length > 0) {
-                                var i = 0;
-                                var b = 0;
-                                while (i < findConstructionSiteToRepair.length) {
-                                    if (b === 0) {
-                                        var pos = findConstructionSiteToRepair[i].pos;
-                                        if (Memory.rooms[room.name].trail) {
-                                            if (Memory.rooms[room.name].trail[pos]) {
-                                                var road = Memory.rooms[room.name].trail[pos];
-                                                if (road) {
-                                                    if (road.usedtimes > 10) {
-                                                        tower.repair(findConstructionSiteToRepair[i]);
-                                                        b++;
+                            var repairs = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_WALL) && (s.hits < 1000)) });
+                            if (repairs.length > 0) {
+                                tower.repair(repairs[0]);
+                            }
+                            else {
+                                var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
+                                if (findConstructionSiteToRepair.length > 0) {
+                                    var i = 0;
+                                    var b = 0;
+                                    while (i < findConstructionSiteToRepair.length) {
+                                        if (b === 0) {
+                                            var pos = findConstructionSiteToRepair[i].pos;
+                                            if (Memory.rooms[room.name].trail) {
+                                                if (Memory.rooms[room.name].trail[pos]) {
+                                                    var road = Memory.rooms[room.name].trail[pos];
+                                                    if (road) {
+                                                        if (road.usedtimes > 10) {
+                                                            tower.repair(findConstructionSiteToRepair[i]);
+                                                            b++;
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
+                                        i++;
                                     }
-                                    i++;
                                 }
-                            }
-                            else {
-                                var totalRepairs = countRepairs(room.name);
-                                if (totalRepairs > 0) {
-                                    var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001)) });
-                                    tower.repair(findConstructionSiteToRepair[0]);
+                                else {
+                                    var totalRepairs = countRepairs(room.name);
+                                    if (totalRepairs > 0) {
+                                        var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001)) });
+                                        tower.repair(findConstructionSiteToRepair[0]);
+                                    }
                                 }
                             }
                         }
