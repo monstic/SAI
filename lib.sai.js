@@ -584,7 +584,6 @@ function (room) {
 
     //PASSO 1 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 1) {
-        console.log('1');
         if (room.controller.level >= 2) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -608,7 +607,6 @@ function (room) {
 
     //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER
     if (Memory.rooms[room.name].info.constructionslevel === 2) {
-        console.log('2');
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
             var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
@@ -629,7 +627,6 @@ function (room) {
 
     //PASSO 3 - TOWER NEAR SPAWN
     if (Memory.rooms[room.name].info.constructionslevel === 3) {
-        console.log('3');
         if (room.controller.level >= 3) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -655,7 +652,6 @@ function (room) {
 
     //PASSO 4 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 4) {
-        console.log('4');
         if (room.controller.level >= 3) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -680,7 +676,6 @@ function (room) {
 
     //PASSO 5 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 5) {
-        console.log('5');
         if (room.controller.level >= 4) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -708,7 +703,6 @@ function (room) {
 
     //PASSO 6 - TOWER NEAR SPAWN
     if (Memory.rooms[room.name].info.constructionslevel === 6) {
-        console.log('6');
         if (room.controller.level >= 5) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -735,7 +729,6 @@ function (room) {
 
     //PASSO 7 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 7) {
-        console.log('7');
         if (room.controller.level >= 5) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -760,7 +753,6 @@ function (room) {
 
     //PASSO 8 - STORAGE NEAR MINERAL
     if (Memory.rooms[room.name].info.constructionslevel === 8) {
-        console.log('8');
         if (room.controller.level >= 5) {
             var storage = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
             if (storage.length === 0) {
@@ -783,7 +775,6 @@ function (room) {
 
     //PASSO 9 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 9) {
-        console.log('9');
         if (room.controller.level >= 6) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
@@ -811,7 +802,6 @@ function (room) {
 
     //PASSO 10 - EXTRACTOR
     if (Memory.rooms[room.name].info.constructionslevel === 10) {
-        console.log('10');
         if (room.controller.level >= 6) {
             var extractor = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTRACTOR)});
             if (extractor.length === 0) {
@@ -832,7 +822,6 @@ function (room) {
 
     //PASSO 11 - LAB
     if (Memory.rooms[room.name].info.constructionslevel === 11) {
-        console.log('11');
         if (room.controller.level >= 6) {
             var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
             if (labs.length === 0) {
@@ -852,162 +841,163 @@ function (room) {
             }
         }
     }
+};
 
-    //PASSO 12 - CRIAR MUROS
-    if (Memory.rooms[room.name].info.constructionslevel === 12) {
-        if (room.controller.level >= 5) {
-            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-            if (constructionSites.length === 0) {
-                if (Memory.rooms[room.name].exit) {
-                    var top = Memory.rooms[room.name].exit.top;
-                    var bot = Memory.rooms[room.name].exit.bottom;
-                    var left = Memory.rooms[room.name].exit.left;
-                    var right = Memory.rooms[room.name].exit.right;
-                    //CREATE CS WALLS
-                    if (left) {
-                        for (var pos in left) {
-                            var wall = Memory.rooms[room.name].exit.left[pos];
-                            if (wall) {
-                                var place = new RoomPosition(2, wall, room.name);
-                                place.createConstructionSite(STRUCTURE_WALL);
-                            }
+//AUTO BUILD WALLS AND RAMPARTS
+autoBuildWalls = 
+function (room) {
+    if (room.controller.level >= 5) {
+        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+        if (constructionSites.length === 0) {
+            if (Memory.rooms[room.name].exit) {
+                var top = Memory.rooms[room.name].exit.top;
+                var bot = Memory.rooms[room.name].exit.bottom;
+                var left = Memory.rooms[room.name].exit.left;
+                var right = Memory.rooms[room.name].exit.right;
+                //CREATE CS WALLS
+                if (left) {
+                    for (var pos in left) {
+                        var wall = Memory.rooms[room.name].exit.left[pos];
+                        if (wall) {
+                            var place = new RoomPosition(2, wall, room.name);
+                            place.createConstructionSite(STRUCTURE_WALL);
                         }
                     }
-                    if (right) {
-                        for (var pos in right) {
-                            var wall = Memory.rooms[room.name].exit.right[pos];
-                            if (wall) {
-                                var place = new RoomPosition(47, wall, room.name);
-                                place.createConstructionSite(STRUCTURE_WALL);
-                            }
+                }
+                if (right) {
+                    for (var pos in right) {
+                        var wall = Memory.rooms[room.name].exit.right[pos];
+                        if (wall) {
+                            var place = new RoomPosition(47, wall, room.name);
+                            place.createConstructionSite(STRUCTURE_WALL);
                         }
                     }
-                    if (top) {
-                        for (var pos in top) {
-                            var wall = Memory.rooms[room.name].exit.top[pos];
-                            if (wall) {
-                                var place = new RoomPosition(wall, 2, room.name);
-                                place.createConstructionSite(STRUCTURE_WALL);
-                            }
+                }
+                if (top) {
+                    for (var pos in top) {
+                        var wall = Memory.rooms[room.name].exit.top[pos];
+                        if (wall) {
+                            var place = new RoomPosition(wall, 2, room.name);
+                            place.createConstructionSite(STRUCTURE_WALL);
                         }
                     }
-                    if (bot) {
-                        for (var pos in bot) {
-                            var wall = Memory.rooms[room.name].exit.bottom[pos];
-                            if (wall) {
-                                var place = new RoomPosition(wall, 47, room.name);
-                                place.createConstructionSite(STRUCTURE_WALL);
-                            }
+                }
+                if (bot) {
+                    for (var pos in bot) {
+                        var wall = Memory.rooms[room.name].exit.bottom[pos];
+                        if (wall) {
+                            var place = new RoomPosition(wall, 47, room.name);
+                            place.createConstructionSite(STRUCTURE_WALL);
                         }
                     }
-                    //CREATE CS RAMPART AND BORDERS
-                    var countExits = room.find(FIND_EXIT_LEFT);
-                    var rexits = Memory.rooms[room.name].exit.left;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === 0) {
-                            var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-1), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        if (i === parseInt(countExits.length/2)) {
-                            var place = new RoomPosition(2, Memory.rooms[room.name].exit.left[exit], room.name);
-                            place.createConstructionSite(STRUCTURE_RAMPART);
-                        }
-                        if (i === countExits.length) {
-                            var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        i++;
+                }
+                //CREATE CS RAMPART AND BORDERS
+                var countExits = room.find(FIND_EXIT_LEFT);
+                var rexits = Memory.rooms[room.name].exit.left;
+                var i = 0;
+                for (var exit in rexits) {
+                    if (i === 0) {
+                        var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-1), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
                     }
-                    //CREATE CS RAMPART AND BORDERS
-                    var countExits = room.find(FIND_EXIT_RIGHT);
-                    var rexits = Memory.rooms[room.name].exit.right;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === 0) {
-                            var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-1), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        if (i === parseInt(countExits.length/2)) { 
-                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.right[exit], room.name);
-                            place.createConstructionSite(STRUCTURE_RAMPART);
-                        }
-                        if (i === countExits.length) {
-                            var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        i++;
+                    if (i === parseInt(countExits.length/2)) {
+                        var place = new RoomPosition(2, Memory.rooms[room.name].exit.left[exit], room.name);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                     }
-                    //CREATE CS RAMPART AND BORDERS
-                    var countExits = room.find(FIND_EXIT_TOP);
-                    var rexits = Memory.rooms[room.name].exit.top;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === 0) {
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 1, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 2, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-1), 2, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        if (i === parseInt(countExits.length/2)) { 
-                            var place = new RoomPosition(Memory.rooms[room.name].exit.top[exit], 1, room.name);
-                            place.createConstructionSite(STRUCTURE_RAMPART);
-                        }
-                        if (i === countExits.length) {
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+1), 2, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+2), 2, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+2), 1, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        i++;
+                    if (i === countExits.length) {
+                        var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
                     }
-                    //CREATE CS RAMPART AND BORDERS
-                    var countExits = room.find(FIND_EXIT_BOTTOM);
-                    var rexits = Memory.rooms[room.name].exit.bottom;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === 0) {
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 49, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 48, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-1), 48, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        if (i === parseInt(countExits.length/2)) { 
-                            var place = new RoomPosition(Memory.rooms[room.name].exit.bottom[exit], 48, room.name);
-                            place.createConstructionSite(STRUCTURE_RAMPART);
-                        }
-                        if (i === countExits.length) {
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+1), 48, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+2), 48, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                            var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+2), 49, room.name);
-                            place.createConstructionSite(STRUCTURE_WALL);
-                        }
-                        i++;
+                    i++;
+                }
+                //CREATE CS RAMPART AND BORDERS
+                var countExits = room.find(FIND_EXIT_RIGHT);
+                var rexits = Memory.rooms[room.name].exit.right;
+                var i = 0;
+                for (var exit in rexits) {
+                    if (i === 0) {
+                        var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-1), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
                     }
+                    if (i === parseInt(countExits.length/2)) { 
+                        var place = new RoomPosition(48, Memory.rooms[room.name].exit.right[exit], room.name);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
+                    }
+                    if (i === countExits.length) {
+                        var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                    }
+                    i++;
+                }
+                //CREATE CS RAMPART AND BORDERS
+                var countExits = room.find(FIND_EXIT_TOP);
+                var rexits = Memory.rooms[room.name].exit.top;
+                var i = 0;
+                for (var exit in rexits) {
+                    if (i === 0) {
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 1, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 2, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-1), 2, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                    }
+                    if (i === parseInt(countExits.length/2)) { 
+                        var place = new RoomPosition(Memory.rooms[room.name].exit.top[exit], 1, room.name);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
+                    }
+                    if (i === countExits.length) {
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+1), 2, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+2), 2, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+2), 1, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                    }
+                    i++;
+                }
+                //CREATE CS RAMPART AND BORDERS
+                var countExits = room.find(FIND_EXIT_BOTTOM);
+                var rexits = Memory.rooms[room.name].exit.bottom;
+                var i = 0;
+                for (var exit in rexits) {
+                    if (i === 0) {
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 49, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 48, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-1), 48, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                    }
+                    if (i === parseInt(countExits.length/2)) { 
+                        var place = new RoomPosition(Memory.rooms[room.name].exit.bottom[exit], 48, room.name);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
+                    }
+                    if (i === countExits.length) {
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+1), 48, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+2), 48, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+2), 49, room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                    }
+                    i++;
                 }
             }
         }

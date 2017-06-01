@@ -67,24 +67,41 @@ module.exports = function (room) {
             //CREATE CRONJOBS
             if (!Memory.rooms[room.name].cron || Memory.rooms[room.name].cron === 'undefined') {
                 Memory.rooms[room.name].cron = {};
+            }
+            if (!Memory.rooms[room.name].cron[0] || Memory.rooms[room.name].cron[0] === 'undefined') {
                 Memory.rooms[room.name].cron[0] = {};
                 Memory.rooms[room.name].cron[0].lastrun = Game.time;
                 Memory.rooms[room.name].cron[0].interval = 50;
+            }
+            if (!Memory.rooms[room.name].cron[1] || Memory.rooms[room.name].cron[1] === 'undefined') {
                 Memory.rooms[room.name].cron[1] = {};
                 Memory.rooms[room.name].cron[1].lastrun = (Game.time+1);
                 Memory.rooms[room.name].cron[1].interval = 500;
+            }
+            if (!Memory.rooms[room.name].cron[2] || Memory.rooms[room.name].cron[2] === 'undefined') {
                 Memory.rooms[room.name].cron[2] = {};
                 Memory.rooms[room.name].cron[2].lastrun = (Game.time+2);
                 Memory.rooms[room.name].cron[2].interval = 100;
+            }
+            if (!Memory.rooms[room.name].cron[3] || Memory.rooms[room.name].cron[3] === 'undefined') {
                 Memory.rooms[room.name].cron[3] = {};
                 Memory.rooms[room.name].cron[3].lastrun = (Game.time+3);
                 Memory.rooms[room.name].cron[3].interval = 50;
+            }
+            if (!Memory.rooms[room.name].cron[4] || Memory.rooms[room.name].cron[4] === 'undefined') {
                 Memory.rooms[room.name].cron[4] = {};
                 Memory.rooms[room.name].cron[4].lastrun = (Game.time+4);
                 Memory.rooms[room.name].cron[4].interval = 500;
+            }
+            if (!Memory.rooms[room.name].cron[5] || Memory.rooms[room.name].cron[5] === 'undefined') {
                 Memory.rooms[room.name].cron[5] = {};
                 Memory.rooms[room.name].cron[5].lastrun = (Game.time+5);
-                Memory.rooms[room.name].cron[5].interval = 25;
+                Memory.rooms[room.name].cron[5].interval = 50;
+            }
+            if (!Memory.rooms[room.name].cron[6] || Memory.rooms[room.name].cron[6] === 'undefined') {
+                Memory.rooms[room.name].cron[6] = {};
+                Memory.rooms[room.name].cron[6].lastrun = (Game.time+5);
+                Memory.rooms[room.name].cron[6].interval = 25;
             }
 
         //END ONE TIME RUN
@@ -322,6 +339,12 @@ module.exports = function (room) {
             }
             //END CRON 5
 
+            //START CRON 6 [AUTO BUILD WALLS AND RAMPARTS]
+            if (Memory.rooms[room.name].cron[6].lastrun < (Game.time-Memory.rooms[room.name].cron[6].interval)) {
+                autoBuildWalls(room);
+                Memory.rooms[room.name].cron[6].lastrun = Game.time;
+            }
+            //END CRON 5
             //END CRONJOBS
 
         }
