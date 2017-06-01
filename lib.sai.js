@@ -1009,7 +1009,7 @@ function (room) {
                         place.createConstructionSite(STRUCTURE_WALL);
                     }
                     if (i === parseInt(countExits.length/2)) { 
-                        var place = new RoomPosition(Memory.rooms[room.name].exit.bottom[exit], 47, room.name);
+                        var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+1), 47, room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === (countExits.length-1)) {
