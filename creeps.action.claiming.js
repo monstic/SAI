@@ -3,14 +3,14 @@ var creepActFunctions = function(creep) {
     //SET TARGET
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         var flag = Game.flags.claim;
-        setTarget(creep, flag.id, 'LOWSTO', flag.pos.roomName);
+        setTarget(creep, 'claim', 'LOWSTO', flag.pos.roomName);
         delete creep.memory.path;
         creep.memory.path = creep.pos.findPathTo(flag);
     }
 
     //CLAIM CONTROLLER
     if (creep.memory.targetId) {
-        var target = Game.getObjectById(creep.memory.targetId);
+        var target = Game.flags.claim;
         if (target.pos.roomName !== creep.room.name) {
             moveToByPath(creep, target.pos);
         }
