@@ -312,7 +312,8 @@ spawnProtoCreep =
                             }
                         }
                         else if (creeptype === 'claimer') {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(8) - 1);
+                            var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 600);
+                            numberOfParts = Math.min(numberOfParts, Math.floor(6) - 1);
                             var body = [];
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(MOVE);
