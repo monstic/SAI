@@ -940,11 +940,11 @@ function (room) {
                 var i = 1;
                 for (var exit in rexits) {
                     if (i === 1) {
-                        var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
-                        var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-1), room.name);
+                        var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]-1), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                     }
                     if (i === parseInt(countExits.length/2)) { 
@@ -952,11 +952,11 @@ function (room) {
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === (countExits.length-1)) {
-                        var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
+                        var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
+                        place.createConstructionSite(STRUCTURE_WALL);
+                        var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
-                        var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                     }
                     i++;
