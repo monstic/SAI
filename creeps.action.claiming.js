@@ -11,7 +11,7 @@ var creepActFunctions = function(creep) {
     //CLAIM CONTROLLER
     if (creep.memory.targetId) {
         var target = Game.getObjectById(creep.memory.targetId);
-        if (target.room.name !== creep.room.name) {
+        if (target.pos.roomName !== creep.room.name) {
             moveToByPath(creep, target.pos);
         }
         else {
