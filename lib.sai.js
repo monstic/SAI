@@ -257,13 +257,13 @@ addToQueue =
 
 //CREEP TYPES
 spawnProtoCreep =
-    function (spawnname, creeptype, creepfirstaction, removeFromQueue) {
+    function (spawnname, creeptype, creepgoto, removeFromQueue) {
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
             var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
             if (totalHarvesters === 0) {
                 delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
-                var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
+                var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                 if (_.isString(name)) {
                     result = ('Spawning new harvester on ' + spawn.name + ' with name ' + name + '.');
                     log(result);
@@ -273,7 +273,7 @@ spawnProtoCreep =
                 var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
                 if (totalTransporters === 0) {
                     delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
-                    var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
+                    var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                     if (_.isString(name)) {
                         result = ('Spawning new transporter on ' + spawn.name + ' with name ' + name + '.');
                         log(result);
@@ -306,6 +306,19 @@ spawnProtoCreep =
                             }
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(CARRY);
+                            }
+                            for (let i = 0; i < numberOfParts; i++) {
+                                body.push(MOVE);
+                            }
+                        }
+                        else if (creeptype === 'claimer') {
+                            numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2) - 1);
+                            var body = [];
+                            for (let i = 0; i < 1; i++) {
+                                body.push(CLAIM);
+                            }
+                            for (let i = 0; i < numberOfParts; i++) {
+                                body.push(CLAIM);
                             }
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(MOVE);
@@ -362,9 +375,9 @@ spawnProtoCreep =
                             }
                         }
 
-                        var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
+                        var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                         if (canIspawn === 0) {
-                            var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, firstaction: creepfirstaction, id: Game.time });
+                            var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                             if (_.isString(name)) {
                                 result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
                                 delete Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[removeFromQueue];
@@ -1065,4 +1078,47 @@ function (room) {
     }
 };
 
+moveToByPath = 
+function (creep, target) {
+  let ret = PathFinder.search(
+    creep.pos, target,
+    {
+      // We need to set the defaults costs higher so that we
+      // can set the road cost lower in `roomCallback`
+      plainCost: 2,
+      swampCost: 10,
 
+      roomCallback: function(roomName) {
+
+        let room = Game.rooms[roomName];
+        // In this example `room` will always exist, but since 
+        // PathFinder supports searches which span multiple rooms 
+        // you should be careful!
+        if (!room) return;
+        let costs = new PathFinder.CostMatrix;
+
+        room.find(FIND_STRUCTURES).forEach(function(struct) {
+          if (struct.structureType === STRUCTURE_ROAD) {
+            // Favor roads over plain tiles
+            costs.set(struct.pos.x, struct.pos.y, 1);
+          } else if (struct.structureType !== STRUCTURE_CONTAINER &&
+                     (struct.structureType !== STRUCTURE_RAMPART ||
+                      !struct.my)) {
+            // Can't walk through non-walkable buildings
+            costs.set(struct.pos.x, struct.pos.y, 0xff);
+          }
+        });
+
+        // Avoid creeps in the room
+        room.find(FIND_CREEPS).forEach(function(creep) {
+          costs.set(creep.pos.x, creep.pos.y, 0xff);
+        });
+
+        return costs;
+      },
+    }
+  );
+
+  let pos = ret.path[0];
+  creep.move(creep.pos.getDirectionTo(pos));
+};
