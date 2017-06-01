@@ -924,7 +924,7 @@ function (room) {
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
-                    if (i === countExits.length) {
+                    if (i === (countExits.length-1)) {
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
                         console.log('i = ' + i + ' - y = ' + (Memory.rooms[room.name].exit.left[exit]+1));
                         place.createConstructionSite(STRUCTURE_WALL);
