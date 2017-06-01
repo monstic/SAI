@@ -15,10 +15,8 @@ var creepActFunctions = function(creep) {
             moveToByPath(creep, target.pos);
         }
         else {
-            if(creep.room.controller) {
-                if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                    creep.moveByPath(creep.memory.path);
-                }
+            if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                creep.moveByPath(creep.memory.path);
             }
         }
     }
