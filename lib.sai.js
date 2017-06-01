@@ -581,363 +581,360 @@ function (room) {
 //AUTO BUILD
 autoBuild = 
 function (room) {
-    if (Memory.rooms[room.name].cron[5].lastrun < (Game.time - Memory.rooms[room.name].cron[5].interval)) {
 
-        //PASSO 1 - EXTENSIONS
-        if (Memory.rooms[room.name].info.constructionslevel === 1) {
-            if (room.controller.level >= 2) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                    if (extensions.length < 5) {
-                        var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                        if (someroad.length > 0) {
-                            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                            }
-                        }
-                    }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 2;
-                    }
-                }
-            }
-        }
-
-        //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER
-        if (Memory.rooms[room.name].info.constructionslevel === 2) {
+    //PASSO 1 - EXTENSIONS
+    if (Memory.rooms[room.name].info.constructionslevel === 1) {
+        if (room.controller.level >= 2) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
-                var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-                var haveContainer = Memory.rooms[room.name].structure.container.controller;
-                if (!haveContainer) {
-                        var sourcePos = room.controller;
-                        var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
-                        if (getFreePos !== 'searching') {
-                            getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
+                var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
+                if (extensions.length < 5) {
+                    var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
+                    if (someroad.length > 0) {
+                        var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                        var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                        if (freeSpace) {
+                            freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
                         }
+                    }
                 }
                 else {
-                    Memory.rooms[room.name].info.constructionslevel = 3;
+                    Memory.rooms[room.name].info.constructionslevel = 2;
                 }
             }
         }
+    }
 
-
-        //PASSO 3 - TOWER NEAR SPAWN
-        if (Memory.rooms[room.name].info.constructionslevel === 3) {
-            if (room.controller.level >= 3) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var tower = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER});
-                    if (tower.length === 0) {
-                        var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
-                        if (spawn.length > 0) {
-                            var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_TOWER);
-                            }
-                        }
+    //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER
+    if (Memory.rooms[room.name].info.constructionslevel === 2) {
+        var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+        if (constructionSites.length === 0) {
+            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
+            var haveContainer = Memory.rooms[room.name].structure.container.controller;
+            if (!haveContainer) {
+                    var sourcePos = room.controller;
+                    var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                    if (getFreePos !== 'searching') {
+                        getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                     }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 4;
-                    }
-                }
-            }
-            else {
-                Memory.rooms[room.name].info.constructionslevel = 1;
-            }
-        }
-
-        //PASSO 4 - EXTENSIONS
-        if (Memory.rooms[room.name].info.constructionslevel === 4) {
-            if (room.controller.level >= 3) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                    var extensionsLimit = checkExtensionsLimits(room);
-                    if (extensions.length < 10) {
-                        var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                        if (someroad.length > 0) {
-                        var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                        var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                        if (freeSpace) {
-                            freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                        }
-                        }
-                    }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 5;
-                    }
-                }
-            }
-        }
-
-        //PASSO 5 - EXTENSIONS
-        if (Memory.rooms[room.name].info.constructionslevel === 5) {
-            if (room.controller.level >= 4) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                    var extensionsLimit = checkExtensionsLimits(room);
-                    if (extensions.length < 20) {
-                        var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                        if (someroad.length > 0) {
-                        var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                        var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                        if (freeSpace) {
-                            freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                        }
-                        }
-                    }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 6;
-                    }
-                }
             }
             else {
                 Memory.rooms[room.name].info.constructionslevel = 3;
             }
         }
+    }
 
-        //PASSO 6 - TOWER NEAR SPAWN
-        if (Memory.rooms[room.name].info.constructionslevel === 6) {
-            if (room.controller.level >= 5) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var tower = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER});
-                    if (tower.length === 1) {
-                        var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
-                        if (spawn.length > 0) {
-                            var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_TOWER);
-                            }
+
+    //PASSO 3 - TOWER NEAR SPAWN
+    if (Memory.rooms[room.name].info.constructionslevel === 3) {
+        if (room.controller.level >= 3) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var tower = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER});
+                if (tower.length === 0) {
+                    var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
+                    if (spawn.length > 0) {
+                        var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
+                        if (freeSpace) {
+                            freeSpace.createConstructionSite(STRUCTURE_TOWER);
                         }
                     }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 7;
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 4;
+                }
+            }
+        }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 1;
+        }
+    }
+
+    //PASSO 4 - EXTENSIONS
+    if (Memory.rooms[room.name].info.constructionslevel === 4) {
+        if (room.controller.level >= 3) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
+                var extensionsLimit = checkExtensionsLimits(room);
+                if (extensions.length < 10) {
+                    var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
+                    if (someroad.length > 0) {
+                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                    var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                    if (freeSpace) {
+                        freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
+                    }
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 5;
+                }
+            }
+        }
+    }
+
+    //PASSO 5 - EXTENSIONS
+    if (Memory.rooms[room.name].info.constructionslevel === 5) {
+        if (room.controller.level >= 4) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
+                var extensionsLimit = checkExtensionsLimits(room);
+                if (extensions.length < 20) {
+                    var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
+                    if (someroad.length > 0) {
+                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                    var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                    if (freeSpace) {
+                        freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
+                    }
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 6;
+                }
+            }
+        }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 3;
+        }
+    }
+
+    //PASSO 6 - TOWER NEAR SPAWN
+    if (Memory.rooms[room.name].info.constructionslevel === 6) {
+        if (room.controller.level >= 5) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var tower = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType === STRUCTURE_TOWER});
+                if (tower.length === 1) {
+                    var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
+                    if (spawn.length > 0) {
+                        var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
+                        if (freeSpace) {
+                            freeSpace.createConstructionSite(STRUCTURE_TOWER);
+                        }
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 7;
+                }
+            }
+        }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 5;
+        }
+
+    }
+
+    //PASSO 7 - EXTENSIONS
+    if (Memory.rooms[room.name].info.constructionslevel === 7) {
+        if (room.controller.level >= 5) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
+                var extensionsLimit = checkExtensionsLimits(room);
+                if (extensions.length < 30) {
+                    var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
+                    if (someroad.length > 0) {
+                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                    var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                    if (freeSpace) {
+                        freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
+                    }
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 8;
+                }
+            }
+        }
+    }
+
+    //PASSO 8 - STORAGE NEAR MINERAL
+    if (Memory.rooms[room.name].info.constructionslevel === 8) {
+        if (room.controller.level >= 5) {
+            var storage = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
+            if (storage.length === 0) {
+                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+                if (constructionSites.length === 0) {
+                    var mineral = Memory.rooms[room.name].mineral;
+                    if (mineral) {
+                        var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
+                        if (freeSpace) {
+                            freeSpace.createConstructionSite(STRUCTURE_STORAGE);
+                        }
                     }
                 }
             }
             else {
-                Memory.rooms[room.name].info.constructionslevel = 5;
-            }
-
-        }
-
-        //PASSO 7 - EXTENSIONS
-        if (Memory.rooms[room.name].info.constructionslevel === 7) {
-            if (room.controller.level >= 5) {
-                var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                if (constructionSites.length === 0) {
-                    var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                    var extensionsLimit = checkExtensionsLimits(room);
-                    if (extensions.length < 30) {
-                        var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                        if (someroad.length > 0) {
-                        var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                        var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                        if (freeSpace) {
-                            freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                        }
-                        }
-                    }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 8;
-                    }
-                }
+                Memory.rooms[room.name].info.constructionslevel = 9;
             }
         }
+    }
 
-        //PASSO 8 - STORAGE NEAR MINERAL
-        if (Memory.rooms[room.name].info.constructionslevel === 8) {
-            if (room.controller.level >= 5) {
-                var storage = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
-                if (storage.length === 0) {
-                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                    if (constructionSites.length === 0) {
-                        var mineral = Memory.rooms[room.name].mineral;
-                        if (mineral) {
-                            var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_STORAGE);
-                            }
-                        }
+    //PASSO 9 - EXTENSIONS
+    if (Memory.rooms[room.name].info.constructionslevel === 9) {
+        if (room.controller.level >= 6) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
+                var extensionsLimit = checkExtensionsLimits(room);
+                if (extensions.length < 40) {
+                    var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
+                    if (someroad.length > 0) {
+                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                    var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                    if (freeSpace) {
+                        freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
+                    }
                     }
                 }
                 else {
-                    Memory.rooms[room.name].info.constructionslevel = 9;
+                    Memory.rooms[room.name].info.constructionslevel = 10;
                 }
             }
         }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 1;
+        }
+    }
 
-        //PASSO 9 - EXTENSIONS
-        if (Memory.rooms[room.name].info.constructionslevel === 9) {
-            if (room.controller.level >= 6) {
+    //PASSO 10 - EXTRACTOR
+    if (Memory.rooms[room.name].info.constructionslevel === 10) {
+        if (room.controller.level >= 6) {
+            var extractor = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTRACTOR)});
+            if (extractor.length === 0) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
                 if (constructionSites.length === 0) {
-                    var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                    var extensionsLimit = checkExtensionsLimits(room);
-                    if (extensions.length < 40) {
-                        var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                        if (someroad.length > 0) {
-                        var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                        var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                        if (freeSpace) {
-                            freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                        }
-                        }
-                    }
-                    else {
-                        Memory.rooms[room.name].info.constructionslevel = 10;
+                    var mineral = Memory.rooms[room.name].mineral;
+                    if (mineral) {
+                        var mineralPos = new RoomPosition(mineral.pos.x, mineral.pos.y, mineral.pos.roomName);
+                        mineralPos.createConstructionSite(STRUCTURE_EXTRACTOR);
                     }
                 }
             }
             else {
-                Memory.rooms[room.name].info.constructionslevel = 1;
+                Memory.rooms[room.name].info.constructionslevel = 11;
             }
         }
+    }
 
-        //PASSO 10 - EXTRACTOR
-        if (Memory.rooms[room.name].info.constructionslevel === 10) {
-            if (room.controller.level >= 6) {
-                var extractor = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTRACTOR)});
-                if (extractor.length === 0) {
-                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                    if (constructionSites.length === 0) {
-                        var mineral = Memory.rooms[room.name].mineral;
-                        if (mineral) {
-                            var mineralPos = new RoomPosition(mineral.pos.x, mineral.pos.y, mineral.pos.roomName);
-                            mineralPos.createConstructionSite(STRUCTURE_EXTRACTOR);
-                        }
-                    }
-                }
-                else {
-                    Memory.rooms[room.name].info.constructionslevel = 11;
-                }
-            }
-        }
-
-        //PASSO 11 - LAB
-        if (Memory.rooms[room.name].info.constructionslevel === 11) {
-            if (room.controller.level >= 6) {
-                var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
-                if (labs.length === 0) {
-                    var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-                    if (constructionSites.length === 0) {
-                        var mineral = Memory.rooms[room.name].mineral;
-                        if (mineral) {
-                            var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                            if (freeSpace) {
-                                freeSpace.createConstructionSite(STRUCTURE_LAB);
-                            }
-                        }
-                    }
-                }
-                else {
-                    Memory.rooms[room.name].info.constructionslevel = 12;
-                }
-            }
-        }
-
-        //PASSO 12 - CRIAR MUROS
-        if (Memory.rooms[room.name].info.constructionslevel === 12) {
-            if (room.controller.level >= 6) {
+    //PASSO 11 - LAB
+    if (Memory.rooms[room.name].info.constructionslevel === 11) {
+        if (room.controller.level >= 6) {
+            var labs = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LAB)});
+            if (labs.length === 0) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
                 if (constructionSites.length === 0) {
-                    if (Memory.rooms[room.name].exit) {
-                        var top = Memory.rooms[room.name].exit.top;
-                        var bot = Memory.rooms[room.name].exit.bottom;
-                        var left = Memory.rooms[room.name].exit.left;
-                        var right = Memory.rooms[room.name].exit.right;
-                        //CREATE CS WALLS
-                        if (left) {
-                            for (var pos in left) {
-                                var wall = left[pos];
-                                if (wall) {
-                                    var place = new RoomPosition(1, wall)
-                                    place.createConstructionSite(STRUCTURE_WALL);
-                                }
-                            }
-                        }
-                        if (right) {
-                            for (var pos in right) {
-                                var wall = right[pos];
-                                if (wall) {
-                                    var place = new RoomPosition(48, wall)
-                                    place.createConstructionSite(STRUCTURE_WALL);
-                                }
-                            }
-                        }
-                        if (top) {
-                            for (var pos in top) {
-                                var wall = top[pos];
-                                if (wall) {
-                                    var place = new RoomPosition(wall, 1)
-                                    place.createConstructionSite(STRUCTURE_WALL);
-                                }
-                            }
-                        }
-                        if (bot) {
-                            for (var pos in bot) {
-                                var wall = bot[pos];
-                                if (wall) {
-                                    var place = new RoomPosition(wall, 48)
-                                    place.createConstructionSite(STRUCTURE_WALL);
-                                }
-                            }
-                        }
-                        //REGISTER RAMPART POSITION
-                        var countExits = room.find(FIND_EXIT_LEFT);
-                        var rexits = Memory.rooms[room.name].exit.left;
-                        var i = 0;
-                        for (var exit in rexits) {
-                            if (i === parseInt(countExits.length/2)) {
-                                var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit])
-                                place.createConstructionSite(STRUCTURE_RAMPART);
-                            }
-                            i++;
-                        }
-                        //REGISTER RAMPART POSITION
-                        var countExits = room.find(FIND_EXIT_RIGHT);
-                        var rexits = Memory.rooms[room.name].exit.right;
-                        var i = 0;
-                        for (var exit in rexits) {
-                            if (i === parseInt(countExits.length/2)) { 
-                                var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit])
-                                place.createConstructionSite(STRUCTURE_RAMPART);
-                            }
-                            i++;
-                        }
-                        //REGISTER RAMPART POSITION
-                        var countExits = room.find(FIND_EXIT_TOP);
-                        var rexits = Memory.rooms[room.name].exit.top;
-                        var i = 0;
-                        for (var exit in rexits) {
-                            if (i === parseInt(countExits.length/2)) { 
-                                var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit], 1)
-                                place.createConstructionSite(STRUCTURE_RAMPART);
-                            }
-                            i++;
-                        }
-                        //REGISTER RAMPART POSITION
-                        var countExits = room.find(FIND_EXIT_BOTTOM);
-                        var rexits = Memory.rooms[room.name].exit.bottom;
-                        var i = 0;
-                        for (var exit in rexits) {
-                            if (i === parseInt(countExits.length/2)) { 
-                                var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit], 48)
-                                place.createConstructionSite(STRUCTURE_RAMPART);
-                            }
-                            i++;
+                    var mineral = Memory.rooms[room.name].mineral;
+                    if (mineral) {
+                        var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
+                        if (freeSpace) {
+                            freeSpace.createConstructionSite(STRUCTURE_LAB);
                         }
                     }
                 }
             }
+            else {
+                Memory.rooms[room.name].info.constructionslevel = 12;
+            }
         }
+    }
 
+    //PASSO 12 - CRIAR MUROS
+    if (Memory.rooms[room.name].info.constructionslevel === 12) {
+        if (room.controller.level >= 6) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                if (Memory.rooms[room.name].exit) {
+                    var top = Memory.rooms[room.name].exit.top;
+                    var bot = Memory.rooms[room.name].exit.bottom;
+                    var left = Memory.rooms[room.name].exit.left;
+                    var right = Memory.rooms[room.name].exit.right;
+                    //CREATE CS WALLS
+                    if (left) {
+                        for (var pos in left) {
+                            var wall = left[pos];
+                            if (wall) {
+                                var place = new RoomPosition(1, wall)
+                                place.createConstructionSite(STRUCTURE_WALL);
+                            }
+                        }
+                    }
+                    if (right) {
+                        for (var pos in right) {
+                            var wall = right[pos];
+                            if (wall) {
+                                var place = new RoomPosition(48, wall)
+                                place.createConstructionSite(STRUCTURE_WALL);
+                            }
+                        }
+                    }
+                    if (top) {
+                        for (var pos in top) {
+                            var wall = top[pos];
+                            if (wall) {
+                                var place = new RoomPosition(wall, 1)
+                                place.createConstructionSite(STRUCTURE_WALL);
+                            }
+                        }
+                    }
+                    if (bot) {
+                        for (var pos in bot) {
+                            var wall = bot[pos];
+                            if (wall) {
+                                var place = new RoomPosition(wall, 48)
+                                place.createConstructionSite(STRUCTURE_WALL);
+                            }
+                        }
+                    }
+                    //REGISTER RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_LEFT);
+                    var rexits = Memory.rooms[room.name].exit.left;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit])
+                            place.createConstructionSite(STRUCTURE_RAMPART);
+                        }
+                        i++;
+                    }
+                    //REGISTER RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_RIGHT);
+                    var rexits = Memory.rooms[room.name].exit.right;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) { 
+                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit])
+                            place.createConstructionSite(STRUCTURE_RAMPART);
+                        }
+                        i++;
+                    }
+                    //REGISTER RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_TOP);
+                    var rexits = Memory.rooms[room.name].exit.top;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) { 
+                            var place = new RoomPosition(1, Memory.rooms[room.name].exit.left[exit], 1)
+                            place.createConstructionSite(STRUCTURE_RAMPART);
+                        }
+                        i++;
+                    }
+                    //REGISTER RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_BOTTOM);
+                    var rexits = Memory.rooms[room.name].exit.bottom;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) { 
+                            var place = new RoomPosition(48, Memory.rooms[room.name].exit.left[exit], 48)
+                            place.createConstructionSite(STRUCTURE_RAMPART);
+                        }
+                        i++;
+                    }
+                }
+            }
+        }
     }
 };
