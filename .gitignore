@@ -54,3 +54,7 @@ Temporary Items
 
 #autocomplete
 .autocomplete
+
+#GIT
+.gitattributes
+.gitignore
