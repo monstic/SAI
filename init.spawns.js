@@ -43,6 +43,9 @@ module.exports = function (spawn) {
                     //START CRON 2 [SPAWNER]
                     if (Memory.rooms[spawn.pos.roomName].cron[2].lastrun < (Game.time-Memory.rooms[spawn.pos.roomName].cron[2].interval)) {
 
+                        var repairs = countRepairs(spawn.pos.roomName);
+                        var builds = countConstructions(spawn.pos.roomName);
+                        
                         //SPAWN RULES UPDATER
                         if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner) {
 
@@ -62,8 +65,6 @@ module.exports = function (spawn) {
                             }
 
                             //ENGINEER
-                            var repairs = countRepairs(spawn.pos.roomName);
-                            var builds = countConstructions(spawn.pos.roomName);
                             if (builds > 0 || (repairs > 0 && repairs < 40)) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
                             }
