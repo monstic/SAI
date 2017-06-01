@@ -6,15 +6,6 @@ var creepType = function(creep) {
         creep.say('claim');
         cleanTarget(creep);
     }
-    if (creep.memory.action === 'claiming') {
-        if (creep.memory.goto === creep.room.name) {
-            if (creep.room.controller.my) {
-                creep.memory.action = 'claimed';
-                creep.say('claimed');
-                cleanTarget(creep);
-            }
-        }
-    }
 
 
 };
