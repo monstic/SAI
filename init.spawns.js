@@ -84,6 +84,14 @@ module.exports = function (spawn) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 0;
                                 }
                             }
+                            //CLAIMER
+                            if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer === 0) {
+                                var flagColor = Game.flags.claim;
+                                if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
+                                }
+                            }
+
                         }
 
                         //POPULATE QUEUE LIST
@@ -139,7 +147,16 @@ module.exports = function (spawn) {
                             var totalQueuedClaimers = countQueue('claimer', spawn.name);
                             var totalClaimers = (totalSpawnedClaimers+totalQueuedClaimers);
                             if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer && totalGuards >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
-                                addToQueue('claimer', spawn.name);
+                                var flagColor = Game.flags.claim;
+                                if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
+                                    var flag = Game.flags.claim;
+                                    log('ok');
+                                }
+                                else {
+                                    var flag = spawn;
+                                }
+                                
+                                addToQueue('claimer', spawn.name, flag.pos.roomName);
                             }
                         }
 
