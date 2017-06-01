@@ -925,7 +925,7 @@ function (room) {
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-1), room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === parseInt(countExits.length/2)) {
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
@@ -933,7 +933,7 @@ function (room) {
                     }
                     if (i === (countExits.length-1)) {
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+1), room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]+2), room.name);
@@ -952,7 +952,7 @@ function (room) {
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]-1), room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === parseInt(countExits.length/2)) { 
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
@@ -960,7 +960,7 @@ function (room) {
                     }
                     if (i === (countExits.length-1)) {
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]+2), room.name);
@@ -979,7 +979,7 @@ function (room) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 2, room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-1), 2, room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === parseInt(countExits.length/2)) { 
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+1), 2, room.name);
@@ -987,7 +987,7 @@ function (room) {
                     }
                     if (i === (countExits.length-1)) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+1), 2, room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+2), 2, room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+2), 1, room.name);
@@ -1006,7 +1006,7 @@ function (room) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 47, room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-1), 47, room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === parseInt(countExits.length/2)) { 
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+1), 47, room.name);
@@ -1014,7 +1014,7 @@ function (room) {
                     }
                     if (i === (countExits.length-1)) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+1), 47, room.name);
-                        place.createConstructionSite(STRUCTURE_WALL);
+                        place.createConstructionSite(STRUCTURE_RAMPART);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+2), 47, room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+2), 48, room.name);
