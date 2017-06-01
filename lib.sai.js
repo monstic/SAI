@@ -805,7 +805,7 @@ function (room) {
             }
         }
         else {
-            Memory.rooms[room.name].info.constructionslevel = 1;
+            Memory.rooms[room.name].info.constructionslevel = 12;
         }
     }
 
@@ -854,7 +854,7 @@ function (room) {
     }
 
     //PASSO 12 - CRIAR MUROS
-    if (Memory.rooms[room.name].info.constructionslevel === 9) {
+    if (Memory.rooms[room.name].info.constructionslevel === 12) {
         console.log('12');
         if (room.controller.level >= 6) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
