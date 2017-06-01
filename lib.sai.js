@@ -867,7 +867,7 @@ function (room) {
                     //CREATE CS WALLS
                     if (left) {
                         for (var pos in left) {
-                            var wall = left[pos];
+                            var wall = Memory.rooms[room.name].exit.left[pos];
                             if (wall) {
                                 var place = new RoomPosition(1, wall)
                                 place.createConstructionSite(STRUCTURE_WALL);
@@ -876,7 +876,7 @@ function (room) {
                     }
                     if (right) {
                         for (var pos in right) {
-                            var wall = right[pos];
+                            var wall = Memory.rooms[room.name].exit.right[pos];
                             if (wall) {
                                 var place = new RoomPosition(48, wall)
                                 place.createConstructionSite(STRUCTURE_WALL);
@@ -885,7 +885,7 @@ function (room) {
                     }
                     if (top) {
                         for (var pos in top) {
-                            var wall = top[pos];
+                            var wall = Memory.rooms[room.name].exit.top[pos];
                             if (wall) {
                                 var place = new RoomPosition(wall, 1)
                                 place.createConstructionSite(STRUCTURE_WALL);
@@ -894,7 +894,7 @@ function (room) {
                     }
                     if (bot) {
                         for (var pos in bot) {
-                            var wall = bot[pos];
+                            var wall = Memory.rooms[room.name].exit.bottom[pos];
                             if (wall) {
                                 var place = new RoomPosition(wall, 48)
                                 place.createConstructionSite(STRUCTURE_WALL);
