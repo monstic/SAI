@@ -86,9 +86,11 @@ module.exports = function (spawn) {
                             }
                             //CLAIMER
                             if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer === 0) {
-                                var flagColor = Game.flags.claim;
-                                if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
+                                if (Game.flags.claim) {
+                                    var flagColor = Game.flags.claim;
+                                    if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
+                                    }
                                 }
                             }
 
