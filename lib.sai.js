@@ -909,11 +909,10 @@ function (room) {
                 }
                 //CREATE CS RAMPART AND BORDERS
                 var countExits = room.find(FIND_EXIT_LEFT);
-                console.log(countExits.length);
                 var rexits = Memory.rooms[room.name].exit.left;
-                var i = 0;
+                var i = 1;
                 for (var exit in rexits) {
-                    if (i === 0) {
+                    if (i === 1) {
                         var place = new RoomPosition(1, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-2), room.name);
@@ -922,7 +921,7 @@ function (room) {
                         place.createConstructionSite(STRUCTURE_WALL);
                     }
                     if (i === parseInt(countExits.length/2)) {
-                        var place = new RoomPosition(2, (Memory.rooms[room.name].exit.left[exit]-1), room.name);
+                        var place = new RoomPosition(2, Memory.rooms[room.name].exit.left[exit], room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
                     if (i === countExits.length) {
@@ -938,9 +937,9 @@ function (room) {
                 //CREATE CS RAMPART AND BORDERS
                 var countExits = room.find(FIND_EXIT_RIGHT);
                 var rexits = Memory.rooms[room.name].exit.right;
-                var i = 0;
+                var i = 1;
                 for (var exit in rexits) {
-                    if (i === 0) {
+                    if (i === 1) {
                         var place = new RoomPosition(49, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition(48, (Memory.rooms[room.name].exit.right[exit]-2), room.name);
@@ -965,9 +964,9 @@ function (room) {
                 //CREATE CS RAMPART AND BORDERS
                 var countExits = room.find(FIND_EXIT_TOP);
                 var rexits = Memory.rooms[room.name].exit.top;
-                var i = 0;
+                var i = 1;
                 for (var exit in rexits) {
-                    if (i === 0) {
+                    if (i === 1) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 1, room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-2), 2, room.name);
@@ -992,9 +991,9 @@ function (room) {
                 //CREATE CS RAMPART AND BORDERS
                 var countExits = room.find(FIND_EXIT_BOTTOM);
                 var rexits = Memory.rooms[room.name].exit.bottom;
-                var i = 0;
+                var i = 1;
                 for (var exit in rexits) {
-                    if (i === 0) {
+                    if (i === 1) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 49, room.name);
                         place.createConstructionSite(STRUCTURE_WALL);
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-2), 48, room.name);
