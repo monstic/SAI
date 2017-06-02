@@ -24,8 +24,12 @@ var creepActFunctions = function(creep) {
             }
         }
         if (creep.memory.targetType === 'CONTROLLER') {
-            if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+                if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.controller);
+                }
+                else {
+                   console.log(creep.claimController(creep.room.controller));
+                }
             }
         }
     }
