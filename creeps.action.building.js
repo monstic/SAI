@@ -7,7 +7,7 @@ var creepActFunctions = function(creep) {
         if (creep.memory.action === 'building') {
             var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
             if (findConstructionSiteToBuild) {
-                setTarget(creep, findConstructionSiteToBuild.id, 'DROP', findConstructionSiteToBuild.room.name);
+                setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
             }
             else {
                 creep.memory.action = 'repairing';
