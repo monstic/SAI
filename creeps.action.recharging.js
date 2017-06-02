@@ -115,7 +115,7 @@ var creepActFunctions = function(creep) {
             if (creep.memory.targetType === 'DROP') {
                 targetId = creep.memory.targetId;
                 dropToGet = Game.getObjectById(targetId);
-                if (dropToGet && creep.memory.path) {
+                if (dropToGet) {
                     if (dropToGet.pos.roomName !== creep.room.name) {
                         moveToByPath(creep, target.pos);
                     }
