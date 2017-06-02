@@ -6,30 +6,36 @@ var creepActFunctions = function(creep) {
         //repairing
         if (creep.memory.action === 'repairing') {
             var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.structureType === STRUCTURE_RAMPART)});
+                                    console.log('changing to build');
             if (repairs.length > 0) {
                 setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
             }
             else {
                 var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.structureType !== STRUCTURE_ROAD)});
+                                    console.log('changing to build2');
                 if (repairs.length > 0) {
                     setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                 }
                 else {
                     var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 5000 && s.structureType !== STRUCTURE_ROAD)});
+                                    console.log('changing to build3');
                     if (repairs.length > 0) {
                         setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                     }
                     else {
                         var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 10000 && s.structureType !== STRUCTURE_ROAD)});
+                                    console.log('changing to build4');
                         if (repairs.length > 0) {
                             setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                         }
                         else {
                             var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 100000 && s.structureType !== STRUCTURE_ROAD)});
+                                    console.log('changing to build5');
                             if (repairs.length > 0) {
                                 setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                             }
                             else {
+                                    console.log('changing to build6');
                                 var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < s.hitsMax && s.structureType !== STRUCTURE_ROAD)});
                                 if (repairs.length > 0) {
                                     setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
