@@ -61,7 +61,7 @@ var creepActFunctions = function(creep) {
                             new RoomVisual(creep.room.name).text('r', (target.pos.x), (target.pos.y + 0.2));
 
                             if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                                creep.moveByPath(creep.memory.path);
+                                creep.moveTo(target);
                             }
                             else if (creep.repair(target) === ERR_BUSY) {
                                 creep.say('!');
