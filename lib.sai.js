@@ -675,6 +675,9 @@ function (room) {
                 }
                 else {
                     Memory.rooms[room.name].info.constructionslevel = 1;
+                    if (Game.flags.claim) {
+                        Game.flags.claim.remove();
+                    }
                 }
             }
         }
