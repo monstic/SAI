@@ -667,17 +667,21 @@ function (room) {
 //AUTO BUILD ROADS
 autoBuildRoads = 
 function (room) {
-    if (room.controller.level > 2) {
+    if (room.controller.level > 1) {
         var ca = room.find(FIND_CONSTRUCTION_SITES);
         var paths = Memory.rooms[room.name].trail;
         if (ca.length < 2) {
+            var i = 0;
             for (var path in paths) {
-                //AUTO CONSTRUCTION ROADS
-                if (Memory.rooms[room.name].trail[path]) {
-                    if (Memory.rooms[room.name].trail[path].usedtimes) {
-                        if (Memory.rooms[room.name].trail[path].usedtimes >= 20) {
-                            var roadHere = new RoomPosition(Memory.rooms[room.name].trail[path].x, Memory.rooms[room.name].trail[path].y, room.name);
-                            roadHere.createConstructionSite(STRUCTURE_ROAD);
+                if (i === 0) {
+                    //AUTO CONSTRUCTION ROADS
+                    if (Memory.rooms[room.name].trail[path]) {
+                        if (Memory.rooms[room.name].trail[path].usedtimes) {
+                            if (Memory.rooms[room.name].trail[path].usedtimes >= 20) {
+                                var roadHere = new RoomPosition(Memory.rooms[room.name].trail[path].x, Memory.rooms[room.name].trail[path].y, room.name);
+                                roadHere.createConstructionSite(STRUCTURE_ROAD);
+                                i++;
+                            }
                         }
                     }
                 }
