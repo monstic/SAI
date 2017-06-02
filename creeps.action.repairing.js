@@ -51,11 +51,11 @@ var creepActFunctions = function(creep) {
         if (creep.memory.action === 'repairing') {
             if (creep.memory.targetType === 'STDMG') {
                 var target = Game.getObjectById(creep.memory.targetId);
-                if (target.pos.roomName !== creep.room.name) {
-                    moveToByPath(creep, target.pos);
-                }
-                else {
-                    if (target) {
+                if (target) {
+                    if (target.pos.roomName !== creep.room.name) {
+                        moveToByPath(creep, target.pos);
+                    }
+                    else {
                         if (target.hits < target.hitsMax) {
                             //VISUALS
                             new RoomVisual(creep.room.name).text('r', (target.pos.x), (target.pos.y + 0.2));
@@ -88,9 +88,9 @@ var creepActFunctions = function(creep) {
                             cleanTarget(creep);
                         }
                     }
-                    else {
-                        cleanTarget(creep);
-                    }
+                }
+                else {
+                    cleanTarget(creep);
                 }
             }
         }
