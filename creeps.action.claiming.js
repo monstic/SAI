@@ -11,14 +11,6 @@ var creepActFunctions = function(creep) {
         }
     }
 
-    if (creep.room.targetId === 'travel' && creep.room.name === creep.memory.goto) {
-        cleanTarget(creep);
-    }
-    if (creep.room.targetId === 'claim' && creep.room.name !== creep.memory.goto) {
-        cleanTarget(creep);
-    }
-       
-
     //CLAIM CONTROLLER
     if (creep.memory.targetId) {
         if (creep.memory.targetType === 'FLAG') {
@@ -26,14 +18,22 @@ var creepActFunctions = function(creep) {
             if (target.pos.roomName !== creep.room.name) {
                 moveToByPath(creep, target.pos);
             }
+            else {
+                cleanTarget(creep);
+            }
         }
         if (creep.memory.targetType === 'CONTROLLER') {
-            if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                console.log(creep.claimController(creep.room.controller));
-                creep.moveTo(creep.room.controller);
+            if (creep.memory.goto === creep.room.name) {
+                if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    console.log(creep.claimController(creep.room.controller));
+                    creep.moveTo(creep.room.controller);
+                }
+                else {
+                    console.log(creep.claimController(creep.room.controller));
+                }
             }
             else {
-                console.log(creep.claimController(creep.room.controller));
+                cleanTarget(creep);
             }
         }
     }
