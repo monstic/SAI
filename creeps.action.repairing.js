@@ -35,6 +35,7 @@ var creepActFunctions = function(creep) {
                                     setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                                 }
                                 else {
+                                    console.log('changing to build');
                                     creep.memory.action = 'building';
                                     cleanTarget(creep);
                                 }
