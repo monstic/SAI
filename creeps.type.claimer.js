@@ -6,12 +6,6 @@ var creepType = function(creep) {
         creep.say('travel');
         cleanTarget(creep);
     }
-    if (creep.room.targetType === 'travel' && creep.room.name === creep.memory.goto) {
-        cleanTarget(creep);
-    }
-    if (creep.room.targetType === 'claim' && creep.room.name !== creep.memory.goto) {
-        cleanTarget(creep);
-    }
 
 };
 

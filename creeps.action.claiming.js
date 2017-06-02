@@ -3,16 +3,20 @@ var creepActFunctions = function(creep) {
     //SET TARGET
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         if (creep.room.name !== creep.memory.goto) {
-            cleanTarget(creep);
             var flag = Game.flags.claim;
             setTarget(creep, 'travel', 'FLAG', flag.pos.roomName);
         }
         else {
-            cleanTarget(creep);
             setTarget(creep, 'claim', 'CONTROLLER', creep.pos.roomName);
         }
     }
 
+    if (creep.room.targetId === 'travel' && creep.room.name === creep.memory.goto) {
+        cleanTarget(creep);
+    }
+    if (creep.room.targetId === 'claim' && creep.room.name !== creep.memory.goto) {
+        cleanTarget(creep);
+    }
        
 
     //CLAIM CONTROLLER
