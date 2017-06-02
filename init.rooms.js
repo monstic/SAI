@@ -77,7 +77,7 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].cron[1] || Memory.rooms[room.name].cron[1] === 'undefined') {
                 Memory.rooms[room.name].cron[1] = {};
                 Memory.rooms[room.name].cron[1].lastrun = (Game.time+1);
-                Memory.rooms[room.name].cron[1].interval = 500;
+                Memory.rooms[room.name].cron[1].interval = 110;
             }
             if (!Memory.rooms[room.name].cron[2] || Memory.rooms[room.name].cron[2] === 'undefined') {
                 Memory.rooms[room.name].cron[2] = {};

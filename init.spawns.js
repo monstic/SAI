@@ -68,7 +68,7 @@ module.exports = function (spawn) {
                             if (builds > 0 || (repairs > 0 && repairs < 40)) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
                             }
-                            if (builds >= 40 || repairs >= 40) {
+                            else if (builds >= 40 || repairs >= 40) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
                             }
                             else {
