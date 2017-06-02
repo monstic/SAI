@@ -660,6 +660,26 @@ function (room) {
 autoBuild = 
 function (room) {
 
+    //PASSO 0 - SPAWN
+    if (Memory.rooms[room.name].info.constructionslevel === 0) {
+        if (room.controller.level === 1) {
+            var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
+                var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
+                if (spawn.length === 0) {
+                    var flag = Game.flags.claim;
+                    if (flag) {
+                        var spawnPos = new RoomPosition(flag.pos.x, flag.pos.y, flag.pos.roomName);
+                        spawnPos.createConstructionSite(STRUCTURE_SPAWN);
+                    }
+                }
+                else {
+                    Memory.rooms[room.name].info.constructionslevel = 1;
+                }
+            }
+        }
+    }
+
     //PASSO 1 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 1) {
         if (room.controller.level >= 2) {
@@ -680,6 +700,9 @@ function (room) {
                     Memory.rooms[room.name].info.constructionslevel = 2;
                 }
             }
+        }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
     }
 
@@ -915,7 +938,7 @@ function (room) {
                 }
             }
             else {
-                Memory.rooms[room.name].info.constructionslevel = 12;
+                Memory.rooms[room.name].info.constructionslevel = 0;
             }
         }
     }

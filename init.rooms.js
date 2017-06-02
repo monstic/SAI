@@ -23,7 +23,7 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].info || Memory.rooms[room.name].info === 'undefined') {
                 Memory.rooms[room.name].info = {};
                 Memory.rooms[room.name].info.lastseen = Game.time;
-                Memory.rooms[room.name].info.constructionslevel = 1;
+                Memory.rooms[room.name].info.constructionslevel = 0;
             }
 
             //CREATE ROOM CONFIG
