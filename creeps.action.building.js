@@ -9,6 +9,7 @@ var creepActFunctions = function(creep) {
                 var flag = Game.flags.claim;
                 var flagPos = new RoomPosition(flag.pos.x, flag.pos.y, flag.pos.roomName);
                 var csspawn = flagPos.room.find(FIND_CONSTRUCTION_SITES);
+                console.log(csspawn);
                 if (csspawn.length > 0) {
                     setTarget(creep, csspawn.id, 'CTST', csspawn.pos.roomName);
                 }
