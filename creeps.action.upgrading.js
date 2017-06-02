@@ -6,9 +6,7 @@ var creepActFunctions = function(creep) {
         //upgrading
         if (creep.memory.action === 'upgrading') {
             if (creep.room.controller) {
-                creep.memory.targetId = creep.room.controller.id;
-                creep.memory.targetType = 'RMCT';
-                creep.memory.targetRoom = creep.room.name;
+                setTarget(creep, creep.room.controller.id, 'RMCT', creep.room.name);
             }
         }
 

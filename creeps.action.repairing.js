@@ -7,44 +7,32 @@ var creepActFunctions = function(creep) {
         if (creep.memory.action === 'repairing') {
             var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.structureType === STRUCTURE_RAMPART)});
             if (repairs.length > 0) {
-                creep.memory.targetId = repairs[0].id;
-                creep.memory.targetType = 'STDMG';
-                creep.memory.targetRoom = creep.room.name;
+                setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
             }
             else {
                 var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.structureType !== STRUCTURE_ROAD)});
                 if (repairs.length > 0) {
-                    creep.memory.targetId = repairs[0].id;
-                    creep.memory.targetType = 'STDMG';
-                    creep.memory.targetRoom = creep.room.name;
+                    setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                 }
                 else {
                     var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 5000 && s.structureType !== STRUCTURE_ROAD)});
                     if (repairs.length > 0) {
-                        creep.memory.targetId = repairs[0].id;
-                        creep.memory.targetType = 'STDMG';
-                        creep.memory.targetRoom = creep.room.name;
+                        setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                     }
                     else {
                         var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 10000 && s.structureType !== STRUCTURE_ROAD)});
                         if (repairs.length > 0) {
-                            creep.memory.targetId = repairs[0].id;
-                            creep.memory.targetType = 'STDMG';
-                            creep.memory.targetRoom = creep.room.name;
+                            setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                         }
                         else {
                             var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 100000 && s.structureType !== STRUCTURE_ROAD)});
                             if (repairs.length > 0) {
-                                creep.memory.targetId = repairs[0].id;
-                                creep.memory.targetType = 'STDMG';
-                                creep.memory.targetRoom = creep.room.name;
+                                setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                             }
                             else {
                                 var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < s.hitsMax && s.structureType !== STRUCTURE_ROAD)});
                                 if (repairs.length > 0) {
-                                    creep.memory.targetId = repairs[0].id;
-                                    creep.memory.targetType = 'STDMG';
-                                    creep.memory.targetRoom = creep.room.name;
+                                    setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                                 }
                                 else {
                                     creep.memory.action = 'building';

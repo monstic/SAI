@@ -8,25 +8,19 @@ var creepActFunctions = function(creep) {
             var container = Game.getObjectById(containerId);
             // if one was found
             if (container !== null && container.store.energy > 0) {
-                creep.memory.targetId = container.id;
-                creep.memory.targetType = 'HIGCT';
-                creep.memory.targetRoom = creep.room.name;
+                setTarget(creep, container.id, 'HIGCT', container.pos.roomName);
             }
             else {
                 var storageId = Memory.rooms[creep.room.name].structure.storage.mineral;
                 var storage = Game.getObjectById(storageId);
                 // if one was found
                 if (storage !== null && ((_.sum(storage.store) > 0))) {
-                    creep.memory.targetId = storage.id;
-                    creep.memory.targetType = 'HIGSTO';
-                    creep.memory.targetRoom = creep.room.name;
+                    setTarget(creep, storage.id, 'HIGSTO', storage.pos.roomName);
                 }
                 else {
                     var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
                     if (droppedSources) {
-                        creep.memory.targetId = droppedSources.id;
-                        creep.memory.targetType = 'DROP';
-                        creep.memory.targetRoom = creep.room.name;
+                        setTarget(creep, droppedSources.id, 'DROP', droppedSources.pos.roomName);
                     }
                     else {
                         creep.say('?');
