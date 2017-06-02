@@ -51,41 +51,46 @@ var creepActFunctions = function(creep) {
         if (creep.memory.action === 'repairing') {
             if (creep.memory.targetType === 'STDMG') {
                 var target = Game.getObjectById(creep.memory.targetId);
-                if (target) {
-                    if (target.hits < target.hitsMax) {
-                        //VISUALS
-                        new RoomVisual(creep.room.name).text('r', (target.pos.x), (target.pos.y + 0.2));
+                if (target.pos.roomName !== creep.room.name) {
+                    moveToByPath(creep, target.pos);
+                }
+                else {
+                    if (target) {
+                        if (target.hits < target.hitsMax) {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).text('r', (target.pos.x), (target.pos.y + 0.2));
 
-                        if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                            creep.moveByPath(creep.memory.path);
-                        }
-                        else if (creep.repair(target) === ERR_BUSY) {
-                            creep.say('!');
-                        }
-                        else if (creep.repair(target) === ERR_FULL) {
-                            creep.say('!!');
-                        }
-                        else if (creep.repair(target) === ERR_TIRED) {
-                            creep.say('!!!');
-                        }
-                        else if (creep.repair(target) === ERR_INVALID_TARGET) {
-                            cleanTarget(creep);
-                            creep.say('?');
+                            if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+                                creep.moveByPath(creep.memory.path);
+                            }
+                            else if (creep.repair(target) === ERR_BUSY) {
+                                creep.say('!');
+                            }
+                            else if (creep.repair(target) === ERR_FULL) {
+                                creep.say('!!');
+                            }
+                            else if (creep.repair(target) === ERR_TIRED) {
+                                creep.say('!!!');
+                            }
+                            else if (creep.repair(target) === ERR_INVALID_TARGET) {
+                                cleanTarget(creep);
+                                creep.say('?');
+                            }
+                            else {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).text('.', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                                new RoomVisual(creep.room.name).text('.', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                                new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
+                                new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
+                            }
                         }
                         else {
-                            //VISUALS
-                            new RoomVisual(creep.room.name).text('.', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                            new RoomVisual(creep.room.name).text('.', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                            new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                            new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
+                            cleanTarget(creep);
                         }
                     }
                     else {
                         cleanTarget(creep);
                     }
-                }
-                else {
-                    cleanTarget(creep);
                 }
             }
         }
