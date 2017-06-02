@@ -662,7 +662,7 @@ function (room) {
 
     //PASSO 0 - SPAWN
     if (Memory.rooms[room.name].info.constructionslevel === 0) {
-        if (room.controller.level === 1) {
+        if (room.controller.level > 0) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
                 var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
