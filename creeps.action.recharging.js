@@ -4,6 +4,9 @@ var creepActFunctions = function(creep) {
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         //recharging
         if (creep.memory.action === 'recharging') {
+            if (creep.room.name !== creep.room.homespawn) {
+                moveToByPath(creep, Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn].pos);
+            }
             var containerId = Memory.rooms[creep.room.name].structure.container.controller;
             var container = Game.getObjectById(containerId);
             // if one was found
