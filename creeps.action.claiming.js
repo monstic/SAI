@@ -4,10 +4,10 @@ var creepActFunctions = function(creep) {
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         if (creep.room.name !== creep.memory.goto) {
             var flag = Game.flags.claim;
-            setTarget(creep, flag.id, 'FLAG', flag.pos.roomName);
+            setTarget(creep, creep.room.controller.id, 'FLAG', flag.pos.roomName);
         }
         else {
-            setTarget(creep, flag.id, 'CONTROLLER', creep.pos.roomName);
+            setTarget(creep, creep.room.controller.id, 'CONTROLLER', creep.pos.roomName);
         }
     }
 
