@@ -41,12 +41,12 @@ var creepActFunctions = function(creep) {
         if (creep.memory.action === 'recharging') {
             if (creep.memory.targetType === 'HIGSTO') {
                 target = Game.getObjectById(creep.memory.targetId);
-                if (target) {
+                if (target && creep.memory.path) {
                     //VISUALS
                     new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                     if ((_.sum(target.store) > 0)) {
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.move(creep.memory.path);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             creep.say('!');
@@ -79,12 +79,12 @@ var creepActFunctions = function(creep) {
             }
             if (creep.memory.targetType === 'HIGCT') {
                 target = Game.getObjectById(creep.memory.targetId);
-                if (target) {
+                if (target && creep.memory.path) {
                     if ((_.sum(target.store) > 0)) {
                         //VISUALS
                         new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                         if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.move(creep.memory.path);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.transfer(target) === ERR_BUSY) {
                             creep.say('!');
@@ -111,12 +111,12 @@ var creepActFunctions = function(creep) {
             if (creep.memory.targetType === 'DROP') {
                 targetId = creep.memory.targetId;
                 dropToGet = Game.getObjectById(targetId);
-                if (dropToGet) {
+                if (dropToGet && creep.memory.path) {
                     if (dropToGet.energy > 0 && dropToGet.energy !== null) {
                         //VISUALS
                         new RoomVisual(creep.room.name).text('-', (dropToGet.pos.x - 0.01), (dropToGet.pos.y + 0.3));
                         if (creep.pickup(dropToGet, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.move(creep.memory.path);
+                            creep.moveByPath(creep.memory.path);
                         }
                         else if (creep.pickup(dropToGet) === ERR_BUSY) {
                             creep.say('!');
