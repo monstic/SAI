@@ -113,21 +113,21 @@ module.exports = function (spawn) {
                         }
                         //ONLY IF ROOM IS CLEAN
                         if (Memory.rooms[spawn.pos.roomName].security.underattack === 'no') {
+                            var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
+                            var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
+                            var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
+                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                addToQueue('upgrader', spawn.name);
+                            }
                             var totalConstructions = countConstructions(spawn.pos.roomName);
                             var totalRepairs = countRepairs(spawn.pos.roomName);
                             if (totalConstructions > 0 || totalRepairs > 0) {
                                 var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
                                 var totalQueuedEngineers = countQueue('engineer', spawn.name);
                                 var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
-                                if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                                if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalUpgraders >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
                                     addToQueue('engineer', spawn.name);
                                 }
-                            }
-                            var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
-                            var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
-                            var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
-                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                addToQueue('upgrader', spawn.name);
                             }
                             if (Memory.rooms[spawn.pos.roomName].mineral) {
                                 if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
