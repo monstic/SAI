@@ -126,7 +126,7 @@ module.exports = function (spawn) {
                             var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
                             var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
                             var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
-                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalEngineers >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
+                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
                                 addToQueue('upgrader', spawn.name);
                             }
                             if (Memory.rooms[spawn.pos.roomName].mineral) {
