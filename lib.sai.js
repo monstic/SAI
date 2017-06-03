@@ -344,7 +344,7 @@ spawnProtoCreep =
                         }
                         else if (creeptype === 'engineer') {
                             var body = [];
-                            if (room.controller.level < 3) {
+                            if (room.controller.level < 6) {
                                 for (let i = 0; i < numberOfParts; i++) {
                                     body.push(WORK);
                                 }

@@ -125,6 +125,7 @@ module.exports = function (spawn) {
                                 var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
                                 var totalQueuedEngineers = countQueue('engineer', spawn.name);
                                 var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
+                                console.log('t = ' + totalQueuedEngineers);
                                 if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalUpgraders >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
                                     addToQueue('engineer', spawn.name);
                                 }
