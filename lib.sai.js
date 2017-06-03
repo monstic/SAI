@@ -319,7 +319,7 @@ spawnProtoCreep =
                         else if (creeptype === 'upgrader') {
                             numberOfParts = Math.min(numberOfParts, Math.floor(43));
                             var body = [];
-                            if (room.controller.level < 3) {
+                            if (room.controller.level < 6) {
                                 for (let i = 0; i < numberOfParts; i++) {
                                     body.push(WORK);
                                 }
