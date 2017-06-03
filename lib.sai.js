@@ -797,12 +797,14 @@ function (room) {
                 var extensionsLimit = checkExtensionsLimits(room);
                 if (extensions.length < 10) {
                     var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
-                    if (someroad.length > 0) {
-                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                    var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                    if (freeSpace) {
-                        freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                    }
+                    if (someroad[someNumber]) {
+                        if (someroad.length > 0) {
+                            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                            var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                            if (freeSpace) {
+                                freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
+                            }
+                        }
                     }
                 }
                 else {
