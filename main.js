@@ -29,19 +29,20 @@ if (FORCE_PAUSE !== true) {
         if (Game.cpu.limit > 100 || Game.cpu.tickLimit < 100 || Game.cpu.bucket < 100) {
             console.log('CPU: ' + Game.cpu.getUsed() + '%');
         }
-
-        //PULSE ALL CREEPS
-        for (var creepName in Game.creeps) {
-            //load creep
-            var creep = Game.creeps[creepName];
-            //load main
-            initCreeps(creep);
-            //load types
-            var initCreepType = require('creeps.type.' + creep.memory.type);
-            initCreepType(creep);
-            //load actions
-            var initCreepAction = require('creeps.action.' + creep.memory.action);
-            initCreepAction(creep);
+        if (Game.cpu.bucket > 100) {
+            //PULSE ALL CREEPS
+            for (var creepName in Game.creeps) {
+                //load creep
+                var creep = Game.creeps[creepName];
+                //load main
+                initCreeps(creep);
+                //load types
+                var initCreepType = require('creeps.type.' + creep.memory.type);
+                initCreepType(creep);
+                //load actions
+                var initCreepAction = require('creeps.action.' + creep.memory.action);
+                initCreepAction(creep);
+            }
         }
 
         //PULSE ALL ROOMS
