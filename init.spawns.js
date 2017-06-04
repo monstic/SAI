@@ -57,22 +57,19 @@ module.exports = function (spawn) {
 
                             //UPGRADERS
                             var room = Game.rooms[spawn.pos.roomName];
-                            if (room.controller.level > 4 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader < 2 && (builds < 40 || repairs < 40)) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                            if (room.controller.level < 5 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader !== 4) {
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
                             }
-                            if (builds >= 40 || repairs >= 40) {
+                            if (room.controller.level >= 5 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader !== 1) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
                             }
 
                             //ENGINEER
-                            if (builds > 0 || (repairs > 0 && repairs < 40)) {
+                            if (builds > 0 || (repairs > 0 && repairs < 100)) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
                             }
-                            else if (builds >= 40 || repairs >= 40) {
+                            else if (builds >= 100 || repairs >= 100) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
-                            }
-                            else {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                             }
 
                             //MINER
