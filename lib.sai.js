@@ -673,15 +673,12 @@ function (room) {
         if (ca.length < 2) {
             var i = 0;
             for (var path in paths) {
-                if (i === 0) {
-                    //AUTO CONSTRUCTION ROADS
-                    if (Memory.rooms[room.name].trail[path]) {
-                        if (Memory.rooms[room.name].trail[path].usedtimes) {
-                            if (Memory.rooms[room.name].trail[path].usedtimes >= 20) {
-                                var roadHere = new RoomPosition(Memory.rooms[room.name].trail[path].x, Memory.rooms[room.name].trail[path].y, room.name);
-                                roadHere.createConstructionSite(STRUCTURE_ROAD);
-                                i++;
-                            }
+                //AUTO CONSTRUCTION ROADS
+                if (Memory.rooms[room.name].trail[path]) {
+                    if (Memory.rooms[room.name].trail[path].usedtimes) {
+                        if (Memory.rooms[room.name].trail[path].usedtimes >= 20) {
+                            var roadHere = new RoomPosition(Memory.rooms[room.name].trail[path].x, Memory.rooms[room.name].trail[path].y, room.name);
+                            roadHere.createConstructionSite(STRUCTURE_ROAD);
                         }
                     }
                 }
