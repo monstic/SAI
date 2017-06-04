@@ -23,7 +23,7 @@ module.exports = function (spawn) {
                     if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner === undefined) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner = {};
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 1;
-                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 3;
+                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 2;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 0;
