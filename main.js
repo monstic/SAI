@@ -44,6 +44,7 @@ if (FORCE_PAUSE !== true) {
                 initCreepAction(creep);
             }
         }
+        
 
         //PULSE ALL ROOMS
         for (var roomName in Game.rooms) {
