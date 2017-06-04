@@ -19,7 +19,7 @@ var creepActFunctions = function(creep) {
             if (creep.memory.targetType === 'RMCT') {
                 targetController = Game.getObjectById(creep.memory.targetId);
                 //VISUALS
-                new RoomVisual(creep.room.name).text('+', (targetController.pos.x - 0.5), (targetController.pos.y + 0.1));
+                new RoomVisual(creep.room.name).circle((targetController.pos.x), (targetController.pos.y - 0.02), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
                 if (creep.upgradeController(targetController) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.controller);
                 }
