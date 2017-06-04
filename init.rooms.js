@@ -179,7 +179,7 @@ module.exports = function (room) {
                     }
 
                     //REGISTER TOWERS
-                    if (!Memory.rooms[room.name].structure.tower || Memory.rooms[room.name].structure.tower === 'undefined') {
+                    if (Memory.rooms[room.name].structure.tower) {
                         var towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
                         if (towers.length > 0) {
                             Memory.rooms[room.name].structure.tower.total = towers.length;
