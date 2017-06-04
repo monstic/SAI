@@ -153,7 +153,6 @@ module.exports = function (spawn) {
                                     var flagColor = Game.flags.claim;
                                     if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
                                         var flag = Game.flags.claim;
-                                        log('ok');
                                     }
                                     else {
                                         var flag = spawn;
