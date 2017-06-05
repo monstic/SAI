@@ -177,7 +177,7 @@ getRandomFreePosOutOfRoad =
         }
         while ((x + y) % 2 !== (startPos.x + startPos.y) % 2 || Game.map.getTerrainAt(x, y, startPos.roomName) === 'wall');
         var checkPlace = room.lookAt(x, y);
-        if (checkPlace[0].type === 'terrain') {
+        if (checkPlace[0].type === 'terrain' || checkPlace[0].type === 'swamp') {
             var place = new RoomPosition(x, y, startPos.roomName);
             new RoomVisual(startPos.roomName).text('âœ”', x, y, { align: 'center', size: '0.7', color: 'green' });
             return place;
@@ -788,10 +788,9 @@ function (room) {
     //PASSO 4 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 4) {
         if (room.controller.level >= 3) {
+            console.log('d');
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
-            if (constructionSites.length === 0) {
                 var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
-                var extensionsLimit = checkExtensionsLimits(room);
                 if (extensions.length < 10) {
                     var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
                     if (someroad[someNumber]) {
@@ -807,7 +806,6 @@ function (room) {
                 else {
                     Memory.rooms[room.name].info.constructionslevel = 5;
                 }
-            }
         }
     }
 
@@ -983,7 +981,7 @@ function (room) {
 //AUTO BUILD WALLS AND RAMPARTS
 autoBuildWalls = 
 function (room) {
-    if (room.controller.level >= 4) {
+    if (room.controller.level >= 5) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
             if (Memory.rooms[room.name].exit) {

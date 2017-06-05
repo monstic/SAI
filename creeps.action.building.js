@@ -36,7 +36,7 @@ var creepActFunctions = function(creep) {
                 var target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     if (target.pos.roomName !== creep.room.name) {
-                        moveToByPath(creep, target.pos);
+                        creep.moveTo(target);
                     }
                     else {
                         //VISUALS

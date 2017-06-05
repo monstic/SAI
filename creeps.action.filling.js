@@ -91,7 +91,7 @@ var creepActFunctions = function(creep) {
                 if (target && target.energy !== null) {
                     if (target.energy < target.energyCapacity) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveByPath(creep.memory.path);
+                            creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             cleanTarget(creep);
@@ -125,7 +125,7 @@ var creepActFunctions = function(creep) {
                     if ((_.sum(target.store) < 2000)) {
                         
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveByPath(creep.memory.path);
+                            creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             cleanTarget(creep);
@@ -161,7 +161,7 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     if ((_.sum(target.store) < 1000000)) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            creep.moveByPath(creep.memory.path);
+                            creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             creep.say('!');

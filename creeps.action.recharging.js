@@ -42,7 +42,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     if (target.pos.roomName !== creep.room.name) {
-                        moveToByPath(creep, target.pos);
+                        creep.moveTo(target);
                     }
                     else {
                         //VISUALS
@@ -85,7 +85,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     if (target.pos.roomName !== creep.room.name) {
-                        moveToByPath(creep, target.pos);
+                        creep.moveTo(target);
                     }
                         else {
                         if ((_.sum(target.store) > 0)) {
@@ -122,7 +122,7 @@ var creepActFunctions = function(creep) {
                 dropToGet = Game.getObjectById(targetId);
                 if (dropToGet) {
                     if (dropToGet.pos.roomName !== creep.room.name) {
-                        moveToByPath(creep, target.pos);
+                        creep.moveTo(dropToGet);
                     }
                     else {
                         if (dropToGet.energy > 0 && dropToGet.energy !== null) {
