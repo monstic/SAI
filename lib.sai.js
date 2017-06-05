@@ -488,7 +488,7 @@ enableTowers =
                                                 if (Memory.rooms[room.name].trail[pos]) {
                                                     var road = Memory.rooms[room.name].trail[pos];
                                                     if (road) {
-                                                        if (road.usedtimes > 10) {
+                                                        if (road.usedtimes > 5000) {
                                                             tower.repair(findConstructionSiteToRepair[i]);
                                                             //VISUALS
                                                             new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x - 0.5), (findConstructionSiteToRepair[i].pos.y + 0.1), {size: 0.4, color: 'blue'});
@@ -676,7 +676,7 @@ function (room) {
                 //AUTO CONSTRUCTION ROADS
                 if (Memory.rooms[room.name].trail[path]) {
                     if (Memory.rooms[room.name].trail[path].usedtimes) {
-                        if (Memory.rooms[room.name].trail[path].usedtimes >= 20) {
+                        if (Memory.rooms[room.name].trail[path].usedtimes >= 5000) {
                             var roadHere = new RoomPosition(Memory.rooms[room.name].trail[path].x, Memory.rooms[room.name].trail[path].y, room.name);
                             roadHere.createConstructionSite(STRUCTURE_ROAD);
                         }

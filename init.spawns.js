@@ -23,9 +23,9 @@ module.exports = function (spawn) {
                     if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner === undefined) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner = {};
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 1;
-                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 2;
+                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 3;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
-                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
+                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 0;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard = 0;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
@@ -52,27 +52,58 @@ module.exports = function (spawn) {
                             //HARVESTERS
                             if (Memory.rooms[spawn.pos.roomName].sources) {
                                 var sources = Memory.rooms[spawn.pos.roomName].sources.total;
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
+                                var harvesterQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester;
+                                if (sources === 0) {
+                                    if (harvesterQty !== 0) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 0;
+                                    }
+                                }
+                                else if (sources === 1) {
+                                    if (harvesterQty !== 2) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 2;
+                                    }
+                                }
+                                else if (sources > 1) {
+                                    if (harvesterQty < 2) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
+                                    }
+                                }
                             }
 
                             //UPGRADERS
                             var room = Game.rooms[spawn.pos.roomName];
-                            if (room.controller.level < 5 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader !== 4) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
+                            var upgraderQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader;
+
+                            if (room.controller.level === 1) {
+                                if (upgraderQty !== 1) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
+                                }
                             }
-                            if (room.controller.level >= 5 && Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader !== 1) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
+                            else if (room.controller.level === 2) {
+                                if (upgraderQty !== 3) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                                }
+                            }
+                            else if (room.controller.level === 3) {
+                                if (upgraderQty !== 3) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 3;
+                                }
+                            }
+                            else if (room.controller.level >= 4) {
+                                if (upgraderQty !== 4) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
+                                }
                             }
 
                             //ENGINEER
-                            if ((builds > 0 && builds < 100) || repairs >= 50) {
+                            if (builds === 0 && repairs < 50) {
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
+                            }
+                            else if ((builds > 0 && builds <= 5) || (repairs > 0 && repairs < 50)) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
                             }
-                            if (builds >= 100) {
+                            else {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
-                            }
-                            if (builds === 0 || repairs < 50) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                             }
 
                             //MINER
