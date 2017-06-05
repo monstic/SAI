@@ -234,7 +234,7 @@ addToQueue =
         //QUEUE LIST LIMIT
         var totalList = countQueue('all', spawnname);
         if (totalList >= 20) {
-            log('Queue list full! Can`t add more creeps to spawn.');
+            console.log('Queue list full! Can`t add more creeps to spawn.');
         }
         else {
             var taskId = Game.time;
@@ -488,7 +488,7 @@ enableTowers =
                                                 if (Memory.rooms[room.name].trail[pos]) {
                                                     var road = Memory.rooms[room.name].trail[pos];
                                                     if (road) {
-                                                        if (road.usedtimes > 5000) {
+                                                        if (road.usedtimes > 500) {
                                                             tower.repair(findConstructionSiteToRepair[i]);
                                                             //VISUALS
                                                             new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x - 0.5), (findConstructionSiteToRepair[i].pos.y + 0.1), {size: 0.4, color: 'blue'});
@@ -788,16 +788,16 @@ function (room) {
     //PASSO 4 - EXTENSIONS
     if (Memory.rooms[room.name].info.constructionslevel === 4) {
         if (room.controller.level >= 3) {
-            console.log('d');
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
+            if (constructionSites.length === 0) {
                 var extensions = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_EXTENSION)});
                 if (extensions.length < 10) {
                     var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
+                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
                     if (someroad[someNumber]) {
                         if (someroad.length > 0) {
-                            var someNumber = Math.floor((Math.random() * someroad.length) + 1);
                             var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                            if (freeSpace) {
+                            if (freeSpace !== 'searching') {
                                 freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
                             }
                         }
@@ -806,6 +806,7 @@ function (room) {
                 else {
                     Memory.rooms[room.name].info.constructionslevel = 5;
                 }
+            }
         }
     }
 

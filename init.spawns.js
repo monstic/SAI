@@ -91,6 +91,7 @@ module.exports = function (spawn) {
                             }
                             else if (room.controller.level >= 4) {
                                 if (upgraderQty !== 4) {
+                            console.log(upgraderQty);
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
                                 }
                             }
