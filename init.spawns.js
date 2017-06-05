@@ -95,7 +95,7 @@ module.exports = function (spawn) {
                                 }
                             }
 
-                            //ENGINEER
+                            //ENGINEER 
                             if (builds === 0 && repairs < 50) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                             }
