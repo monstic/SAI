@@ -4,14 +4,12 @@ var creepActFunctions = function(creep) {
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
         var flag = Game.flags.claim;
         if (creep.room.name !== creep.memory.goto) {
-            var controller = flag.pos.findClosestByRange(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTROLLER) });
-            if (controller) {
-                setTarget(creep, controller.id, 'FLAG', flag.pos.roomName);
-            }
+            var controller = creep.pos.findClosestByRange(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTROLLER) });
+            setTarget(creep, controller.id, 'FLAG', flag.pos.roomName);
             Memory.rooms[flag.pos.roomName].info.claim = "no";
         }
         else {
-            var controller = flag.pos.findClosestByRange(FIND_SPAWNS);
+            var controller = flag.pos.findClosestByRange(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTROLLER) });
             if (controller) {
                 setTarget(creep, controller.id, 'CONTROLLER', flag.pos.roomName);
             }

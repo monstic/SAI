@@ -16,26 +16,30 @@ var creepActFunctions = function(creep) {
 
         if (creep.memory.targetType === 'DROP') {
             targetId = creep.memory.targetId;
-            dropToGet = Game.getObjectById(targetId);
-            if (dropToGet) {
-                if (dropToGet.energy > 0 && dropToGet.energy !== null) {
-                    //VISUALS
-                    new RoomVisual(creep.room.name).text('get', (dropToGet.pos.x + 0.1), (dropToGet.pos.y - 0.5), {opacity: 0.5, size: 0.5, color: 'green'});
-                    if (creep.pickup(dropToGet) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(dropToGet);
+            target = Game.getObjectById(targetId);
+            if (target) {
+                if (target.energy > 0 && target.energy !== null) {
+                    if (creep.pickup(target) === ERR_NOT_IN_RANGE) {
+                        //VISUALS
+                        new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.2});
+                        creep.moveTo(target);
                     }
-                    else if (creep.pickup(dropToGet) === ERR_BUSY) {
+                    else if (creep.pickup(target) === ERR_BUSY) {
                         creep.say('!');
                     }
-                    else if (creep.pickup(dropToGet) === ERR_FULL) {
+                    else if (creep.pickup(target) === ERR_FULL) {
                         creep.say('!!');
                     }
-                    else if (creep.pickup(dropToGet) === ERR_TIRED) {
+                    else if (creep.pickup(target) === ERR_TIRED) {
                         creep.say('!!!');
                     }
-                    else if (creep.pickup(dropToGet) === ERR_INVALID_TARGET) {
-                    cleanTarget(creep);
-                    creep.say('?');
+                    else if (creep.pickup(target) === ERR_INVALID_TARGET) {
+                        cleanTarget(creep);
+                        creep.say('?');
+                    }
+                    else {
+                        //VISUALS
+                        new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.3});
                     }
                 }
                 else {
