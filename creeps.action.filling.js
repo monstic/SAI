@@ -21,13 +21,13 @@ var creepActFunctions = function(creep) {
                 var target = Game.getObjectById(Memory.rooms[creep.room.name].spawns[creep.memory.homespawn].id);
 
                 if (target.energy < target.energyCapacity) {
-                    setTarget(creep, target.id, 'LOWST', target.room.name);
+                    setTarget(creep, target.id, 'LOWSP', target.room.name);
                 }
                 else {
 
                     if (Memory.rooms[creep.room.name].security.underattack === 'yes') {
                         var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
-                        setTarget(creep, target.id, 'LOWST', creep.room.name);
+                        setTarget(creep, target.id, 'LOWTW', creep.room.name);
                     }
                     else {
 
@@ -39,13 +39,13 @@ var creepActFunctions = function(creep) {
 
                             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy === 0)))}});
                             if (target) {
-                                setTarget(creep, target.id, 'LOWST', target.room.name);
+                                setTarget(creep, target.id, 'LOWTW', target.room.name);
                             }
                             else {
 
                                 var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
                                 if (target) {
-                                    setTarget(creep, target.id, 'LOWST', target.room.name);
+                                    setTarget(creep, target.id, 'LOWTW', target.room.name);
                                 }
                                 else {
 
@@ -86,14 +86,22 @@ var creepActFunctions = function(creep) {
     if (creep.memory.targetId) {
 
         if (creep.memory.action === 'filling') {
-            if (creep.memory.targetType === 'LOWST') {
+            if (creep.memory.targetType === 'LOWST' || creep.memory.targetType === 'LOWSP' || creep.memory.targetType === 'LOWTW') {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target && target.energy !== null) {
                     if (target.energy < target.energyCapacity) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                            //VISUALS
+                          //VISUALS
+                          if (creep.memory.targetType === 'LOWST') {
                             new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
-                            creep.moveTo(target);
+                          }
+                          if (creep.memory.targetType === 'LOWSP') {
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.7, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
+                          }
+                          if (creep.memory.targetType === 'LOWTW') {
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.7, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
+                          }
+                          creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
                             cleanTarget(creep);
@@ -112,8 +120,15 @@ var creepActFunctions = function(creep) {
                             creep.say('?');
                         }
                         else {
-                            //VISUALS
-                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'gold', lineStyle: 'dotted', opacity: 0.3});
+                          if (creep.memory.targetType === 'LOWST') {
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
+                          }
+                          if (creep.memory.targetType === 'LOWSP') {
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.7, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
+                          }
+                          if (creep.memory.targetType === 'LOWTW') {
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.7, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
+                          }
                         }
                     }
                     else {
@@ -125,7 +140,7 @@ var creepActFunctions = function(creep) {
                 target = Game.getObjectById(creep.memory.targetId);
                 if (target) {
                     if ((_.sum(target.store) < 2000)) {
-                        
+
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             //VISUALS
                             new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
@@ -166,7 +181,7 @@ var creepActFunctions = function(creep) {
                     if ((_.sum(target.store) < 1000000)) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                             //VISUALS
-                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.7, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
                             creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
@@ -184,7 +199,7 @@ var creepActFunctions = function(creep) {
                         }
                         else {
                             //VISUALS
-                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'gold', lineStyle: 'dotted', opacity: 0.3});
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.7, fill: 'gold', lineStyle: 'dotted', opacity: 0.2});
                         }
                     }
                     else {
@@ -205,4 +220,3 @@ var creepActFunctions = function(creep) {
 
 
 module.exports = creepActFunctions;
-

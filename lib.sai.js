@@ -742,21 +742,69 @@ function (room) {
         }
     }
 
-    //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER
+    //PASSO 2 - CONTAINER NEAR ROOM CONTROLLER AND SOURCES
     if (Memory.rooms[room.name].info.constructionslevel === 2) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
             var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
             var haveContainer = Memory.rooms[room.name].structure.container.controller;
             if (!haveContainer) {
-                    var sourcePos = room.controller;
+                var sourcePos = room.controller;
+                var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                if (getFreePos !== 'searching') {
+                    getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
+                }
+            }
+            else {
+                var sourceId = Memory.rooms[room.name].source[0];
+                var source = Game.getObjectById(sourceOneId);
+                var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
+                var haveContainer = Memory.rooms[room.name].structure.container.source[0];
+                if (!haveContainer) {
                     var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
                     if (getFreePos !== 'searching') {
                         getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                     }
-            }
-            else {
-                Memory.rooms[room.name].info.constructionslevel = 3;
+                }
+                else {
+                    var sourceId = Memory.rooms[room.name].source[1];
+                    var source = Game.getObjectById(sourceOneId);
+                    var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
+                    var haveContainer = Memory.rooms[room.name].structure.container.source[1];
+                    if (!haveContainer) {
+                        var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                        if (getFreePos !== 'searching') {
+                            getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
+                        }
+                    }
+                    else {
+                        var sourceId = Memory.rooms[room.name].source[2];
+                        var source = Game.getObjectById(sourceOneId);
+                        var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
+                        var haveContainer = Memory.rooms[room.name].structure.container.source[2];
+                        if (!haveContainer) {
+                            var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                            if (getFreePos !== 'searching') {
+                                getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
+                            }
+                        }
+                        else {
+                            var sourceId = Memory.rooms[room.name].source[3];
+                            var source = Game.getObjectById(sourceOneId);
+                            var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
+                            var haveContainer = Memory.rooms[room.name].structure.container.source[3];
+                            if (!haveContainer) {
+                                var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                                if (getFreePos !== 'searching') {
+                                    getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
+                                }
+                                else {
+                                  Memory.rooms[room.name].info.constructionslevel = 3;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

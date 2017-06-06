@@ -164,6 +164,27 @@ module.exports = function (room) {
                         }
                     }
 
+                    //REGISTER CONTAINER NEAR SOURCES
+                    if (Memory.rooms[room.name].structure.container) {
+                        if (Memory.rooms[room.name].structure.container.source) {
+                            if (!Memory.rooms[room.name].structure.container.source[0] || Memory.rooms[room.name].structure.container.source[0] === 'undefined') {
+                                var sources = room.find(FIND_SOURCES);
+                                if (sources.length > 0) {
+                                    Memory.rooms[room.name].structure.container.source[0] = sources[0].id;
+                                    if (sources.length > 1) {
+                                        Memory.rooms[room.name].structure.container.source[0] = sources[1].id;
+                                        if (sources.length > 2) {
+                                            Memory.rooms[room.name].structure.container.source[0] = sources[2].id;
+                                            if (sources.length > 3) {
+                                                Memory.rooms[room.name].structure.container.source[0] = sources[3].id;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     //REGISTER STORAGES NEAR MINERAL
                     if (Memory.rooms[room.name].structure.storage) {
                         if (!Memory.rooms[room.name].structure.storage.mineral || Memory.rooms[room.name].structure.storage.mineral === 'undefined') {
@@ -240,7 +261,7 @@ module.exports = function (room) {
                             var rexits = Memory.rooms[room.name].exit.right;
                             var i = 0;
                             for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) { 
+                                if (i === parseInt(countExits.length/2)) {
                                     delete Memory.rooms[room.name].exit.right[exit];
                                 }
                                 i++;
@@ -260,7 +281,7 @@ module.exports = function (room) {
                             var rexits = Memory.rooms[room.name].exit.top;
                             var i = 0;
                             for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) { 
+                                if (i === parseInt(countExits.length/2)) {
                                     delete Memory.rooms[room.name].exit.top[exit];
                                 }
                                 i++;
@@ -280,7 +301,7 @@ module.exports = function (room) {
                             var rexits = Memory.rooms[room.name].exit.bottom;
                             var i = 0;
                             for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) { 
+                                if (i === parseInt(countExits.length/2)) {
                                     delete Memory.rooms[room.name].exit.bottom[exit];
                                 }
                                 i++;
@@ -361,5 +382,3 @@ module.exports = function (room) {
 
 };
 //END ROOM
-
-
