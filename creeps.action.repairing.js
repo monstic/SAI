@@ -10,22 +10,22 @@ var creepActFunctions = function(creep) {
                 setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
             }
             else {
-                var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.structureType !== STRUCTURE_ROAD)});
+                var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 1000 && s.hitsMax >= 1000 && s.structureType !== STRUCTURE_ROAD)});
                 if (repairs.length > 0) {
                     setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                 }
                 else {
-                    var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 5000 && s.structureType !== STRUCTURE_ROAD)});
+                    var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 5000 && s.hitsMax >= 5000 && s.structureType !== STRUCTURE_ROAD)});
                     if (repairs.length > 0) {
                         setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                     }
                     else {
-                        var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 10000 && s.structureType !== STRUCTURE_ROAD)});
+                        var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 10000 && s.hitsMax >= 10000 && s.structureType !== STRUCTURE_ROAD)});
                         if (repairs.length > 0) {
                             setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                         }
                         else {
-                            var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 100000 && s.structureType !== STRUCTURE_ROAD)});
+                            var repairs = creep.room.find(FIND_STRUCTURES, {filter: (s) => (s.hits < 100000 && s.hitsMax >= 100000 && s.structureType !== STRUCTURE_ROAD)});
                             if (repairs.length > 0) {
                                 setTarget(creep, repairs[0].id, 'STDMG', repairs[0].pos.roomName);
                             }
@@ -57,10 +57,10 @@ var creepActFunctions = function(creep) {
                     }
                     else {
                         if (target.hits < target.hitsMax) {
-                            //VISUALS
-                            new RoomVisual(creep.room.name).text('r', (target.pos.x), (target.pos.y + 0.2));
 
                             if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'green', lineStyle: 'dotted', opacity: 0.2});
                                 creep.moveTo(target);
                             }
                             else if (creep.repair(target) === ERR_BUSY) {
@@ -78,10 +78,7 @@ var creepActFunctions = function(creep) {
                             }
                             else {
                                 //VISUALS
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'green', lineStyle: 'dotted', opacity: 0.3});
                             }
                         }
                         else {
