@@ -65,7 +65,7 @@ module.exports = function (spawn) {
                                 }
                                 else if (sources > 1) {
                                     if (harvesterQty < 2) {
-                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = (sources*2);
                                     }
                                 }
                             }
@@ -101,10 +101,10 @@ module.exports = function (spawn) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                             }
                             else if ((builds > 0 && builds <= 5) || (repairs > 0 && repairs < 50)) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
                             }
                             else {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 3;
                             }
 
                             //MINER
