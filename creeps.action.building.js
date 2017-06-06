@@ -16,7 +16,6 @@ var creepActFunctions = function(creep) {
         }
     }
 
-
     if (creep.memory.targetId) {
 
         if (creep.memory.action === 'building') {
