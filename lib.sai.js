@@ -264,7 +264,7 @@ spawnProtoCreep =
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
             var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
-            if (totalHarvesters < (Memory.rooms[spawn.pos.roomName].spawns.spawner.harvester-1)) {
+            if (totalHarvesters < (Memory.rooms[spawn.pos.roomName].spawns.spawner.harvester - 1)) {
                 delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
                 var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                 if (_.isString(name)) {
