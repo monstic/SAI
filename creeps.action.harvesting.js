@@ -5,7 +5,7 @@ var creepActFunctions = function(creep) {
 
         //harvesting
         if (creep.memory.action === 'harvesting') {
-            
+
             if (Memory.rooms[creep.room.name].sources) {
                 var sources = Memory.rooms[creep.room.name].sources;
                 var haveSources = Memory.rooms[creep.room.name].sources.total;
@@ -26,6 +26,7 @@ var creepActFunctions = function(creep) {
                         var isBusyToo = countCreepsInSource(sources[1]);
                         if (isBusyToo > 0) {
                             creep.say('?');
+                            creep.memory.action = 'undefined';
                         }
                         else {
                             creep.memory.sourceId = sources[1];
@@ -48,6 +49,7 @@ var creepActFunctions = function(creep) {
                             var isBusyTooToo = countCreepsInSource(sources[2]);
                             if (isBusyTooToo > 0) {
                                 creep.say('?');
+                                creep.memory.action = 'undefined';
                             }
                             else {
                                 creep.memory.sourceId = sources[2];
@@ -77,13 +79,15 @@ var creepActFunctions = function(creep) {
 
         if (creep.memory.action === 'harvesting') {
             if (creep.memory.sourceType === 'SCAC') {
-                source = Game.getObjectById(creep.memory.sourceId);
+                var source = Game.getObjectById(creep.memory.sourceId);
                 if (source.energy > 0)  {
                     if (creep.harvest(source) === OK) {
-                    //VISUALS
-                    new RoomVisual(creep.room.name).text('🔊', (source.pos.x - 0.5), (source.pos.y + 0.1), {size: 0.4, color: 'gold'});
+                      //VISUALS
+                      new RoomVisual(creep.room.name).circle((source.pos.x), (source.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
                     }
                     else if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+                        //VISUALS
+                        new RoomVisual(creep.room.name).circle((source.pos.x), (source.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.2});
                         creep.moveTo(source);
                     }
                     else if (creep.harvest(source) === ERR_BUSY) {
@@ -114,4 +118,3 @@ var creepActFunctions = function(creep) {
 
 
 module.exports = creepActFunctions;
-

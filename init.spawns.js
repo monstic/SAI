@@ -31,21 +31,14 @@ module.exports = function (spawn) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
                     }
 
-                    //CREATE QUEUE LIST
-                    if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue === undefined) {
-                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue = {};
-                        console.log(spawn.name + ' queue list initialized.');
-                    }
-
-
                     //START CRONJOBS
-                    
+
                     //START CRON 2 [SPAWNER]
                     if (Memory.rooms[spawn.pos.roomName].cron[2].lastrun < (Game.time-Memory.rooms[spawn.pos.roomName].cron[2].interval)) {
 
                         var repairs = countRepairs(spawn.pos.roomName);
                         var builds = countConstructions(spawn.pos.roomName);
-                        
+
                         //SPAWN RULES UPDATER
                         if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner) {
 
@@ -72,7 +65,7 @@ module.exports = function (spawn) {
 
                             //TRANSPORTERS
                             var transporterQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter;
-                            if (transporterQty !== 4) {
+                            if (transporterQty !== 3) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 3;
                             }
 
@@ -86,7 +79,7 @@ module.exports = function (spawn) {
                                 }
                             }
                             else if (room.controller.level === 2) {
-                                if (upgraderQty !== 3) {
+                                if (upgraderQty !== 4) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
                                 }
                             }
@@ -96,19 +89,17 @@ module.exports = function (spawn) {
                                 }
                             }
                             else if (room.controller.level === 4) {
-                                if (upgraderQty !== 4) {
-                            console.log(upgraderQty);
+                                if (upgraderQty !== 2) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
                                 }
                             }
                             else if (room.controller.level >= 5) {
-                                if (upgraderQty !== 4) {
-                            console.log(upgraderQty);
+                                if (upgraderQty !== 2) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
                                 }
                             }
 
-                            //ENGINEER 
+                            //ENGINEER
                             if (builds === 0 && repairs < 50) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                             }
@@ -135,98 +126,46 @@ module.exports = function (spawn) {
                                     if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
                                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
                                     }
+                                    else {
+                                      Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
+                                    }
                                 }
                             }
 
                         }
 
                         //POPULATE QUEUE LIST
-                        var totalOfNecessaryHarvesters = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester;
-                        var totalSpawnedHarvesters = countCreeps('harvester', spawn.pos.roomName);
-                        var totalQueuedHarvesters = countQueue('harvester', spawn.name);
-                        var totalHarvesters = (totalSpawnedHarvesters+totalQueuedHarvesters);
-                        if (totalHarvesters < totalOfNecessaryHarvesters) {
-                            addToQueue('harvester', spawn.name);
+                        var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
+                        if (totalHarvesters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester) {
+                            spawnProtoCreep(spawn.name, 'harvester', 'spawn.pos.roomName');
                         }
-                        var sources = Memory.rooms[spawn.pos.roomName].sources.total;
-                        var totalSpawnedTransporters = countCreeps('transporter', spawn.pos.roomName);
-                        var totalQueuedTransporters = countQueue('transporter', spawn.name);
-                        var totalTransporters = (totalSpawnedTransporters+totalQueuedTransporters);
-                        if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter && totalHarvesters >= sources) {
-                            addToQueue('transporter', spawn.name);
-                        }
-                        //ONLY IF ROOM IS CLEAN
-                        if (Memory.rooms[spawn.pos.roomName].security.underattack === 'no') {
-                            var totalSpawnedUpgraders = countCreeps('upgrader', spawn.pos.roomName);
-                            var totalQueuedUpgraders = countQueue('upgrader', spawn.name);
-                            var totalUpgraders = (totalSpawnedUpgraders+totalQueuedUpgraders);
-                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                addToQueue('upgrader', spawn.name);
+                        else {
+                          var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
+                          if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
+                            spawnProtoCreep(spawn.name, 'transporter', 'spawn.pos.roomName');
+                          }
+                          else {
+                            var totalUpgraders = countCreeps('upgrader', spawn.pos.roomName);
+                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
+                              spawnProtoCreep(spawn.name, 'upgrader', 'spawn.pos.roomName');
                             }
-                            var totalConstructions = countConstructions(spawn.pos.roomName);
-                            var totalRepairs = countRepairs(spawn.pos.roomName);
-                            if (totalConstructions > 0 || totalRepairs > 0) {
-                                var totalSpawnedEngineers = countCreeps('engineer', spawn.pos.roomName);
-                                var totalQueuedEngineers = countQueue('engineer', spawn.name);
-                                var totalEngineers = (totalSpawnedEngineers+totalQueuedEngineers);
-                                if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && totalUpgraders >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
-                                    addToQueue('engineer', spawn.name);
-                                }
-                            }
-                            if (Memory.rooms[spawn.pos.roomName].mineral) {
-                                if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
-                                    var totalSpawnedMiners = countCreeps('miner', spawn.pos.roomName);
-                                    var totalQueuedMiners = countQueue('miner', spawn.name);
-                                    var totalMiners = (totalSpawnedMiners+totalQueuedMiners);
-                                    if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                        addToQueue('miner', spawn.name);
+                            else {
+                              var totalEngineers = countCreeps('engineer', spawn.pos.roomName);
+                              if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
+                                  spawnProtoCreep(spawn.name, 'engineer', 'spawn.pos.roomName');
+                              }
+                              else {
+                                if (Memory.rooms[spawn.pos.roomName].mineral) {
+                                  if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
+                                  var totalMiners = countCreeps('miner', spawn.pos.roomName);
+                                    if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner) {
+                                      spawnProtoCreep(spawn.name, 'miner', 'spawn.pos.roomName');
                                     }
+                                  }
                                 }
+                              }
                             }
-                            var totalSpawnedGuards = countCreeps('guard', spawn.pos.roomName);
-                            var totalQueuedGuards = countQueue('guard', spawn.name);
-                            var totalGuards = (totalSpawnedGuards+totalQueuedGuards);
-                            if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard && totalTransporters >= Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                                addToQueue('guard', spawn.name);
-                            }
-                            var totalSpawnedClaimers = countCreeps('claimer', spawn.pos.roomName);
-                            var totalQueuedClaimers = countQueue('claimer', spawn.name);
-                            var totalClaimers = (totalSpawnedClaimers+totalQueuedClaimers);
-                            if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer) {
-                                if (Game.flags.claim) {
-                                    var flagColor = Game.flags.claim;
-                                    if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
-                                        var flag = Game.flags.claim;
-                                    }
-                                    else {
-                                        var flag = spawn;
-                                    }
-                                addToQueue('claimer', spawn.name, flag.pos.roomName);
-                                }
-                                
-                            }
-                        }
-
-                        //RUN QUEUE LIST
-                        var totalList = countQueue('all', spawn.name);
-                        if (totalList > 0) {
-                            var i = 0;
-                            for (var id in Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue) {
-                                if (i === 0) {
-                                    //LOAD VARIABLES
-                                    var queue_spawn = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].spawnname;
-                                    var queue_type = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].type;
-                                    var queue_goto = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].goto;
-                                    var removeFromQueue = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[id].registertime;
-                                    //SPAWN
-                                    var result = spawnProtoCreep(queue_spawn, queue_type, queue_goto, removeFromQueue);
-                                    //SHOW RESULT
-                                    if (result) {
-                                        console.log(result);
-                                    }
-                                }
-                                i++;
-                            }
+                          }
                         }
 
                         //SAVE LAST RUN
@@ -239,10 +178,9 @@ module.exports = function (spawn) {
                 }
 
                 //LOAD MODULES
-                spawnProgress(spawn);
+                //spawnProgress(spawn);
 
             }
         }
     }
 };
-

@@ -27,10 +27,13 @@ var creepActFunctions = function(creep) {
                             moveToByPath(creep, Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn].pos);
                         }
                         else {
-                            creep.say('?');
+                            creep.say('⛽?');
                             var totalHrvst = countCreeps('harvester', creep.memory.homeroom);
                             if (totalHrvst < Memory.rooms[creep.room.name].sources.total) {
                                 creep.memory.action = 'harvesting';
+                            }
+                            else {
+                                creep.memory.action = 'undefined';
                             }
                         }
                     }
@@ -66,7 +69,7 @@ var creepActFunctions = function(creep) {
                             }
                             else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_INVALID_TARGET) {
                                 cleanTarget(creep);
-                                creep.say('?');
+                                creep.say('⛽?');
                             }
                             else {
                                 //VISUALS
@@ -106,7 +109,7 @@ var creepActFunctions = function(creep) {
                             }
                             else if (creep.transfer(target) === ERR_INVALID_TARGET) {
                                 cleanTarget(creep);
-                                creep.say('?');
+                                creep.say('⛽?');
                             }
                             else {
                                 //VISUALS
@@ -147,7 +150,7 @@ var creepActFunctions = function(creep) {
                             }
                             else if (creep.pickup(target) === ERR_INVALID_TARGET) {
                                 cleanTarget(creep);
-                                creep.say('?');
+                                creep.say('⛽?');
                             }
                             else {
                                 //VISUALS
@@ -173,4 +176,3 @@ var creepActFunctions = function(creep) {
 
 
 module.exports = creepActFunctions;
-

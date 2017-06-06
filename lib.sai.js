@@ -32,11 +32,11 @@ countRepairs =
     };
 
 //TURN ON/OFF DISPLAY
-showDisplay = 
+showDisplay =
 function () {
     Memory.system.config.display = 'on';
 };
-hideDisplay = 
+hideDisplay =
 function () {
     Memory.system.config.display = 'off';
 };
@@ -263,55 +263,66 @@ addToQueue =
 
 //CREEP TYPES
 spawnProtoCreep =
-    function (spawnname, creeptype, creepgoto, removeFromQueue) {
+    function (spawnname, creeptype, creepgoto) {
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
             var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
-            if (totalHarvesters === 0) {
-                delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
+            var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
+            if (totalHarvesters === 0 && spawn.energy < 300) {
                 var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                 if (_.isString(name)) {
                     result = ('Spawning new harvester on ' + spawn.name + ' with name ' + name + '.');
                     log(result);
                 }
             }
-            else {
-                var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
-                if (totalTransporters === 0) {
-                    delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
-                    var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                    if (_.isString(name)) {
-                        result = ('Spawning new transporter on ' + spawn.name + ' with name ' + name + '.');
-                        log(result);
-                    }
+            else if (totalHarvesters > 0 && totalTransporters === 0) {
+                var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+                if (_.isString(name)) {
+                    result = ('Spawning new transporter on ' + spawn.name + ' with name ' + name + '.');
+                    log(result);
                 }
-                else {
-                    if (spawn.energy >= 300) {
-                        //ACTION: SPAWN
-                        // create a balanced body as big as possible with the given energy
-                        var spawn = Game.spawns[spawnname];
-                        var room = Game.rooms[spawn.pos.roomName];
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 200);
-                        // make sure the creep is not too big (more than 50 parts)
-                        if (creeptype === 'harvester') {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(7));
-                            var body = [];
+            }
+            else {
+                if (spawn.energy >= 300) {
+                    //ACTION: SPAWN
+                    // create a balanced body as big as possible with the given energy
+                    var spawn = Game.spawns[spawnname];
+                    var room = Game.rooms[spawn.pos.roomName];
+                    var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 200);
+                    // make sure the creep is not too big (more than 50 parts)
+                    if (creeptype === 'harvester') {
+                        numberOfParts = Math.min(numberOfParts, Math.floor(7));
+                        var body = [];
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(WORK);
+                        }
+                        for (let i = 0; i < 1; i++) {
+                            body.push(CARRY);
+                        }
+                        for (let i = 0; i < 3; i++) {
+                            body.push(MOVE);
+                        }
+                    }
+                    else if (creeptype === 'transporter') {
+                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2) - 1);
+                        var body = [];
+                        for (let i = 0; i < 1; i++) {
+                            body.push(WORK);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(CARRY);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(MOVE);
+                        }
+                    }
+                    else if (creeptype === 'upgrader') {
+                        numberOfParts = Math.min(numberOfParts, Math.floor(43));
+                        var body = [];
+                        if (room.controller.level < 6) {
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(WORK);
                             }
-                            for (let i = 0; i < 1; i++) {
-                                body.push(CARRY);
-                            }
-                            for (let i = 0; i < 3; i++) {
-                                body.push(MOVE);
-                            }
-                        }
-                        else if (creeptype === 'transporter') {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2) - 1);
-                            var body = [];
-                            for (let i = 0; i < 1; i++) {
-                                body.push(WORK);
-                            }
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(CARRY);
                             }
@@ -319,60 +330,8 @@ spawnProtoCreep =
                                 body.push(MOVE);
                             }
                         }
-                        else if (creeptype === 'upgrader') {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(43));
-                            var body = [];
-                            if (room.controller.level < 6) {
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(WORK);
-                                }
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(CARRY);
-                                }
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(MOVE);
-                                }
-                            }
-                            else {
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(WORK);
-                                }
-                                for (let i = 0; i < 2; i++) {
-                                    body.push(CARRY);
-                                }
-                                for (let i = 0; i < 4; i++) {
-                                    body.push(MOVE);
-                                }
-                            }
-                        }
-                        else if (creeptype === 'engineer') {
-                            var body = [];
-                            if (room.controller.level < 6) {
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(WORK);
-                                }
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(CARRY);
-                                }
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(MOVE);
-                                }
-                            }
-                            else {
-                                for (let i = 0; i < 5; i++) {
-                                    body.push(WORK);
-                                }
-                                for (let i = 0; i < 5; i++) {
-                                    body.push(CARRY);
-                                }
-                                for (let i = 0; i < 5; i++) {
-                                    body.push(MOVE);
-                                }
-                            }
-                        }
-                        else if (creeptype === 'miner') {
-                            var body = [];
-                            for (let i = 0; i < 9; i++) {
+                        else {
+                            for (let i = 0; i < numberOfParts; i++) {
                                 body.push(WORK);
                             }
                             for (let i = 0; i < 2; i++) {
@@ -382,42 +341,82 @@ spawnProtoCreep =
                                 body.push(MOVE);
                             }
                         }
-                        else if (creeptype === 'claimer') {
-                            var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 600);
-                            numberOfParts = Math.min(numberOfParts, Math.floor(6) - 1);
+                    }
+                    else if (creeptype === 'engineer') {
+                        var totalConstructions = countConstructions(spawn.pos.roomName);
+                        var totalRepairs = countRepairs(spawn.pos.roomName);
+                        if (totalConstructions > 0 || totalRepairs > 0) {
                             var body = [];
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(MOVE);
+                            if (room.controller.level < 6) {
+                                for (let i = 0; i < numberOfParts; i++) {
+                                    body.push(WORK);
+                                }
+                                for (let i = 0; i < numberOfParts; i++) {
+                                    body.push(CARRY);
+                                }
+                                for (let i = 0; i < numberOfParts; i++) {
+                                    body.push(MOVE);
+                                }
                             }
-                            for (let i = 0; i < 1; i++) {
-                                body.push(CLAIM);
-                            }
-                            for (let i = 0; i < 1; i++) {
-                                body.push(CARRY);
+                            else {
+                                for (let i = 0; i < 5; i++) {
+                                    body.push(WORK);
+                                }
+                                for (let i = 0; i < 5; i++) {
+                                    body.push(CARRY);
+                                }
+                                for (let i = 0; i < 5; i++) {
+                                    body.push(MOVE);
+                                }
                             }
                         }
-                        else {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
-                            var body = [];
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(WORK);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(CARRY);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(MOVE);
-                            }
+                    }
+                    else if (creeptype === 'miner') {
+                        var body = [];
+                        for (let i = 0; i < 9; i++) {
+                            body.push(WORK);
                         }
+                        for (let i = 0; i < 2; i++) {
+                            body.push(CARRY);
+                        }
+                        for (let i = 0; i < 4; i++) {
+                            body.push(MOVE);
+                        }
+                    }
+                    else if (creeptype === 'claimer') {
+                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 600);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(6) - 1);
+                        var body = [];
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(MOVE);
+                        }
+                        for (let i = 0; i < 1; i++) {
+                            body.push(CLAIM);
+                        }
+                        for (let i = 0; i < 1; i++) {
+                            body.push(CARRY);
+                        }
+                    }
+                    else {
+                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
+                        var body = [];
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(WORK);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(CARRY);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(MOVE);
+                        }
+                    }
 
-                        var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                        if (canIspawn === 0) {
-                            var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                            if (_.isString(name)) {
-                                result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
-                                delete Memory.rooms[spawn.pos.roomName].spawns[spawn.name].queue[removeFromQueue];
-                                log(result);
-                            }
+                    var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+                    if (canIspawn === 0) {
+                        var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+                        if (_.isString(name)) {
+                            result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
+                            log(result);
                         }
                     }
                 }
@@ -556,7 +555,7 @@ spawnProgress =
     };
 
 //VISUAL TRAIL
-showTrails = 
+showTrails =
     function (room) {
 
         //SHOW CREEP TRAIL
@@ -653,7 +652,7 @@ saveTrail =
     };
 
 //DECREASE ROADS NOT USED
-decreaseRoads = 
+decreaseRoads =
 function (room) {
     var paths = Memory.rooms[room.name].trail;
     for (var path in paths) {
@@ -668,7 +667,7 @@ function (room) {
 };
 
 //AUTO BUILD ROADS
-autoBuildRoads = 
+autoBuildRoads =
 function (room) {
     if (room.controller.level > 1) {
         var ca = room.find(FIND_CONSTRUCTION_SITES);
@@ -691,7 +690,7 @@ function (room) {
 };
 
 //AUTO BUILD
-autoBuild = 
+autoBuild =
 function (room) {
 
     //PASSO 0 - SPAWN
@@ -983,7 +982,7 @@ function (room) {
 };
 
 //AUTO BUILD WALLS AND RAMPARTS
-autoBuildWalls = 
+autoBuildWalls =
 function (room) {
     if (room.controller.level >= 5) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
@@ -1070,7 +1069,7 @@ function (room) {
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]-1), room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
-                    if (i === parseInt(countExits.length/2)) { 
+                    if (i === parseInt(countExits.length/2)) {
                         var place = new RoomPosition(47, (Memory.rooms[room.name].exit.right[exit]+1), room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
@@ -1097,7 +1096,7 @@ function (room) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]-1), 2, room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
-                    if (i === parseInt(countExits.length/2)) { 
+                    if (i === parseInt(countExits.length/2)) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.top[exit]+1), 2, room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
@@ -1124,7 +1123,7 @@ function (room) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]-1), 47, room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
-                    if (i === parseInt(countExits.length/2)) { 
+                    if (i === parseInt(countExits.length/2)) {
                         var place = new RoomPosition((Memory.rooms[room.name].exit.bottom[exit]+1), 47, room.name);
                         place.createConstructionSite(STRUCTURE_RAMPART);
                     }
@@ -1143,7 +1142,7 @@ function (room) {
     }
 };
 
-moveToByPath = 
+moveToByPath =
 function (creep, target) {
     let roomName = creep.pos.roomName;
     let ret = PathFinder.search(
@@ -1157,8 +1156,8 @@ function (creep, target) {
         roomCallback: function(roomName) {
 
             let room = Game.rooms[roomName];
-            // In this example `room` will always exist, but since 
-            // PathFinder supports searches which span multiple rooms 
+            // In this example `room` will always exist, but since
+            // PathFinder supports searches which span multiple rooms
             // you should be careful!
             if (!room) return;
             let costs = new PathFinder.CostMatrix;
@@ -1191,4 +1190,3 @@ function (creep, target) {
         creep.move(creep.pos.getDirectionTo(pos));
     }
 };
-
