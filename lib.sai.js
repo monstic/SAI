@@ -264,7 +264,7 @@ spawnProtoCreep =
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
             var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
-            if (totalHarvesters === 0) {
+            if (totalHarvesters < (Memory.rooms[spawn.pos.roomName].spawns.spawner.harvester-1)) {
                 delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
                 var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                 if (_.isString(name)) {
@@ -274,7 +274,7 @@ spawnProtoCreep =
             }
             else {
                 var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
-                if (totalTransporters === 0) {
+                if (totalTransporters < (Memory.rooms[spawn.pos.roomName].spawns.spawner.transporter-1)) {
                     delete Memory.rooms[spawn.pos.roomName].spawns[spawnname].queue;
                     var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                     if (_.isString(name)) {

@@ -58,13 +58,8 @@ module.exports = function (spawn) {
                                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 0;
                                     }
                                 }
-                                else if (sources === 1) {
-                                    if (harvesterQty !== 2) {
-                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 2;
-                                    }
-                                }
-                                else if (sources > 1) {
-                                    if (harvesterQty < 2) {
+                                else {
+                                    if (harvesterQty < (sources*2)) {
                                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = (sources*2);
                                     }
                                 }

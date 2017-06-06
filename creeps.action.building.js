@@ -7,12 +7,11 @@ var creepActFunctions = function(creep) {
         if (creep.memory.action === 'building') {
             if (Game.flags.claim) {
                 var flag = Game.flags.claim;
-                var flagPos = new RoomPosition(flag.pos.x, flag.pos.y, flag.pos.roomName);
-                var csspawn = flag.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-                console.log(csspawn);
-                if (csspawn) {
-                    setTarget(creep, csspawn.id, 'CTST', csspawn.pos.roomName);
-                }
+                //var flagPos = new RoomPosition(flag.pos.x, flag.pos.y, flag.pos.roomName);
+                //var csspawn = flagPos.findInRange(FIND_CONSTRUCTION_SITES, 10);
+                //if (csspawn.length > 0) {
+                    //setTarget(creep, csspawn.id, 'CTST', csspawn.pos.roomName);
+                //}
             }
             else {
                 var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
