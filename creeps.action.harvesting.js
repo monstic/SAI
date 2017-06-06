@@ -81,10 +81,7 @@ var creepActFunctions = function(creep) {
                 if (source.energy > 0)  {
                     if (creep.harvest(source) === OK) {
                     //VISUALS
-                    new RoomVisual(creep.room.name).text('.', (source.pos.x - 0.5), (source.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                    new RoomVisual(creep.room.name).text('.', (source.pos.x + 0.5), (source.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                    new RoomVisual(creep.room.name).text('.', (source.pos.x), (source.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                    new RoomVisual(creep.room.name).text('.', (source.pos.x), (source.pos.y + 0.6), {size: 0.4, color: 'gold'});
+                    new RoomVisual(creep.room.name).text('🔊', (source.pos.x - 0.5), (source.pos.y + 0.1), {size: 0.4, color: 'gold'});
                     }
                     else if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(source);
