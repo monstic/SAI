@@ -5,47 +5,17 @@ var creepActFunctions = function(creep) {
 
         //building
         if (creep.memory.action === 'building') {
-            if (Game.flags.claim) {
-                var flag = Game.flags.claim;
-                if (Memory.rooms[flag.pos.roomName].info.claim === "claiming") {
-                    var spawnToBuild = flag.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-                    if (spawnToBuild) {
-                        setTarget(creep, spawnToBuild.id, 'CTST', spawnToBuild.pos.roomName);
-                    }
-                    else {
-                        var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-                        if (findConstructionSiteToBuild) {
-                            setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
-                        }
-                        else {
-                            creep.memory.action = 'repairing';
-                            cleanTarget(creep);
-                        }
-                    }
-                }
-                else {
-                    var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-                    if (findConstructionSiteToBuild) {
-                        setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
-                    }
-                    else {
-                        creep.memory.action = 'repairing';
-                        cleanTarget(creep);
-                    }
-                }
+            var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+            if (findConstructionSiteToBuild) {
+                setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
             }
             else {
-                var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-                if (findConstructionSiteToBuild) {
-                    setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
-                }
-                else {
-                    creep.memory.action = 'repairing';
-                    cleanTarget(creep);
-                }
+                creep.memory.action = 'repairing';
+                cleanTarget(creep);
             }
         }
     }
+
 
     if (creep.memory.targetId) {
 
