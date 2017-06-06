@@ -5,15 +5,15 @@ var creepActFunctions = function(creep) {
 
         //building
         if (creep.memory.action === 'building') {
-            if (Game.flags.claim) {
-                var flag = Game.flags.claim;
+            //if (Game.flags.claim) {
+                //var flag = Game.flags.claim;
                 //var flagPos = new RoomPosition(flag.pos.x, flag.pos.y, flag.pos.roomName);
                 //var csspawn = flagPos.findInRange(FIND_CONSTRUCTION_SITES, 10);
                 //if (csspawn.length > 0) {
                     //setTarget(creep, csspawn.id, 'CTST', csspawn.pos.roomName);
                 //}
-            }
-            else {
+            //}
+            //else {
                 var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
                 if (findConstructionSiteToBuild) {
                     setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
@@ -22,7 +22,7 @@ var creepActFunctions = function(creep) {
                     creep.memory.action = 'repairing';
                     cleanTarget(creep);
                 }
-            }
+            //}
         }
 
     }
