@@ -58,3 +58,4 @@ Temporary Items
 #GIT
 .gitattributes
 .gitignore
+credentials.js
