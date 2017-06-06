@@ -4,7 +4,6 @@ var creepTypeFunctions = function(creep) {
     if (creep.carry.energy === 0 && creep.memory.action !== 'harvesting') {
         creep.memory.action = 'harvesting';
         creep.say('hrvst');
-        cleanTarget(creep);
     }
     if (creep.memory.action === 'undefined') {
         creep.memory.action = 'harvesting';
@@ -16,7 +15,6 @@ var creepTypeFunctions = function(creep) {
         if (totalTransporters > 0) {
             creep.memory.action = 'dropping';
             creep.say('drop');
-            cleanTarget(creep);
         }
         else {
             creep.memory.action = 'filling';

@@ -23,11 +23,15 @@ var creepActFunctions = function(creep) {
                         setTarget(creep, droppedSources.id, 'DROP', droppedSources.pos.roomName);
                     }
                     else {
-                        if (creep.room.name !== creep.room.homespawn) {
+                        if (creep.room.name !== creep.memory.homeroom) {
                             moveToByPath(creep, Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn].pos);
                         }
                         else {
                             creep.say('?');
+                            var totalHrvst = countCreeps('harvester', creep.memory.homeroom);
+                            if (totalHrvst < Memory.rooms[creep.room.name].sources.total) {
+                                creep.memory.action = 'harvesting';
+                            }
                         }
                     }
                 }
@@ -45,10 +49,10 @@ var creepActFunctions = function(creep) {
                         creep.moveTo(target);
                     }
                     else {
-                        //VISUALS
-                        new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                         if ((_.sum(target.store) > 0)) {
                             if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
                                 creep.moveTo(target);
                             }
                             else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
@@ -66,10 +70,7 @@ var creepActFunctions = function(creep) {
                             }
                             else {
                                 //VISUALS
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x - 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x + 0.5), (target.pos.y + 0.1), {size: 0.4, color: 'gold'});
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y - 0.4), {size: 0.4, color: 'gold'});
-                                new RoomVisual(creep.room.name).text('.', (target.pos.x), (target.pos.y + 0.6), {size: 0.4, color: 'gold'});
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
                             }
                         }
                         else {
@@ -89,9 +90,9 @@ var creepActFunctions = function(creep) {
                     }
                         else {
                         if ((_.sum(target.store) > 0)) {
-                            //VISUALS
-                            new RoomVisual(creep.room.name).text('-', (target.pos.x - 0.01), (target.pos.y + 0.3));
                             if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
                                 creep.moveTo(target);
                             }
                             else if (creep.transfer(target) === ERR_BUSY) {
@@ -107,6 +108,10 @@ var creepActFunctions = function(creep) {
                                 cleanTarget(creep);
                                 creep.say('?');
                             }
+                            else {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
+                            }
                         }
                         else {
                             cleanTarget(creep);
@@ -119,30 +124,34 @@ var creepActFunctions = function(creep) {
             }
             if (creep.memory.targetType === 'DROP') {
                 targetId = creep.memory.targetId;
-                dropToGet = Game.getObjectById(targetId);
-                if (dropToGet) {
-                    if (dropToGet.pos.roomName !== creep.room.name) {
-                        creep.moveTo(dropToGet);
+                target = Game.getObjectById(targetId);
+                if (target) {
+                    if (target.pos.roomName !== creep.room.name) {
+                        creep.moveTo(target);
                     }
                     else {
-                        if (dropToGet.energy > 0 && dropToGet.energy !== null) {
-                            //VISUALS
-                            new RoomVisual(creep.room.name).text('-', (dropToGet.pos.x - 0.01), (dropToGet.pos.y + 0.3));
-                            if (creep.pickup(dropToGet, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                                creep.moveTo(dropToGet);
+                        if (target.energy > 0 && target.energy !== null) {
+                            if (creep.pickup(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
+                                creep.moveTo(target);
                             }
-                            else if (creep.pickup(dropToGet) === ERR_BUSY) {
+                            else if (creep.pickup(target) === ERR_BUSY) {
                                 creep.say('!');
                             }
-                            else if (creep.pickup(dropToGet) === ERR_FULL) {
+                            else if (creep.pickup(target) === ERR_FULL) {
                                 creep.say('!!');
                             }
-                            else if (creep.pickup(dropToGet) === ERR_TIRED) {
+                            else if (creep.pickup(target) === ERR_TIRED) {
                                 creep.say('!!!');
                             }
-                            else if (creep.pickup(dropToGet) === ERR_INVALID_TARGET) {
-                            cleanTarget(creep);
-                            creep.say('?');
+                            else if (creep.pickup(target) === ERR_INVALID_TARGET) {
+                                cleanTarget(creep);
+                                creep.say('?');
+                            }
+                            else {
+                                //VISUALS
+                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
                             }
                         }
                         else {

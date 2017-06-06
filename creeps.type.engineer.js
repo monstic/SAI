@@ -15,6 +15,11 @@ var creepTypeFunctions = function(creep) {
         cleanTarget(creep);
         creep.say('b or r');
     }
+    if (creep.memory.action === 'harvesting' && creep.carry.energy === creep.carryCapacity) {
+        creep.memory.action = 'building';
+        creep.say('b or r');
+        cleanSource(creep);
+    }
 };
 
 module.exports = creepTypeFunctions;

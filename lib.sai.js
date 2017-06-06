@@ -114,6 +114,9 @@ cleanTarget =
         delete creep.memory.targetId;
         delete creep.memory.targetRoom;
         delete creep.memory.targetType;
+        delete creep.memory.sourceId;
+        delete creep.memory.sourceRoom;
+        delete creep.memory.sourceType;
         delete creep.memory.path;
         return 1;
     };

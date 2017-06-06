@@ -15,6 +15,11 @@ var creepTypeFunctions = function(creep) {
         cleanTarget(creep);
         creep.say('upgr');
     }
+    if (creep.memory.action === 'harvesting' && creep.carry.energy === creep.carryCapacity) {
+        creep.memory.action = 'upgrading';
+        creep.say('upgr');
+        cleanSource(creep);
+    }
 
     signController(creep);
 

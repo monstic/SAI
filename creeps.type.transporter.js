@@ -16,6 +16,11 @@ var creepTypeFunctions = function(creep) {
         creep.say('fill');
         cleanTarget(creep);
     }
+    if (creep.memory.action === 'harvesting' && creep.carry.energy === creep.carryCapacity) {
+        creep.memory.action = 'filling';
+        creep.say('fill');
+        cleanSource(creep);
+    }
 
 
 
