@@ -58,11 +58,22 @@ module.exports = function (spawn) {
                                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 0;
                                     }
                                 }
-                                else {
-                                    if (harvesterQty < (sources*2)) {
-                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = (sources*2);
+                                else if (sources === 1) {
+                                    if (harvesterQty !== 2) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 2;
                                     }
                                 }
+                                else {
+                                    if (harvesterQty < sources) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = sources;
+                                    }
+                                }
+                            }
+
+                            //TRANSPORTERS
+                            var transporterQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter;
+                            if (transporterQty !== 3) {
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 3;
                             }
 
                             //UPGRADERS
@@ -76,7 +87,7 @@ module.exports = function (spawn) {
                             }
                             else if (room.controller.level === 2) {
                                 if (upgraderQty !== 3) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
                                 }
                             }
                             else if (room.controller.level === 3) {
@@ -84,10 +95,16 @@ module.exports = function (spawn) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 3;
                                 }
                             }
-                            else if (room.controller.level >= 4) {
+                            else if (room.controller.level === 4) {
                                 if (upgraderQty !== 4) {
                             console.log(upgraderQty);
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 4;
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                                }
+                            }
+                            else if (room.controller.level >= 5) {
+                                if (upgraderQty !== 4) {
+                            console.log(upgraderQty);
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
                                 }
                             }
 
@@ -96,10 +113,10 @@ module.exports = function (spawn) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
                             }
                             else if ((builds > 0 && builds <= 5) || (repairs > 0 && repairs < 50)) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
                             }
                             else {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 3;
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
                             }
 
                             //MINER

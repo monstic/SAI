@@ -91,6 +91,8 @@ var creepActFunctions = function(creep) {
                 if (target && target.energy !== null) {
                     if (target.energy < target.energyCapacity) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'black', lineStyle: 'dotted', opacity: 0.5});
                             creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
@@ -111,7 +113,7 @@ var creepActFunctions = function(creep) {
                         }
                         else {
                             //VISUALS
-                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y - 0.02), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'black', lineStyle: 'dotted', opacity: 0.3});
                         }
                     }
                     else {
@@ -125,6 +127,8 @@ var creepActFunctions = function(creep) {
                     if ((_.sum(target.store) < 2000)) {
                         
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'black', lineStyle: 'dotted', opacity: 0.5});
                             creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
@@ -145,7 +149,7 @@ var creepActFunctions = function(creep) {
                         }
                         else {
                             //VISUALS
-                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y - 0.02), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'black', lineStyle: 'dotted', opacity: 0.3});
                         }
                     }
                     else {
@@ -161,6 +165,8 @@ var creepActFunctions = function(creep) {
                 if (target) {
                     if ((_.sum(target.store) < 1000000)) {
                         if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'black', lineStyle: 'dotted', opacity: 0.5});
                             creep.moveTo(target);
                         }
                         else if (creep.transfer(target, RESOURCE_ENERGY) === ERR_BUSY) {
@@ -178,7 +184,7 @@ var creepActFunctions = function(creep) {
                         }
                         else {
                             //VISUALS
-                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y - 0.02), {radius: 0.2, fill: 'yellow', lineStyle: 'dotted', opacity: 0.9});
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'black', lineStyle: 'dotted', opacity: 0.3});
                         }
                     }
                     else {
