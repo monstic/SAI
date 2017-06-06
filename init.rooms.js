@@ -124,15 +124,6 @@ module.exports = function (room) {
                     }
                 }
 
-                //REGISTER AVAILABLE MINERALS
-                if (Memory.flags) {
-                    var findflag = room.find(FIND_FLAGS);
-                    if (findflag.length > 0) {
-                        Memory.flags[findFlag[0].name] = findFlag[0];
-                        console.log('Flag ' + findFlag[0].name + ' was found in room ' + findFlag[0].pos.roomName + '.');
-                    }
-                }
-
                 //REGISTER AVAILABLE SOURCES
                 if (!Memory.rooms[room.name].sources || Memory.rooms[room.name].sources === 'undefined') {
                     var findSources = room.find(FIND_SOURCES);
