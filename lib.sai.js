@@ -750,7 +750,7 @@ function (room) {
         if (constructionSites.length === 0) {
             var haveContainer = Memory.rooms[room.name].structure.container.controller;
             if (!haveContainer) {
-                var getFreePos = getRandomFreePosOutOfRoad(room.controller.pos, 1, room);
+                var getFreePos = getRandomFreePosOutOfRoad(room.controller.pos, 2, room);
                 if (getFreePos !== 'searching') {
                     getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                 }
@@ -770,7 +770,7 @@ function (room) {
                     var haveContainer = null;
                 }
                 if (!haveContainer) {
-                    var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
+                    var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                     if (getFreePos !== 'searching') {
                         getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                     }
@@ -790,7 +790,7 @@ function (room) {
                         var haveContainer = null;
                     }
                     if (!haveContainer) {
-                        var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
+                        var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                         if (getFreePos !== 'searching') {
                             getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                         }
@@ -810,7 +810,7 @@ function (room) {
                             var haveContainer = null;
                         }
                         if (!haveContainer) {
-                            var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
+                            var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                             if (getFreePos !== 'searching') {
                                 getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                             }
@@ -830,7 +830,7 @@ function (room) {
                                 var haveContainer = null;
                             }
                             if (!haveContainer) {
-                                var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
+                                var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                                 if (getFreePos !== 'searching') {
                                     getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                                 }
