@@ -44,6 +44,10 @@ module.exports = function (room) {
                 Memory.rooms[room.name].structure.road = {};
             }
 
+            //CREATE SPAWNS DATABASE
+            if (!Memory.rooms[room.name].structure.container.source || Memory.rooms[room.name].structure.container.source === undefined) {
+                Memory.rooms[room.name].structure.container.source = {};
+            }
 
             //CREATE SECURITY
             if (!Memory.rooms[room.name].security || Memory.rooms[room.name].security === 'undefined') {
@@ -155,13 +159,19 @@ module.exports = function (room) {
 
                     //REGISTER CONTAINER NEAR CONTROLLER
                     if (Memory.rooms[room.name].structure.container) {
-                        if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
-                            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-                            var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
-                            if (container[0]) {
-                                Memory.rooms[room.name].structure.container.controller = container[0].id;
-                            }
-                        }
+                      if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
+                          var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
+                          var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
+                          if (container[0]) {
+                              Memory.rooms[room.name].structure.container.controller = container[0].id;
+                          }
+                      }
+                      if (Memory.rooms[room.name].structure.container.controller) {
+                          var container = Game.getObjectById(Memory.rooms[room.name].structure.container.controller);
+                          if (!container || container === 'undefined') {
+                              delete Memory.rooms[room.name].structure.container.controller;
+                          }
+                      }
                     }
 
                     //REGISTER CONTAINER NEAR SOURCES

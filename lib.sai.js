@@ -180,8 +180,9 @@ getRandomFreePosOutOfRoad =
         }
         while ((x + y) % 2 !== (startPos.x + startPos.y) % 2 || Game.map.getTerrainAt(x, y, startPos.roomName) === 'wall');
         var checkPlace = room.lookAt(x, y);
-        if (checkPlace[0].type === 'terrain' || checkPlace[0].type === 'swamp') {
-            var place = new RoomPosition(x, y, startPos.roomName);
+        var place = new RoomPosition(x, y, startPos.roomName);
+        var checkArea = place.findInRange(FIND_STRUCTURES, 2, { filter: s => (s.structureType === STRUCTURE_SPAWN) });
+        if (checkPlace[0].type === 'terrain' || checkPlace[0].type === 'swamp' || (!checkArea)) {
             new RoomVisual(startPos.roomName).text('âœ”', x, y, { align: 'center', size: '0.7', color: 'green' });
             return place;
         }
@@ -699,6 +700,7 @@ function (room) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
                 var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
+                console.log(spawn.length);
                 if (spawn.length === 0) {
                     var flag = Game.flags.claim;
                     if (flag) {
@@ -746,22 +748,29 @@ function (room) {
     if (Memory.rooms[room.name].info.constructionslevel === 2) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
-            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
             var haveContainer = Memory.rooms[room.name].structure.container.controller;
             if (!haveContainer) {
-                var sourcePos = room.controller;
-                var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                var getFreePos = getRandomFreePosOutOfRoad(room.controller.pos, 1, room);
                 if (getFreePos !== 'searching') {
                     getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                 }
             }
             else {
-                var sourceId = Memory.rooms[room.name].source[0];
-                var source = Game.getObjectById(sourceOneId);
-                var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
-                var haveContainer = Memory.rooms[room.name].structure.container.source[0];
+                var sourceId = Memory.rooms[room.name].sources[0];
+                var source = Game.getObjectById(sourceId);
+                if (Memory.rooms[room.name].structure.container.source) {
+                    if (Memory.rooms[room.name].structure.container.source[0]) {
+                        var haveContainer = Memory.rooms[room.name].structure.container.source[0];
+                    }
+                    else {
+                        var haveContainer = null;
+                    }
+                }
+                else {
+                    var haveContainer = null;
+                }
                 if (!haveContainer) {
-                    var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                    var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
                     if (getFreePos !== 'searching') {
                         getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                     }
@@ -769,10 +778,19 @@ function (room) {
                 else {
                     var sourceId = Memory.rooms[room.name].source[1];
                     var source = Game.getObjectById(sourceOneId);
-                    var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
-                    var haveContainer = Memory.rooms[room.name].structure.container.source[1];
+                    if (Memory.rooms[room.name].structure.container.source) {
+                        if (Memory.rooms[room.name].structure.container.source[1]) {
+                            var haveContainer = Memory.rooms[room.name].structure.container.source[1];
+                        }
+                        else {
+                            var haveContainer = null;
+                        }
+                    }
+                    else {
+                        var haveContainer = null;
+                    }
                     if (!haveContainer) {
-                        var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                        var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
                         if (getFreePos !== 'searching') {
                             getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                         }
@@ -780,10 +798,19 @@ function (room) {
                     else {
                         var sourceId = Memory.rooms[room.name].source[2];
                         var source = Game.getObjectById(sourceOneId);
-                        var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
-                        var haveContainer = Memory.rooms[room.name].structure.container.source[2];
+                        if (Memory.rooms[room.name].structure.container.source) {
+                            if (Memory.rooms[room.name].structure.container.source[2]) {
+                                var haveContainer = Memory.rooms[room.name].structure.container.source[2];
+                            }
+                            else {
+                                var haveContainer = null;
+                            }
+                        }
+                        else {
+                            var haveContainer = null;
+                        }
                         if (!haveContainer) {
-                            var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                            var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
                             if (getFreePos !== 'searching') {
                                 getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                             }
@@ -791,10 +818,19 @@ function (room) {
                         else {
                             var sourceId = Memory.rooms[room.name].source[3];
                             var source = Game.getObjectById(sourceOneId);
-                            var sourcePos = new RoomPosition(source.pos.x, source.pos.y, room.name);
-                            var haveContainer = Memory.rooms[room.name].structure.container.source[3];
+                            if (Memory.rooms[room.name].structure.container.source) {
+                                if (Memory.rooms[room.name].structure.container.source[3]) {
+                                    var haveContainer = Memory.rooms[room.name].structure.container.source[3];
+                                }
+                                else {
+                                    var haveContainer = null;
+                                }
+                            }
+                            else {
+                                var haveContainer = null;
+                            }
                             if (!haveContainer) {
-                                var getFreePos = getRandomFreePosOutOfRoad(sourcePos.pos, 2, room);
+                                var getFreePos = getRandomFreePosOutOfRoad(source.pos, 1, room);
                                 if (getFreePos !== 'searching') {
                                     getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                                 }
@@ -870,11 +906,11 @@ function (room) {
                 if (extensions.length < 20) {
                     var someroad = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_ROAD)});
                     if (someroad.length > 0) {
-                    var someNumber = Math.floor((Math.random() * someroad.length) + 1);
-                    var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                    if (freeSpace) {
-                        freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
-                    }
+                        var someNumber = Math.floor((Math.random() * someroad.length) + 1);
+                        var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
+                        if (freeSpace !== 'searching') {
+                            freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
+                        }
                     }
                 }
                 else {
@@ -897,7 +933,7 @@ function (room) {
                     var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
                     if (spawn.length > 0) {
                         var freeSpace = getRandomFreePosOutOfRoad(spawn[0].pos, 7, room);
-                        if (freeSpace) {
+                        if (freeSpace !== 'searching') {
                             freeSpace.createConstructionSite(STRUCTURE_TOWER);
                         }
                     }
@@ -925,7 +961,7 @@ function (room) {
                     if (someroad.length > 0) {
                     var someNumber = Math.floor((Math.random() * someroad.length) + 1);
                     var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                    if (freeSpace) {
+                    if (freeSpace !== 'searching') {
                         freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
                     }
                     }
@@ -947,7 +983,7 @@ function (room) {
                     var mineral = Memory.rooms[room.name].mineral;
                     if (mineral) {
                         var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                        if (freeSpace) {
+                        if (freeSpace !== 'searching') {
                             freeSpace.createConstructionSite(STRUCTURE_STORAGE);
                         }
                     }
@@ -971,7 +1007,7 @@ function (room) {
                     if (someroad.length > 0) {
                     var someNumber = Math.floor((Math.random() * someroad.length) + 1);
                     var freeSpace = getRandomFreePosOutOfRoad(someroad[someNumber].pos, 1, room);
-                    if (freeSpace) {
+                    if (freeSpace !== 'searching') {
                         freeSpace.createConstructionSite(STRUCTURE_EXTENSION);
                     }
                     }
@@ -982,7 +1018,7 @@ function (room) {
             }
         }
         else {
-            Memory.rooms[room.name].info.constructionslevel = 12;
+            Memory.rooms[room.name].info.constructionslevel = 10;
         }
     }
 
@@ -1016,7 +1052,7 @@ function (room) {
                     var mineral = Memory.rooms[room.name].mineral;
                     if (mineral) {
                         var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
-                        if (freeSpace) {
+                        if (freeSpace !== 'searching') {
                             freeSpace.createConstructionSite(STRUCTURE_LAB);
                         }
                     }
@@ -1026,6 +1062,10 @@ function (room) {
                 Memory.rooms[room.name].info.constructionslevel = 0;
             }
         }
+    }
+    //PASSO 11 - LAB
+    if (Memory.rooms[room.name].info.constructionslevel === 12) {
+      Memory.rooms[room.name].info.constructionslevel = 0;
     }
 };
 

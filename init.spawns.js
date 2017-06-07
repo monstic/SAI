@@ -100,34 +100,51 @@ module.exports = function (spawn) {
                             }
 
                             //ENGINEER
+                            var engineerQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer;
                             if (builds === 0 && repairs < 50) {
+                              if (engineerQty !== 0) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 0;
+                              }
                             }
                             else if ((builds > 0 && builds <= 5) || (repairs > 0 && repairs < 50)) {
+                              if (engineerQty !== 1) {
                                 Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
+                              }
                             }
                             else {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 2;
+                              if (engineerQty !== 1) {
+                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
+                              }
                             }
 
                             //MINER
                             if (Memory.rooms[spawn.pos.roomName].mineral) {
+                                var minerQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner;
                                 if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
+                                  if (minerQty !== 1) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 1;
+                                  }
                                 }
                                 else {
+                                  if (minerQty !== 0) {
                                     Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner = 0;
+                                  }
                                 }
                             }
                             //CLAIMER
                             if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer === 0) {
                                 if (Game.flags.claim) {
+                                    var claimQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer;
                                     var flagColor = Game.flags.claim;
                                     if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
+                                      if (claimQty !== 1) {
                                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
+                                      }
                                     }
                                     else {
-                                      Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
+                                      if (claimQty !== 0) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
+                                      }
                                     }
                                 }
                             }
