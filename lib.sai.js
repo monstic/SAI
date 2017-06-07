@@ -756,10 +756,10 @@ function (room) {
                 }
             }
             else {
-                var sourceId = Memory.rooms[room.name].sources[0];
-                var source = Game.getObjectById(sourceId);
                 if (Memory.rooms[room.name].structure.container.source) {
                     if (Memory.rooms[room.name].structure.container.source[0]) {
+                        var sourceId = Memory.rooms[room.name].sources[0];
+                        var source = Game.getObjectById(sourceId);
                         var haveContainer = Memory.rooms[room.name].structure.container.source[0];
                     }
                     else {
@@ -776,10 +776,10 @@ function (room) {
                     }
                 }
                 else {
-                    var sourceId = Memory.rooms[room.name].source[1];
-                    var source = Game.getObjectById(sourceOneId);
                     if (Memory.rooms[room.name].structure.container.source) {
                         if (Memory.rooms[room.name].structure.container.source[1]) {
+                            var sourceId = Memory.rooms[room.name].source[1];
+                            var source = Game.getObjectById(sourceOneId);
                             var haveContainer = Memory.rooms[room.name].structure.container.source[1];
                         }
                         else {
@@ -796,10 +796,10 @@ function (room) {
                         }
                     }
                     else {
-                        var sourceId = Memory.rooms[room.name].source[2];
-                        var source = Game.getObjectById(sourceOneId);
                         if (Memory.rooms[room.name].structure.container.source) {
                             if (Memory.rooms[room.name].structure.container.source[2]) {
+                                var sourceId = Memory.rooms[room.name].source[2];
+                                var source = Game.getObjectById(sourceOneId);
                                 var haveContainer = Memory.rooms[room.name].structure.container.source[2];
                             }
                             else {
@@ -816,10 +816,10 @@ function (room) {
                             }
                         }
                         else {
-                            var sourceId = Memory.rooms[room.name].source[3];
-                            var source = Game.getObjectById(sourceOneId);
                             if (Memory.rooms[room.name].structure.container.source) {
                                 if (Memory.rooms[room.name].structure.container.source[3]) {
+                                    var sourceId = Memory.rooms[room.name].source[3];
+                                    var source = Game.getObjectById(sourceOneId);
                                     var haveContainer = Memory.rooms[room.name].structure.container.source[3];
                                 }
                                 else {

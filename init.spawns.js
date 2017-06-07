@@ -66,8 +66,8 @@ module.exports = function (spawn) {
                             //TRANSPORTERS
                             var transporterQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter;
                             if (Memory.rooms[spawn.pos.roomName].structure.container.controller) {
-                                if (transporterQty !== 4) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 4;
+                                if (transporterQty !== 3) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 3;
                                 }
                             }
                             else {
