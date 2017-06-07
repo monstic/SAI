@@ -23,15 +23,15 @@ DONE
 - -> Road repair functions (repair only used roads)
 - Auto build
 - -> Roads (on most used paths)
-- -> Container (near controller)
+- -> Container (near controller and sources)
 - -> Storage (near mineral)
 - -> 02 Towers
 - -> 40 Extensions
 - Auto re-build structures
-
+- Auto build walls and ramparts
 
 TODO (NEXT WEEK)
-- Auto build walls
+
 - Guard
 - Claimer
 - routine to explore another room and start new spawn
