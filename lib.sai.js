@@ -183,11 +183,11 @@ getRandomFreePosOutOfRoad =
         var place = new RoomPosition(x, y, startPos.roomName);
         var checkArea = place.findInRange(FIND_STRUCTURES, 2, { filter: s => (s.structureType === STRUCTURE_SPAWN) });
         if (checkPlace[0].type === 'terrain' || checkPlace[0].type === 'swamp' || (!checkArea)) {
-            new RoomVisual(startPos.roomName).text('âœ”', x, y, { align: 'center', size: '0.7', color: 'green' });
+            new RoomVisual(startPos.roomName).text('✔', x, y, { align: 'center', size: '0.7', color: 'green' });
             return place;
         }
         else {
-            new RoomVisual(startPos.roomName).text('ðŸš«', x, y, { align: 'center', size: '0.7', color: 'red' });
+            new RoomVisual(startPos.roomName).text('❌', x, y, { align: 'center', size: '0.7', color: 'red' });
             var searching = 'searching';
             return searching;
         }

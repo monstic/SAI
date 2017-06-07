@@ -65,8 +65,15 @@ module.exports = function (spawn) {
 
                             //TRANSPORTERS
                             var transporterQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter;
-                            if (transporterQty !== 3) {
-                                Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 3;
+                            if (Memory.rooms[spawn.pos.roomName].structure.container.controller) {
+                                if (transporterQty !== 4) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 4;
+                                }
+                            }
+                            else {
+                                if (transporterQty !== 2) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 2;
+                                }
                             }
 
                             //UPGRADERS
@@ -154,29 +161,29 @@ module.exports = function (spawn) {
                         //POPULATE QUEUE LIST
                         var totalHarvesters = countCreeps('harvester', spawn.pos.roomName, 100);
                         if (totalHarvesters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester) {
-                            spawnProtoCreep(spawn.name, 'harvester', 'spawn.pos.roomName');
+                            spawnProtoCreep(spawn.name, 'harvester', spawn.pos.roomName);
                         }
                         else {
                             var totalTransporters = countCreeps('transporter', spawn.pos.roomName, 100);
                             if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                              spawnProtoCreep(spawn.name, 'transporter', 'spawn.pos.roomName');
+                              spawnProtoCreep(spawn.name, 'transporter', spawn.pos.roomName);
                             }
                             else {
                                 var totalUpgraders = countCreeps('upgrader', spawn.pos.roomName, 100);
                                 if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
-                                  spawnProtoCreep(spawn.name, 'upgrader', 'spawn.pos.roomName');
+                                  spawnProtoCreep(spawn.name, 'upgrader', spawn.pos.roomName);
                                 }
                                 else {
                                     var totalEngineers = countCreeps('engineer', spawn.pos.roomName, 100);
                                     if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
-                                        spawnProtoCreep(spawn.name, 'engineer', 'spawn.pos.roomName');
+                                        spawnProtoCreep(spawn.name, 'engineer', spawn.pos.roomName);
                                     }
                                     else {
                                         if (Memory.rooms[spawn.pos.roomName].mineral) {
                                             if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
                                                 var totalMiners = countCreeps('miner', spawn.pos.roomName, 100);
                                                 if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner) {
-                                                  spawnProtoCreep(spawn.name, 'miner', 'spawn.pos.roomName');
+                                                  spawnProtoCreep(spawn.name, 'miner', spawn.pos.roomName);
                                                 }
                                             }
                                         }
