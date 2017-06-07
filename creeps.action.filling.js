@@ -60,16 +60,30 @@ var creepActFunctions = function(creep) {
                                     }
                                     else {
 
-                                        if (Memory.rooms[creep.room.name].structure.storage) {
-                                            if (Memory.rooms[creep.room.name].structure.storage.mineral) {
-                                                var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
+                                        if (Memory.rooms[creep.room.name].structure) {
+                                            if (Memory.rooms[creep.room.name].structure.source) {
+                                                if (Memory.rooms[creep.room.name].structure.source[0]) {
+                                                    var targetc = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source[0]);
+                                                }
                                             }
-                                            else {
-                                                var target = null;
-                                            }
-                                            // if one was found
-                                            if (target !== null && (_.sum(target.store) < 1000000)) {
-                                                setTarget(creep, target.id, 'LOWSTO', target.room.name);
+                                        }
+                                        // if one was found
+                                        if (targetc !== null && targetc.store[RESOURCE_ENERGY] < targetc.storeCapacity) {
+                                            setTarget(creep, Memory.rooms[creep.room.name].structure.container.controller, 'LOWCT', creep.room.name);
+                                        }
+                                        else {
+                                          
+                                            if (Memory.rooms[creep.room.name].structure.storage) {
+                                                if (Memory.rooms[creep.room.name].structure.storage.mineral) {
+                                                    var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
+                                                }
+                                                else {
+                                                    var target = null;
+                                                }
+                                                // if one was found
+                                                if (target !== null && (_.sum(target.store) < 1000000)) {
+                                                    setTarget(creep, target.id, 'LOWSTO', target.room.name);
+                                                }
                                             }
                                         }
                                     }

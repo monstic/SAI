@@ -756,90 +756,16 @@ function (room) {
                 }
             }
             else {
-                if (Memory.rooms[room.name].structure.container.source) {
-                    if (Memory.rooms[room.name].structure.container.source[0]) {
-                        var sourceId = Memory.rooms[room.name].sources[0];
-                        var source = Game.getObjectById(sourceId);
-                        var haveContainer = Memory.rooms[room.name].structure.container.source[0];
-                    }
-                    else {
-                        var haveContainer = null;
-                    }
-                }
-                else {
-                    var haveContainer = null;
-                }
-                if (!haveContainer) {
+                if (!Memory.rooms[room.name].structure.container.source[0]) {
+                    var sourceId = Memory.rooms[room.name].sources[0];
+                    var source = Game.getObjectById(sourceId);
                     var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                     if (getFreePos !== 'searching') {
                         getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                     }
                 }
                 else {
-                    if (Memory.rooms[room.name].structure.container.source) {
-                        if (Memory.rooms[room.name].structure.container.source[1]) {
-                            var sourceId = Memory.rooms[room.name].source[1];
-                            var source = Game.getObjectById(sourceOneId);
-                            var haveContainer = Memory.rooms[room.name].structure.container.source[1];
-                        }
-                        else {
-                            var haveContainer = null;
-                        }
-                    }
-                    else {
-                        var haveContainer = null;
-                    }
-                    if (!haveContainer) {
-                        var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
-                        if (getFreePos !== 'searching') {
-                            getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
-                        }
-                    }
-                    else {
-                        if (Memory.rooms[room.name].structure.container.source) {
-                            if (Memory.rooms[room.name].structure.container.source[2]) {
-                                var sourceId = Memory.rooms[room.name].source[2];
-                                var source = Game.getObjectById(sourceOneId);
-                                var haveContainer = Memory.rooms[room.name].structure.container.source[2];
-                            }
-                            else {
-                                var haveContainer = null;
-                            }
-                        }
-                        else {
-                            var haveContainer = null;
-                        }
-                        if (!haveContainer) {
-                            var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
-                            if (getFreePos !== 'searching') {
-                                getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
-                            }
-                        }
-                        else {
-                            if (Memory.rooms[room.name].structure.container.source) {
-                                if (Memory.rooms[room.name].structure.container.source[3]) {
-                                    var sourceId = Memory.rooms[room.name].source[3];
-                                    var source = Game.getObjectById(sourceOneId);
-                                    var haveContainer = Memory.rooms[room.name].structure.container.source[3];
-                                }
-                                else {
-                                    var haveContainer = null;
-                                }
-                            }
-                            else {
-                                var haveContainer = null;
-                            }
-                            if (!haveContainer) {
-                                var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
-                                if (getFreePos !== 'searching') {
-                                    getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
-                                }
-                                else {
-                                  Memory.rooms[room.name].info.constructionslevel = 3;
-                                }
-                            }
-                        }
-                    }
+                  Memory.rooms[room.name].info.constructionslevel = 3;
                 }
             }
         }
