@@ -23,18 +23,13 @@ var creepActFunctions = function(creep) {
                         setTarget(creep, droppedSources.id, 'DROP', droppedSources.pos.roomName);
                     }
                     else {
-                        if (creep.room.name !== creep.memory.homeroom) {
-                            moveToByPath(creep, Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn].pos);
+                        creep.say('⛽?');
+                        var totalHrvst = countCreeps('harvester', creep.memory.homeroom);
+                        if (totalHrvst < Memory.rooms[creep.room.name].sources.total) {
+                            creep.memory.action = 'harvesting';
                         }
                         else {
-                            creep.say('⛽?');
-                            var totalHrvst = countCreeps('harvester', creep.memory.homeroom);
-                            if (totalHrvst < Memory.rooms[creep.room.name].sources.total) {
-                                creep.memory.action = 'harvesting';
-                            }
-                            else {
-                                creep.memory.action = 'undefined';
-                            }
+                            creep.memory.action = 'undefined';
                         }
                     }
                 }

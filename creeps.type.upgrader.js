@@ -21,6 +21,8 @@ var creepTypeFunctions = function(creep) {
         cleanSource(creep);
     }
 
+
+    //LOAD MODULES
     signController(creep);
 
 

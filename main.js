@@ -9,6 +9,7 @@ var FORCE_PAUSE = false;
 if (FORCE_PAUSE !== true) {
 
     //LIBS
+    require('screeps-perf')();
     var gc = require('lib.gc');
     var gf = require('lib.gf');
     var _ = require('lib.lodash');
@@ -44,7 +45,7 @@ if (FORCE_PAUSE !== true) {
                 initCreepAction(creep);
             }
         }
-        
+
 
         //PULSE ALL ROOMS
         for (var roomName in Game.rooms) {
@@ -73,4 +74,3 @@ if (FORCE_PAUSE !== true) {
 
 // Screeting Artificial intelligence - SAI
 // http://www.screepting.tk
-

@@ -157,7 +157,7 @@ signController =
         }
     };
 
-//GET RAMDOM POSITION WITHOUT STRUCTURES
+//GET RAMDOM POSITION WITHOUT WALL
 getRandomFreePos =
     function (startPos, distance) {
         var x, y;
@@ -169,6 +169,17 @@ getRandomFreePos =
         return new RoomPosition(x, y, startPos.roomName);
     };
 
+//GET RAMDOM POSITION IN ROADS
+walkRandomInRoad =
+function (startPos, distance, roomName) {
+    var x, y;
+    do {
+        x = startPos.x + Math.floor(Math.random() * (distance * 2 + 1)) - distance;
+        y = startPos.y + Math.floor(Math.random() * (distance * 2 + 1)) - distance;
+    }
+    while ((x + y) % 2 !== (startPos.x + startPos.y) % 2 || Game.map.getTerrainAt(x, y, roomName) === 'wall');
+    return new RoomPosition(x, y, roomName);
+};
 
 //GET RAMDOM POSITION WITHOUT STRUCTURES AND OUT OF ROAD
 getRandomFreePosOutOfRoad =
@@ -305,7 +316,7 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'transporter') {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2) - 1);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(15) - 1);
                         var body = [];
                         for (let i = 0; i < 1; i++) {
                             body.push(WORK);
@@ -318,9 +329,9 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'upgrader') {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(43));
                         var body = [];
                         if (room.controller.level < 6) {
+                            numberOfParts = Math.min(numberOfParts, Math.floor(10));
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(WORK);
                             }
@@ -332,6 +343,7 @@ spawnProtoCreep =
                             }
                         }
                         else {
+                            numberOfParts = Math.min(numberOfParts, Math.floor(43));
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(WORK);
                             }
@@ -346,42 +358,56 @@ spawnProtoCreep =
                     else if (creeptype === 'engineer') {
                         var totalConstructions = countConstructions(spawn.pos.roomName);
                         var totalRepairs = countRepairs(spawn.pos.roomName);
-                        if (totalConstructions > 0 || totalRepairs > 0) {
+                        if (totalConstructions > 0 || totalRepairs > 10) {
+                            numberOfParts = Math.min(numberOfParts, Math.floor(15));
                             var body = [];
-                            if (room.controller.level < 6) {
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(WORK);
-                                }
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(CARRY);
-                                }
-                                for (let i = 0; i < numberOfParts; i++) {
-                                    body.push(MOVE);
-                                }
+                            for (let i = 0; i < numberOfParts; i++) {
+                                body.push(WORK);
                             }
-                            else {
-                                for (let i = 0; i < 5; i++) {
-                                    body.push(WORK);
-                                }
-                                for (let i = 0; i < 5; i++) {
-                                    body.push(CARRY);
-                                }
-                                for (let i = 0; i < 5; i++) {
-                                    body.push(MOVE);
-                                }
+                            for (let i = 0; i < numberOfParts; i++) {
+                                body.push(CARRY);
+                            }
+                            for (let i = 0; i < numberOfParts; i++) {
+                                body.push(MOVE);
                             }
                         }
                     }
                     else if (creeptype === 'miner') {
                         var body = [];
-                        for (let i = 0; i < 9; i++) {
+                        for (let i = 0; i < 1; i++) {
                             body.push(WORK);
                         }
-                        for (let i = 0; i < 2; i++) {
+                        for (let i = 0; i < 1; i++) {
                             body.push(CARRY);
                         }
-                        for (let i = 0; i < 4; i++) {
+                        for (let i = 0; i < 9; i++) {
                             body.push(MOVE);
+                        }
+                    }
+                    else if (creeptype === 'guard') {
+                        numberOfParts = Math.min(numberOfParts, Math.floor(80 / 3));
+                        var body = [];
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(TOUGH);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(MOVE);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(ATTACK);
+                        }
+                    }
+                    else if (creeptype === 'healer') {
+                        numberOfParts = Math.min(numberOfParts, Math.floor(250 / 3));
+                        var body = [];
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(TOUGH);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(MOVE);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(HEAL);
                         }
                     }
                     else if (creeptype === 'claimer') {
@@ -395,7 +421,7 @@ spawnProtoCreep =
                             body.push(CLAIM);
                         }
                         for (let i = 0; i < 1; i++) {
-                            body.push(CARRY);
+                            body.push(TOUGH);
                         }
                     }
                     else {
@@ -429,9 +455,10 @@ spawnProtoCreep =
 enableTowers =
     function (room) {
         var towers = _.filter(Game.structures, (s) => s.structureType === STRUCTURE_TOWER);
-        for (let tower of towers) {
+        for (var tower of towers) {
+            var totalGuards = countCreeps('guard', room.name);
             var hostilesHealer = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(HEAL) > 0 } });
-            if (hostilesHealer.length > 0) {
+            if (hostilesHealer.length > 0 && totalGuards === 0) {
                 tower.attack(hostilesHealer[0]);
                 //VISUALS
                 new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x - 0.5), (hostilesHealer[0].pos.y + 0.1), {size: 0.4, color: 'red'});
@@ -440,8 +467,8 @@ enableTowers =
                 new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x), (hostilesHealer[0].pos.y + 0.6), {size: 0.4, color: 'red'});
             }
             else {
-                var hostilesArmed = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
-                if (hostilesArmed.length > 0) {
+              var hostilesArmed = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
+                if (hostilesArmed.length > 0 && totalGuards === 0) {
                     tower.attack(hostilesArmed[0]);
                     //VISUALS
                     new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x - 0.5), (hostilesArmed[0].pos.y + 0.1), {size: 0.4, color: 'red'});
@@ -451,7 +478,7 @@ enableTowers =
                 }
                 else {
                     var hostiles = room.find(FIND_HOSTILE_CREEPS);
-                    if (hostiles.length > 0) {
+                    if (hostiles.length > 0 && totalGuards === 0) {
                         tower.attack(hostiles[0]);
                         //VISUALS
                         new RoomVisual(room.name).text('.', (hostiles[0].pos.x - 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
@@ -470,48 +497,50 @@ enableTowers =
                             new RoomVisual(room.name).text('.', (closestWounded.pos.x), (closestWounded.pos.y + 0.6), {size: 0.4, color: 'green'});
                         }
                         else {
-                            var repairs = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) && (s.hits < 1000)) });
-                            if (repairs.length > 0) {
-                                tower.repair(repairs[0]);
+                            var hostiles = room.find(FIND_HOSTILE_CREEPS);
+                            if (hostiles.length > 0) {
+                                tower.attack(hostiles[0]);
                                 //VISUALS
-                                new RoomVisual(room.name).text('.', (repairs[0].pos.x - 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                new RoomVisual(room.name).text('.', (repairs[0].pos.x + 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y - 0.4), {size: 0.4, color: 'blue'});
-                                new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y + 0.6), {size: 0.4, color: 'blue'});
+                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x - 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x + 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
+                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y - 0.4), {size: 0.4, color: 'red'});
+                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y + 0.6), {size: 0.4, color: 'red'});
                             }
                             else {
-                                var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
-                                if (findConstructionSiteToRepair.length > 0) {
-                                    var i = 0;
-                                    var b = 0;
-                                    while (i < findConstructionSiteToRepair.length) {
-                                        if (b === 0) {
-                                            var pos = findConstructionSiteToRepair[i].pos;
-                                            if (Memory.rooms[room.name].trail) {
-                                                if (Memory.rooms[room.name].trail[pos]) {
-                                                    var road = Memory.rooms[room.name].trail[pos];
-                                                    if (road) {
-                                                        if (road.usedtimes > 500) {
-                                                            tower.repair(findConstructionSiteToRepair[i]);
-                                                            //VISUALS
-                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x - 0.5), (findConstructionSiteToRepair[i].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x + 0.5), (findConstructionSiteToRepair[i].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x), (findConstructionSiteToRepair[i].pos.y - 0.4), {size: 0.4, color: 'blue'});
-                                                            new RoomVisual(room.name).text('.', (findConstructionSiteToRepair[i].pos.x), (findConstructionSiteToRepair[i].pos.y + 0.6), {size: 0.4, color: 'blue'});
-                                                            b++;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        i++;
-                                    }
+                                var repairs = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) && (s.hits < 1000)) });
+                                if (repairs.length > 0) {
+                                    tower.repair(repairs[0]);
+                                    //VISUALS
+                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x - 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x + 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y - 0.4), {size: 0.4, color: 'blue'});
+                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y + 0.6), {size: 0.4, color: 'blue'});
                                 }
                                 else {
-                                    var totalRepairs = countRepairs(room.name);
-                                    if (totalRepairs > 0) {
-                                        var findConstructionSiteToRepair = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 10001)) });
-                                        tower.repair(findConstructionSiteToRepair[0]);
+                                    var repairAllRoads = 'true';
+                                    var target = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_ROAD) && (s.hits < s.hitsMax)) });
+                                    if (target.length > 0) {
+                                        var i = 0;
+                                        var b = 0;
+                                        if (b === 0) {
+                                            if (repairAllRoads === 'true') {
+                                                tower.repair(target[0]);
+                                                //VISUALS
+                                                new RoomVisual(room.name).text('.', (target[0].pos.x - 0.5), (target[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                                new RoomVisual(room.name).text('.', (target[0].pos.x + 0.5), (target[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
+                                                new RoomVisual(room.name).text('.', (target[0].pos.x), (target[0].pos.y - 0.4), {size: 0.4, color: 'blue'});
+                                                new RoomVisual(room.name).text('.', (target[0].pos.x), (target[0].pos.y + 0.6), {size: 0.4, color: 'blue'});
+                                                b++;
+                                            }
+                                            i++;
+                                        }
+                                    }
+                                    else {
+                                        var totalRepairs = countRepairs(room.name);
+                                        if (totalRepairs > 0) {
+                                            var target = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 100)) });
+                                            tower.repair(target[0]);
+                                        }
                                     }
                                 }
                             }
@@ -561,19 +590,26 @@ showTrails =
 
         //SHOW CREEP TRAIL
         var paths = Memory.rooms[room.name].trail;
+        var i = 0;
         for (var path in paths) {
-            if (paths[path].lastused > (Game.time - 16) && paths[path].lastused < (Game.time - 10)) {
-                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.2, opacity: 0.8, color: '#ffff00' });
+            if (i < 50) {
+                if (paths[path].lastused > (Game.time - 16) && paths[path].lastused < (Game.time - 10)) {
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.2, opacity: 0.8, color: '#ffff00' });
+                }
+                if (paths[path].lastused > (Game.time - 11) && paths[path].lastused < (Game.time - 5)) {
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.5, opacity: 0.8, color: '#ffff00' });
+                }
+                if (paths[path].lastused > (Game.time - 6) && paths[path].lastused < (Game.time + 1)) {
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.8, opacity: 0.8, color: '#ffff00' });
+                }
+                if (paths[path].usedtimes >= 20 && paths[path].lastused < (Game.time - 10)) {
+                    new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.8, opacity: 0.8, color: 'black' });
+                }
             }
-            if (paths[path].lastused > (Game.time - 11) && paths[path].lastused < (Game.time - 5)) {
-                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.5, opacity: 0.8, color: '#ffff00' });
+            else {
+                delete Memory.rooms[room.name].trail[path];
             }
-            if (paths[path].lastused > (Game.time - 6) && paths[path].lastused < (Game.time + 1)) {
-                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.8, opacity: 0.8, color: '#ffff00' });
-            }
-            if (paths[path].usedtimes >= 20 && paths[path].lastused < (Game.time - 10)) {
-                new RoomVisual(room.name).text('.', (paths[path].x), (paths[path].y + 0.05), { size: 0.8, opacity: 0.8, color: 'black' });
-            }
+            i++;
         }
 
     };
@@ -592,10 +628,10 @@ showRoomInfoInScreen =
                                 // cannot add more visuals in this tick
                                 var room = Game.rooms[roomName];
                                 //ROOM STATS
-                                new RoomVisual(roomName).text('ROOM ' + roomName, 1, 1, { align: 'left' });
+                                new RoomVisual(roomName).text('🗺️ ' + roomName, 1, 1, { align: 'left' });
                                 new RoomVisual(roomName).text('LVL ' + room.controller.level, 6, 1, { align: 'left' });
                                 //ENERGY STATS
-                                new RoomVisual(roomName).text('ENERGY: ' + parseInt((100 / Game.rooms[roomName].energyCapacityAvailable) * Game.rooms[roomName].energyAvailable) + '% [' + Game.rooms[roomName].energyAvailable + '/' + Game.rooms[roomName].energyCapacityAvailable + 'W]', 1, 2, { align: 'left' });
+                                new RoomVisual(roomName).text('⚡: ' + parseInt((100 / Game.rooms[roomName].energyCapacityAvailable) * Game.rooms[roomName].energyAvailable) + '% [' + Game.rooms[roomName].energyAvailable + '/' + Game.rooms[roomName].energyCapacityAvailable + 'W]', 1, 2, { align: 'left' });
                                 //JOBS
                                 var cs = countConstructions(roomName);
                                 var rp = countRepairs(roomName);
@@ -610,12 +646,13 @@ showRoomInfoInScreen =
                                 //ROOM CONTROLLER
                                 new RoomVisual(roomName).text('LVL ' + room.controller.level, (room.controller.pos.x), (room.controller.pos.y + 1.5), { align: 'center', size: '0.50', color: 'gray', opacity: 0.2 });
                                 //CREEPS STATS
-                                new RoomVisual(roomName).text('H: ' + countCreeps('harvester', roomName), 1, 7, { align: 'left' });
-                                new RoomVisual(roomName).text('U: ' + countCreeps('upgrader', roomName), 1, 8, { align: 'left' });
-                                new RoomVisual(roomName).text('E: ' + countCreeps('engineer', roomName), 1, 9, { align: 'left' });
-                                new RoomVisual(roomName).text('T: ' + countCreeps('transporter', roomName), 1, 10, { align: 'left' });
-                                new RoomVisual(roomName).text('G: ' + countCreeps('guard', roomName), 1, 11, { align: 'left' });
-                                new RoomVisual(roomName).text('C: ' + countCreeps('claimer', roomName), 1, 12, { align: 'left' });
+                                new RoomVisual(roomName).text('HA: ' + countCreeps('harvester', roomName), 1, 7, { align: 'left' });
+                                new RoomVisual(roomName).text('UP: ' + countCreeps('upgrader', roomName), 1, 8, { align: 'left' });
+                                new RoomVisual(roomName).text('EN: ' + countCreeps('engineer', roomName), 1, 9, { align: 'left' });
+                                new RoomVisual(roomName).text('TR: ' + countCreeps('transporter', roomName), 1, 10, { align: 'left' });
+                                new RoomVisual(roomName).text('GU: ' + countCreeps('guard', roomName), 1, 11, { align: 'left' });
+                                new RoomVisual(roomName).text('HE: ' + countCreeps('healer', roomName), 1, 12, { align: 'left' });
+                                new RoomVisual(roomName).text('CL: ' + countCreeps('claimer', roomName), 1, 13, { align: 'left' });
 
                             }
                         }
@@ -756,7 +793,7 @@ function (room) {
                 }
             }
             else {
-                if (!Memory.rooms[room.name].structure.container.source[0]) {
+                if (!Memory.rooms[room.name].structure.container.source) {
                     var sourceId = Memory.rooms[room.name].sources[0];
                     var source = Game.getObjectById(sourceId);
                     var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
@@ -793,7 +830,7 @@ function (room) {
             }
         }
         else {
-            Memory.rooms[room.name].info.constructionslevel = 1;
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
     }
 
@@ -820,6 +857,9 @@ function (room) {
                 }
             }
         }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 0;
+        }
     }
 
     //PASSO 5 - EXTENSIONS
@@ -845,7 +885,7 @@ function (room) {
             }
         }
         else {
-            Memory.rooms[room.name].info.constructionslevel = 3;
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
     }
 
@@ -870,7 +910,7 @@ function (room) {
             }
         }
         else {
-            Memory.rooms[room.name].info.constructionslevel = 5;
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
 
     }
@@ -897,6 +937,9 @@ function (room) {
                 }
             }
         }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 0;
+        }
     }
 
     //PASSO 8 - STORAGE NEAR MINERAL
@@ -918,6 +961,9 @@ function (room) {
             else {
                 Memory.rooms[room.name].info.constructionslevel = 9;
             }
+        }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
     }
 
@@ -944,7 +990,7 @@ function (room) {
             }
         }
         else {
-            Memory.rooms[room.name].info.constructionslevel = 10;
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
     }
 
@@ -965,6 +1011,9 @@ function (room) {
             else {
                 Memory.rooms[room.name].info.constructionslevel = 11;
             }
+        }
+        else {
+            Memory.rooms[room.name].info.constructionslevel = 0;
         }
     }
 
@@ -1160,35 +1209,27 @@ moveToByPath =
 function (creep, target) {
     let roomName = creep.pos.roomName;
     let ret = PathFinder.search(
-        creep.pos, target,
+        creep.pos, target.pos,
         {
-        // We need to set the defaults costs higher so that we
-        // can set the road cost lower in `roomCallback`
         plainCost: 2,
         swampCost: 10,
 
         roomCallback: function(roomName) {
 
             let room = Game.rooms[roomName];
-            // In this example `room` will always exist, but since
-            // PathFinder supports searches which span multiple rooms
-            // you should be careful!
             if (!room) return;
             let costs = new PathFinder.CostMatrix;
 
             room.find(FIND_STRUCTURES).forEach(function(struct) {
             if (struct.structureType === STRUCTURE_ROAD) {
-                // Favor roads over plain tiles
                 costs.set(struct.pos.x, struct.pos.y, 1);
             } else if (struct.structureType !== STRUCTURE_CONTAINER &&
                         (struct.structureType !== STRUCTURE_RAMPART ||
                         !struct.my)) {
-                // Can't walk through non-walkable buildings
                 costs.set(struct.pos.x, struct.pos.y, 0xff);
             }
             });
 
-            // Avoid creeps in the room
             room.find(FIND_CREEPS).forEach(function(creep) {
             costs.set(creep.pos.x, creep.pos.y, 0xff);
             });
