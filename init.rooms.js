@@ -31,9 +31,12 @@ module.exports = function (room) {
                 Memory.rooms[room.name].config = {};
                 Memory.rooms[room.name].config.deleteemptyroomsafter = 500;
                 Memory.rooms[room.name].config.display = 'on';
+                Memory.rooms[room.name].config.autobuild = 'on';
+                Memory.rooms[room.name].config.autobuildroads = 'on';
+                Memory.rooms[room.name].config.autobuildwalls = 'on';
             }
 
-            //CREATE SUMMARY
+            //CREATE STRUCTURES DB
             if (!Memory.rooms[room.name].structure || Memory.rooms[room.name].structure === 'undefined') {
                 Memory.rooms[room.name].structure = {};
                 Memory.rooms[room.name].structure.container = {};
@@ -74,37 +77,37 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].cron[0] || Memory.rooms[room.name].cron[0] === 'undefined') {
                 Memory.rooms[room.name].cron[0] = {};
                 Memory.rooms[room.name].cron[0].lastrun = Game.time;
-                Memory.rooms[room.name].cron[0].interval = 50;
+                Memory.rooms[room.name].cron[0].interval = 27;
             }
             if (!Memory.rooms[room.name].cron[1] || Memory.rooms[room.name].cron[1] === 'undefined') {
                 Memory.rooms[room.name].cron[1] = {};
                 Memory.rooms[room.name].cron[1].lastrun = (Game.time+1);
-                Memory.rooms[room.name].cron[1].interval = 110;
+                Memory.rooms[room.name].cron[1].interval = 500;
             }
             if (!Memory.rooms[room.name].cron[2] || Memory.rooms[room.name].cron[2] === 'undefined') {
                 Memory.rooms[room.name].cron[2] = {};
                 Memory.rooms[room.name].cron[2].lastrun = (Game.time+2);
-                Memory.rooms[room.name].cron[2].interval = 100;
+                Memory.rooms[room.name].cron[2].interval = 61;
             }
             if (!Memory.rooms[room.name].cron[3] || Memory.rooms[room.name].cron[3] === 'undefined') {
                 Memory.rooms[room.name].cron[3] = {};
                 Memory.rooms[room.name].cron[3].lastrun = (Game.time+3);
-                Memory.rooms[room.name].cron[3].interval = 50;
+                Memory.rooms[room.name].cron[3].interval = 9999;
             }
             if (!Memory.rooms[room.name].cron[4] || Memory.rooms[room.name].cron[4] === 'undefined') {
                 Memory.rooms[room.name].cron[4] = {};
                 Memory.rooms[room.name].cron[4].lastrun = (Game.time+4);
-                Memory.rooms[room.name].cron[4].interval = 500;
+                Memory.rooms[room.name].cron[4].interval = 9999;
             }
             if (!Memory.rooms[room.name].cron[5] || Memory.rooms[room.name].cron[5] === 'undefined') {
                 Memory.rooms[room.name].cron[5] = {};
                 Memory.rooms[room.name].cron[5].lastrun = (Game.time+5);
-                Memory.rooms[room.name].cron[5].interval = 50;
+                Memory.rooms[room.name].cron[5].interval = 49;
             }
             if (!Memory.rooms[room.name].cron[6] || Memory.rooms[room.name].cron[6] === 'undefined') {
                 Memory.rooms[room.name].cron[6] = {};
                 Memory.rooms[room.name].cron[6].lastrun = (Game.time+5);
-                Memory.rooms[room.name].cron[6].interval = 25;
+                Memory.rooms[room.name].cron[6].interval = 100;
             }
 
         //END ONE TIME RUN
@@ -153,26 +156,32 @@ module.exports = function (room) {
                                 Memory.rooms[room.name].mineral.extractor = extractor[0].id;
                             }
                         }
+                        if (Memory.rooms[room.name].mineral.extractor) {
+                            var extractor = Game.getObjectById(Memory.rooms[room.name].mineral.extractor);
+                            if (!extractor || extractor === 'undefined') {
+                                delete Memory.rooms[room.name].mineral.extractor;
+                            }
+                        }
                     }
 
                     //REGISTER CONTAINER NEAR CONTROLLER
                     if (Memory.rooms[room.name].structure.container) {
-                      if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
-                          var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-                          var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
-                          if (container[0]) {
-                              Memory.rooms[room.name].structure.container.controller = container[0].id;
-                          }
-                      }
-                      if (Memory.rooms[room.name].structure.container.controller) {
-                          var container = Game.getObjectById(Memory.rooms[room.name].structure.container.controller);
-                          if (!container || container === 'undefined') {
-                              delete Memory.rooms[room.name].structure.container.controller;
-                          }
-                      }
+                        if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
+                            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
+                            var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
+                            if (container[0]) {
+                                Memory.rooms[room.name].structure.container.controller = container[0].id;
+                            }
+                        }
+                        if (Memory.rooms[room.name].structure.container.controller) {
+                            var container = Game.getObjectById(Memory.rooms[room.name].structure.container.controller);
+                            if (!container || container === 'undefined') {
+                                delete Memory.rooms[room.name].structure.container.controller;
+                            }
+                        }
                     }
 
-                    //REGISTER CONTAINER NEAR SOURCES
+                    //REGISTER CONTAINER NEAR SOURCE 0
                     if (Memory.rooms[room.name].structure.container) {
                         if (!Memory.rooms[room.name].structure.container.source || Memory.rooms[room.name].structure.container.source === 'undefined') {
                             var sourceId = Memory.rooms[room.name].sources[0];
@@ -187,6 +196,27 @@ module.exports = function (room) {
                             var container = Game.getObjectById(Memory.rooms[room.name].structure.container.source);
                             if (!container || container === 'undefined') {
                                 delete Memory.rooms[room.name].structure.container.source;
+                            }
+                        }
+                    }
+
+                    //REGISTER CONTAINER NEAR SOURCE 1
+                    if (Memory.rooms[room.name].structure.container) {
+                        if (!Memory.rooms[room.name].structure.container.source1 || Memory.rooms[room.name].structure.container.source1 === 'undefined') {
+                            if (Memory.rooms[room.name].sources[1]) {
+                                var sourceId = Memory.rooms[room.name].sources[1];
+                                var sourceStr = Game.getObjectById(sourceId);
+                                var source = new RoomPosition(sourceStr.pos.x, sourceStr.pos.y, room.name);
+                                var container = source.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
+                                if (container[0]) {
+                                    Memory.rooms[room.name].structure.container.source1 = container[0].id;
+                                }
+                            }
+                        }
+                        if (Memory.rooms[room.name].structure.container.source1) {
+                            var container = Game.getObjectById(Memory.rooms[room.name].structure.container.source1);
+                            if (!container || container === 'undefined') {
+                                delete Memory.rooms[room.name].structure.container.source1;
                             }
                         }
                     }
@@ -213,8 +243,13 @@ module.exports = function (room) {
                             var i = 0;
                             while (i < towers.length) {
                                 if (!Memory.rooms[room.name].structure.tower[i] || Memory.rooms[room.name].structure.tower[i] === 'undefined') {
-                                    Memory.rooms[room.name].structure.tower[i] = {};
                                     Memory.rooms[room.name].structure.tower[i] = towers[i].id;
+                                }
+                                if (Memory.rooms[room.name].structure.tower[i]) {
+                                    var towers = Game.getObjectById(Memory.rooms[room.name].structure.tower[i]);
+                                    if (!towers || towers === 'undefined') {
+                                        delete Memory.rooms[room.name].structure.tower[i];
+                                    }
                                 }
                                 i++;
                             }
@@ -222,13 +257,24 @@ module.exports = function (room) {
                     }
 
                     //REGISTER LINKS
-                    if (!Memory.rooms[room.name].links || Memory.rooms[room.name].links === undefined) {
-                        Memory.rooms[room.name].links = {};
-                    }
-                    if (Memory.rooms[room.name].links) {
-                        var haveLink = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_LINK)});
-                        Memory.rooms[room.name].links.haveLink = haveLink.length;
-
+                    if (Memory.rooms[room.name].structure.link) {
+                        var link = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_LINK)});
+                        if (link.length > 0) {
+                            Memory.rooms[room.name].structure.link.total = link.length;
+                            var i = 0;
+                            while (i < link.length) {
+                                if (!Memory.rooms[room.name].structure.link[i] || Memory.rooms[room.name].structure.link[i] === 'undefined') {
+                                    Memory.rooms[room.name].structure.link[i] = link[i].id;
+                                }
+                                if (Memory.rooms[room.name].structure.link[i]) {
+                                    var link = Game.getObjectById(Memory.rooms[room.name].structure.link[i]);
+                                    if (!link || link === 'undefined') {
+                                        delete Memory.rooms[room.name].structure.link[i];
+                                    }
+                                }
+                                i++;
+                            }
+                        }
                     }
 
                     //CHECK ROOM HOSTILES
@@ -236,7 +282,8 @@ module.exports = function (room) {
                     if (target.length > 0) {
                         if (Memory.attack) {
                             if (Game.flags.attack) {
-                                  Memory.attack.targetid = target[0].id;
+                                  Memory.attack.targetId = target[0].id;
+                                  Memory.flags.attack = Game.flags.attack;
                             }
                         }
                         if (Memory.rooms[room.name].security.underattack !== 'yes') {
@@ -244,8 +291,11 @@ module.exports = function (room) {
                         }
                     }
                     else {
-                      if (Memory.attack.targetid) {
-                        delete Memory.attack.targetid;
+                      if (Memory.attack) {
+                          if (Memory.attack.targetId) {
+                              delete Memory.attack.targetId;
+                              delete Memory.flags.attack;
+                          }
                       }
                       if (Memory.rooms[room.name].security.underattack !== 'no') {
                           Memory.rooms[room.name].security.underattack = 'no';
@@ -359,7 +409,11 @@ module.exports = function (room) {
                 }
 
                 //SAVE LAST RUN
-                Memory.rooms[room.name].cron[1].lastrun = Game.time;
+                if (Memory.rooms[room.name].cron) {
+                    if (Memory.rooms[room.name].cron[1]) {
+                        Memory.rooms[room.name].cron[1].lastrun = Game.time;
+                    }
+                }
 
             }
             //END CRON 1
@@ -369,15 +423,13 @@ module.exports = function (room) {
             //END CRON 2
 
             //START CRON 3 [AUTO DECREASE ROADS]
-            if (Memory.rooms[room.name].cron[3].lastrun < (Game.time-Memory.rooms[room.name].cron[3].interval)) {
-                decreaseRoads(room);
-                Memory.rooms[room.name].cron[3].lastrun = Game.time;
-            }
+            //if (Memory.rooms[room.name].cron[3].lastrun < (Game.time-Memory.rooms[room.name].cron[3].interval)) {
+                //Memory.rooms[room.name].cron[3].lastrun = Game.time;
+            //}
             //END CRON 3
 
             //START CRON 4 [AUTO BUILD ROADS]
             //if (Memory.rooms[room.name].cron[4].lastrun < (Game.time-Memory.rooms[room.name].cron[4].interval)) {
-                //autoBuildRoads(room);
                 //Memory.rooms[room.name].cron[4].lastrun = Game.time;
             //}
             //END CRON 4
@@ -394,7 +446,7 @@ module.exports = function (room) {
                 autoBuildWalls(room);
                 Memory.rooms[room.name].cron[6].lastrun = Game.time;
             }
-            //END CRON 5
+            //END CRON 6
             //END CRONJOBS
 
         }
@@ -403,8 +455,6 @@ module.exports = function (room) {
         //LOAD MODULES
         enableTowers(room);
         showRoomInfoInScreen(room);
-        //showTrails(room);
-
 
     }
 

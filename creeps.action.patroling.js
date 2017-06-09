@@ -6,7 +6,12 @@ var creepActFunctions = function(creep) {
       }
 
       if (creep.memory.nextpos) {
-        creep.moveTo(creep.memory.nextpos.x, creep.memory.nextpos.y);
+          if (creep.room.name !== creep.memory.homeroom) {
+              moveToByPath(creep, Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn]);
+          }
+          else {
+              creep.move(creep.memory.nextpos.x, creep.memory.nextpos.y);
+          }
       }
 
       if (creep.memory.nextpostime) {
@@ -23,7 +28,6 @@ var creepActFunctions = function(creep) {
                             creep.say('👮');
                             delete creep.memory.nextpos;
                           }
-                          creep.memory.checkpos = creep.pos;
                       }
                       else {
                         creep.memory.checkpos = creep.pos;
@@ -31,7 +35,11 @@ var creepActFunctions = function(creep) {
                   }
               }
               else {
-                  creep.memory.nextpos = walkRandomInRoad(Memory.rooms[creep.room.name].spawns[creep.memory.homespawn].pos, 10, creep.room.name);
+                  if (Memory.rooms[creep.memory.homeroom].spawns) {
+                      if (Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn]) {
+                        creep.memory.nextpos = walkRandomInRoad(Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn].pos, 20, creep.memory.homeroom);
+                      }
+                  }
               }
               creep.memory.nextpostime = Game.time;
           }

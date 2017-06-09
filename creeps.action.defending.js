@@ -1,8 +1,14 @@
 var creepActFunctions = function(creep) {
+  if (Memory.attack) {
+      if (Memory.attack.targetid) {
+          var target = Game.getObjectById(Memory.attack.targetid);
+          moveToByPath(creep, target);
+      }
+  }
 
     if (Memory.attack) {
-        if (Memory.attack.targetid) {
-            var target = Game.getObjectById(Memory.attack.targetid);
+        if (Memory.attack.targetId) {
+            var target = Game.getObjectById(Memory.attack.targetId);
             if (creep.room.name === target.pos.roomName) {
                 var war = 'yes';
             }

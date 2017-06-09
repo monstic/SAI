@@ -27,7 +27,9 @@ var creepActFunctions = function(creep) {
 
                     if (Memory.rooms[creep.room.name].security.underattack === 'yes') {
                         var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
-                        setTarget(creep, target.id, 'LOWTW', creep.room.name);
+                        if (target) {
+                             setTarget(creep, target.id, 'LOWTW', creep.room.name);
+                        }
                     }
                     else {
 

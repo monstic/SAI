@@ -20,6 +20,10 @@ var creepTypeFunctions = function(creep) {
         creep.say('🛠');
         cleanSource(creep);
     }
+
+    //LOAD MODULES
+    checkHostilesInRange(creep);
+
 };
 
 module.exports = creepTypeFunctions;

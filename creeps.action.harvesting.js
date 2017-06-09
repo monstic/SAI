@@ -82,11 +82,9 @@ var creepActFunctions = function(creep) {
                 var source = Game.getObjectById(creep.memory.sourceId);
                 if (source.energy > 0)  {
                     if (creep.harvest(source) === OK) {
-                      //VISUALS
                       new RoomVisual(creep.room.name).circle((source.pos.x), (source.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
                     }
                     else if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                        //VISUALS
                         new RoomVisual(creep.room.name).circle((source.pos.x), (source.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.2});
                         creep.moveTo(source);
                     }

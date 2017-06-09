@@ -22,6 +22,8 @@ var creepTypeFunctions = function(creep) {
         cleanSource(creep);
     }
 
+    //LOAD MODULES
+    checkHostilesInRange(creep);
 
 
 };

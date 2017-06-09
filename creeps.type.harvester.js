@@ -13,8 +13,16 @@ var creepTypeFunctions = function(creep) {
     if (creep.memory.action === 'harvesting' && creep.carry.energy === creep.carryCapacity) {
         var totalTransporters = countCreeps('transporter', creep.room.name);
         if (totalTransporters > 0) {
-            creep.memory.action = 'dropping';
-            creep.say('🚨');
+            var container = creep.pos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] < s.storeCapacity)});
+            if (container[0]) {
+                creep.memory.action = 'fillcontainer';
+                setTarget(creep, container[0].id, 'LOWCT', creep.room.name);
+                creep.say('🚨');
+            }
+            else {
+                creep.memory.action = 'dropping';
+                creep.say('🚨');
+            }
         }
         else {
             creep.memory.action = 'filling';

@@ -316,11 +316,9 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'transporter') {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(15) - 1);
+                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 50);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2));
                         var body = [];
-                        for (let i = 0; i < 1; i++) {
-                            body.push(WORK);
-                        }
                         for (let i = 0; i < numberOfParts; i++) {
                             body.push(CARRY);
                         }
@@ -330,8 +328,9 @@ spawnProtoCreep =
                     }
                     else if (creeptype === 'upgrader') {
                         var body = [];
-                        if (room.controller.level < 6) {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(10));
+                        if (room.controller.level < 4) {
+                            var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
+                            numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(WORK);
                             }
@@ -343,7 +342,8 @@ spawnProtoCreep =
                             }
                         }
                         else {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(43));
+                            var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
+                            numberOfParts = Math.min(numberOfParts, Math.floor(40));
                             for (let i = 0; i < numberOfParts; i++) {
                                 body.push(WORK);
                             }
@@ -356,23 +356,22 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'engineer') {
-                        var totalConstructions = countConstructions(spawn.pos.roomName);
-                        var totalRepairs = countRepairs(spawn.pos.roomName);
-                        if (totalConstructions > 0 || totalRepairs > 10) {
-                            numberOfParts = Math.min(numberOfParts, Math.floor(15));
-                            var body = [];
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(WORK);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(CARRY);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(MOVE);
-                            }
+                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(45 / 2));
+                        var body = [];
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(WORK);
+                        }
+                        for (let i = 0; i < numberOfParts; i++) {
+                            body.push(CARRY);
+                        }
+                        for (let i = 0; i < 2; i++) {
+                            body.push(MOVE);
                         }
                     }
                     else if (creeptype === 'miner') {
+                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
                         var body = [];
                         for (let i = 0; i < 1; i++) {
                             body.push(WORK);
@@ -385,9 +384,10 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'guard') {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(80 / 3));
+                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 80);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(48 / 2));
                         var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
+                        for (let i = 0; i < 1; i++) {
                             body.push(TOUGH);
                         }
                         for (let i = 0; i < numberOfParts; i++) {
@@ -398,7 +398,8 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'healer') {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(250 / 3));
+                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 150);
+                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
                         var body = [];
                         for (let i = 0; i < numberOfParts; i++) {
                             body.push(TOUGH);
@@ -411,8 +412,8 @@ spawnProtoCreep =
                         }
                     }
                     else if (creeptype === 'claimer') {
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 600);
-                        numberOfParts = Math.min(numberOfParts, Math.floor(6) - 1);
+                        var numberOfParts = Math.floor(700-(spawn.room.energyCapacityAvailable / 50));
+                        numberOfParts = Math.min(numberOfParts, Math.floor(45));
                         var body = [];
                         for (let i = 0; i < numberOfParts; i++) {
                             body.push(MOVE);
@@ -454,67 +455,37 @@ spawnProtoCreep =
 //TOWERS
 enableTowers =
     function (room) {
-        var towers = _.filter(Game.structures, (s) => s.structureType === STRUCTURE_TOWER);
+        var towers =  room.find(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_TOWER)});
         for (var tower of towers) {
             var totalGuards = countCreeps('guard', room.name);
             var hostilesHealer = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(HEAL) > 0 } });
-            if (hostilesHealer.length > 0 && totalGuards === 0) {
+            if (hostilesHealer.length > 0) {
                 tower.attack(hostilesHealer[0]);
-                //VISUALS
-                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x - 0.5), (hostilesHealer[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x + 0.5), (hostilesHealer[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x), (hostilesHealer[0].pos.y - 0.4), {size: 0.4, color: 'red'});
-                new RoomVisual(room.name).text('.', (hostilesHealer[0].pos.x), (hostilesHealer[0].pos.y + 0.6), {size: 0.4, color: 'red'});
             }
             else {
               var hostilesArmed = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
-                if (hostilesArmed.length > 0 && totalGuards === 0) {
+                if (hostilesArmed.length > 0) {
                     tower.attack(hostilesArmed[0]);
-                    //VISUALS
-                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x - 0.5), (hostilesArmed[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x + 0.5), (hostilesArmed[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x), (hostilesArmed[0].pos.y - 0.4), {size: 0.4, color: 'red'});
-                    new RoomVisual(room.name).text('.', (hostilesArmed[0].pos.x), (hostilesArmed[0].pos.y + 0.6), {size: 0.4, color: 'red'});
                 }
                 else {
-                    var hostiles = room.find(FIND_HOSTILE_CREEPS);
-                    if (hostiles.length > 0 && totalGuards === 0) {
-                        tower.attack(hostiles[0]);
-                        //VISUALS
-                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x - 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x + 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y - 0.4), {size: 0.4, color: 'red'});
-                        new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y + 0.6), {size: 0.4, color: 'red'});
+                    var target = room.find(FIND_HOSTILE_CREEPS);
+                    if (target.length > 0) {
+                        tower.attack(target[0]);
                     }
                     else {
                         var closestWounded = tower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (w) => w.hits < w.hitsMax });
                         if (closestWounded) {
                             tower.heal(closestWounded);
-                            //VISUALS
-                            new RoomVisual(room.name).text('.', (closestWounded.pos.x - 0.5), (closestWounded.pos.y + 0.1), {size: 0.4, color: 'green'});
-                            new RoomVisual(room.name).text('.', (closestWounded.pos.x + 0.5), (closestWounded.pos.y + 0.1), {size: 0.4, color: 'green'});
-                            new RoomVisual(room.name).text('.', (closestWounded.pos.x), (closestWounded.pos.y - 0.4), {size: 0.4, color: 'green'});
-                            new RoomVisual(room.name).text('.', (closestWounded.pos.x), (closestWounded.pos.y + 0.6), {size: 0.4, color: 'green'});
                         }
                         else {
                             var hostiles = room.find(FIND_HOSTILE_CREEPS);
                             if (hostiles.length > 0) {
                                 tower.attack(hostiles[0]);
-                                //VISUALS
-                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x - 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x + 0.5), (hostiles[0].pos.y + 0.1), {size: 0.4, color: 'red'});
-                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y - 0.4), {size: 0.4, color: 'red'});
-                                new RoomVisual(room.name).text('.', (hostiles[0].pos.x), (hostiles[0].pos.y + 0.6), {size: 0.4, color: 'red'});
                             }
                             else {
                                 var repairs = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) && (s.hits < 1000)) });
                                 if (repairs.length > 0) {
                                     tower.repair(repairs[0]);
-                                    //VISUALS
-                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x - 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x + 0.5), (repairs[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y - 0.4), {size: 0.4, color: 'blue'});
-                                    new RoomVisual(room.name).text('.', (repairs[0].pos.x), (repairs[0].pos.y + 0.6), {size: 0.4, color: 'blue'});
                                 }
                                 else {
                                     var repairAllRoads = 'true';
@@ -525,11 +496,6 @@ enableTowers =
                                         if (b === 0) {
                                             if (repairAllRoads === 'true') {
                                                 tower.repair(target[0]);
-                                                //VISUALS
-                                                new RoomVisual(room.name).text('.', (target[0].pos.x - 0.5), (target[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                                new RoomVisual(room.name).text('.', (target[0].pos.x + 0.5), (target[0].pos.y + 0.1), {size: 0.4, color: 'blue'});
-                                                new RoomVisual(room.name).text('.', (target[0].pos.x), (target[0].pos.y - 0.4), {size: 0.4, color: 'blue'});
-                                                new RoomVisual(room.name).text('.', (target[0].pos.x), (target[0].pos.y + 0.6), {size: 0.4, color: 'blue'});
                                                 b++;
                                             }
                                             i++;
@@ -541,27 +507,23 @@ enableTowers =
                                             var target = room.find(FIND_STRUCTURES, { filter: (s) => ((s.structureType !== STRUCTURE_ROAD) && (s.hits < s.hitsMax && s.hits < 100)) });
                                             tower.repair(target[0]);
                                         }
+                                        else {
+                                            for (var creepName in Game.creeps) {
+                                                //load creep
+                                                var creep = Game.creeps[creepName];
+                                                if (creep.memory.type === 'engineer') {
+                                                  if (creep.carry.energy === 0) {
+                                                    tower.transferEnergy(creep);
+                                                  }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-    };
-
-//CHECK IF HAVE HOSTILES
-checkAttacks =
-    function (room) {
-        //CHECK IF ROOM IS UNDER ATTACK
-        if (Memory.rooms[room.name].security) {
-            var hostiles = room.find(FIND_HOSTILE_CREEPS, { filter: function (object) { return object.getActiveBodyparts(ATTACK) > 0 } });
-            if (hostiles.length > 0) {
-                Memory.rooms[room.name].security.underattack = 'yes';
-            }
-            else {
-                Memory.rooms[room.name].security.underattack = 'no';
             }
         }
     };
@@ -707,6 +669,7 @@ function (room) {
 //AUTO BUILD ROADS
 autoBuildRoads =
 function (room) {
+if (Memory.rooms[room.name].config.autobuildroads === 'on') {
     if (room.controller.level > 1) {
         var ca = room.find(FIND_CONSTRUCTION_SITES);
         var paths = Memory.rooms[room.name].trail;
@@ -725,11 +688,13 @@ function (room) {
             }
         }
     }
+}
 };
 
 //AUTO BUILD
 autoBuild =
 function (room) {
+if (Memory.rooms[room.name].config.autobuild === 'on') {
 
     //PASSO 0 - SPAWN
     if (Memory.rooms[room.name].info.constructionslevel === 0) {
@@ -737,7 +702,6 @@ function (room) {
             var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
             if (constructionSites.length === 0) {
                 var spawn = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType === STRUCTURE_SPAWN)});
-                console.log(spawn.length);
                 if (spawn.length === 0) {
                     var flag = Game.flags.claim;
                     if (flag) {
@@ -802,7 +766,17 @@ function (room) {
                     }
                 }
                 else {
-                  Memory.rooms[room.name].info.constructionslevel = 3;
+                    if (!Memory.rooms[room.name].structure.container.source1) {
+                        var sourceId = Memory.rooms[room.name].sources[1];
+                        var source = Game.getObjectById(sourceId);
+                        var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
+                        if (getFreePos !== 'searching') {
+                            getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
+                        }
+                    }
+                    else {
+                        Memory.rooms[room.name].info.constructionslevel = 3;
+                    }
                 }
             }
         }
@@ -949,7 +923,7 @@ function (room) {
             if (storage.length === 0) {
                 var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
                 if (constructionSites.length === 0) {
-                    var mineral = Memory.rooms[room.name].mineral;
+                    var mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
                     if (mineral) {
                         var freeSpace = getRandomFreePosOutOfRoad(mineral.pos, 3, room);
                         if (freeSpace !== 'searching') {
@@ -1042,11 +1016,13 @@ function (room) {
     if (Memory.rooms[room.name].info.constructionslevel === 12) {
       Memory.rooms[room.name].info.constructionslevel = 0;
     }
+}
 };
 
 //AUTO BUILD WALLS AND RAMPARTS
 autoBuildWalls =
 function (room) {
+if (Memory.rooms[room.name].config.autobuildwalls === 'on') {
     if (room.controller.level >= 5) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
@@ -1203,6 +1179,7 @@ function (room) {
             }
         }
     }
+}
 };
 
 moveToByPath =

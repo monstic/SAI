@@ -20,6 +20,8 @@ var creepTypeFunctions = function(creep) {
         cleanTarget(creep);
     }
 
+    //LOAD MODULES
+    checkHostilesInRange(creep);
 
 };
 
