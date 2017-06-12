@@ -157,8 +157,13 @@ module.exports = function (spawn) {
                             //CLAIMER
                             var claimQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer;
                             if (Game.flags.claim) {
-                                if (claimQty !== 1) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
+                                if (Game.glc > 1) {
+                                    if (claimQty !== 1) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
+                                    }
+                                }
+                                if (claimQty !== 0) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
                                 }
                             }
                             else {

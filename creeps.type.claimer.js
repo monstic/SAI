@@ -9,6 +9,16 @@ var creepType = function(creep) {
         creep.memory.action = 'undefined';
         cleanTarget(creep);
     }
+    if (creep.memory.action !== 'defending' && Memory.rooms[creep.room.name].security.underattack === 'yes') {
+        creep.memory.action = 'defending';
+        cleanTarget(creep);
+        creep.say('🔫');
+    }
+
+    if (creep.memory.action === 'defending' && Memory.rooms[creep.room.name].security.underattack !== 'yes') {
+        creep.memory.action = 'claiming';
+        cleanTarget(creep);
+    }
 
 
 };

@@ -9,7 +9,7 @@ var creepActFunctions = function(creep) {
         else {
             var controller = flag.pos.findClosestByRange(FIND_STRUCTURES, { filter: s => (s.structureType === STRUCTURE_CONTROLLER) });
             if (controller) {
-                setTarget(creep, controller.id, 'CONTROLLER', flag.pos.roomName);
+                setTarget(creep, controller.id, 'CONTROLLER', controller.pos.roomName);
             }
         }
     }
@@ -17,8 +17,16 @@ var creepActFunctions = function(creep) {
     //CLAIM CONTROLLER
     if (creep.memory.targetId) {
         if (creep.memory.targetType === 'CONTROLLER') {
-            if(creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+            target = Game.getObjectById(creep.memory.targetId);
+            if (creep.room.name !== creep.memory.targetRoom) {
+                var flag = Game.flags.claim;
+                creep.moveTo(target);
+            }
+            else {
+                console.log(creep.claimController(target));
+                if(creep.claimController(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                }
             }
         }
     }
