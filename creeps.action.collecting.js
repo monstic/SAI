@@ -4,23 +4,46 @@ var creepActFunctions = function(creep) {
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
 
         if (creep.carry.energy < creep.carryCapacity) {
-            //DROPS
-            var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-            if (droppedSources) {
-                setTarget(creep, droppedSources.id, 'DROP', droppedSources.room.name);
-            }
-            else {
+
+          //DROPS
+          var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+          if (droppedSources && droppedSources.energy > 1000) {
+              setTarget(creep, droppedSources.id, 'DROP', droppedSources.room.name);
+          }
+          else {
                 if (Memory.rooms[creep.room.name].structure.container.source) {
                     var container = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source);
-                    if (container  && container.store[RESOURCE_ENERGY] > 0) {
+                    if (container && container.store[RESOURCE_ENERGY] > 0) {
                       setTarget(creep, container.id, 'HIGCT', container.room.name);
+                    }
+                    else {
+                        if (Memory.rooms[creep.room.name].structure.container.source1) {
+                            var container = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source1);
+                            if (container && container.store[RESOURCE_ENERGY] > 0) {
+                              setTarget(creep, container.id, 'HIGCT', container.room.name);
+                            }
+                        }
+                        else {
+                            //DROPS
+                            var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+                            if (droppedSources) {
+                                setTarget(creep, droppedSources.id, 'DROP', droppedSources.room.name);
+                            }
+                        }
                     }
                 }
                 else {
                     if (Memory.rooms[creep.room.name].structure.container.source1) {
-                        var container = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source1);
+                    var container = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source1);
                         if (container  && container.store[RESOURCE_ENERGY] > 0) {
                           setTarget(creep, container.id, 'HIGCT', container.room.name);
+                        }
+                    }
+                    else {
+                        //DROPS
+                        var droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+                        if (droppedSources) {
+                            setTarget(creep, droppedSources.id, 'DROP', droppedSources.room.name);
                         }
                     }
                 }

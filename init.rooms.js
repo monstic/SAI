@@ -54,9 +54,22 @@ module.exports = function (room) {
                 Memory.rooms[room.name].security.level = 1;
                 Memory.rooms[room.name].security.underattack = 'no';
             }
-            if (!Memory.attack || Memory.attack === 'undefined') {
-                Memory.attack = {};
+            if (!Memory.hostiles || Memory.hostiles === 'undefined') {
+                Memory.hostiles = {};
             }
+
+            //FLAGS
+            if (Game.flags.defend) {
+                if (!Memory.flags.defend || Memory.flags.defend === 'undefined') {
+                    Memory.flags.defend = Game.flags.defend;
+                }
+            }
+            else {
+                if (Memory.flags.defend) {
+                    delete Memory.flags.defend;
+                }
+            }
+
 
             //CREATE TRAIL DB
             if (!Memory.rooms[room.name].trail || Memory.rooms[room.name].trail === 'undefined') {
@@ -147,6 +160,16 @@ module.exports = function (room) {
 
                 //REGISTER STRUCTURES
                 if (Memory.rooms[room.name].structure) {
+
+                    //REGISTER CONSTRUCTION SITE TO BUILD SPAWN
+                    var spawnExist = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_SPAWN)});
+                    if (spawnExist === 0) {
+                        var csSpawnExist = room.find(FIND_CONSTRUCTION_SITES);
+                        if (csSpawnExist > 0) {
+                            Memory.constructionSite = csSpawnExist[0];
+                        }
+                    }
+
 
                     //REGISTER EXTRACTOR
                     if (Memory.rooms[room.name].mineral) {
@@ -280,10 +303,16 @@ module.exports = function (room) {
                     //CHECK ROOM HOSTILES
                     var target = room.find(FIND_HOSTILE_CREEPS);
                     if (target.length > 0) {
-                        if (Memory.attack) {
-                            if (Game.flags.attack) {
-                                  Memory.attack.targetId = target[0].id;
-                                  Memory.flags.attack = Game.flags.attack;
+                        if (Game.flags.defend) {
+                            if (Memory.hostiles) {
+                                if (!Memory.hostiles.targetId || Memory.hostiles.targetId === 'undefined') {
+                                    if (target.length > 1) {
+                                      Memory.hostiles.targetId = target[0].id;
+                                    }
+                                    else {
+                                      Memory.hostiles.targetId = target.id;
+                                    }
+                                }
                             }
                         }
                         if (Memory.rooms[room.name].security.underattack !== 'yes') {
@@ -291,10 +320,9 @@ module.exports = function (room) {
                         }
                     }
                     else {
-                      if (Memory.attack) {
-                          if (Memory.attack.targetId) {
-                              delete Memory.attack.targetId;
-                              delete Memory.flags.attack;
+                      if (Memory.hostiles) {
+                          if (Memory.hostiles.targetId) {
+                              delete Memory.hostiles.targetId;
                           }
                       }
                       if (Memory.rooms[room.name].security.underattack !== 'no') {
@@ -409,9 +437,11 @@ module.exports = function (room) {
                 }
 
                 //SAVE LAST RUN
-                if (Memory.rooms[room.name].cron) {
-                    if (Memory.rooms[room.name].cron[1]) {
-                        Memory.rooms[room.name].cron[1].lastrun = Game.time;
+                if (Memory.rooms[room.name]) {
+                    if (Memory.rooms[room.name].cron) {
+                        if (Memory.rooms[room.name].cron[1]) {
+                            Memory.rooms[room.name].cron[1].lastrun = Game.time;
+                        }
                     }
                 }
 

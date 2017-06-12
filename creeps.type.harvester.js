@@ -25,9 +25,15 @@ var creepTypeFunctions = function(creep) {
             }
         }
         else {
-            creep.memory.action = 'filling';
-            creep.say('🚛');
-            cleanTarget(creep);
+            if (Game.rooms[creep.memory.homeroom].energyAvailable < Game.rooms[creep.memory.homeroom].energyCapacityAvailable) {
+                creep.memory.action = 'filling';
+                creep.say('🚛');
+                cleanTarget(creep);
+            }
+            else {
+              creep.memory.action = 'dropping';
+              creep.say('🚨');
+            }
         }
     }
 

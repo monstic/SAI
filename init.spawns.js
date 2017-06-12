@@ -23,6 +23,7 @@ module.exports = function (spawn) {
                     if (!Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner || Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner === undefined) {
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner = {};
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 1;
+                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.travelerharvester = 0;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 3;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
                         Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer = 1;
@@ -53,8 +54,8 @@ module.exports = function (spawn) {
                                     }
                                 }
                                 else if (sources === 1) {
-                                    if (harvesterQty !== 2) {
-                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 2;
+                                    if (harvesterQty !== 4) {
+                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.harvester = 4;
                                     }
                                 }
                                 else {
@@ -66,14 +67,14 @@ module.exports = function (spawn) {
 
                             //TRANSPORTERS
                             var transporterQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter;
-                            if (Memory.rooms[spawn.pos.roomName].structure.container.controller) {
-                                if (transporterQty !== 3) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 3;
+                            if (Memory.rooms[spawn.pos.roomName].structure.container.source) {
+                                if (transporterQty !== 2) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 2;
                                 }
                             }
                             else {
-                                if (transporterQty !== 2) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 2;
+                                if (transporterQty !== 0) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter = 0;
                                 }
                             }
 
@@ -106,13 +107,13 @@ module.exports = function (spawn) {
                                 }
                             }
                             else if (room.controller.level === 2) {
-                                if (upgraderQty !== 3) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 3;
+                                if (upgraderQty !== 1) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
                                 }
                             }
                             else if (room.controller.level === 3) {
-                                if (upgraderQty !== 2) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 2;
+                                if (upgraderQty !== 1) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
                                 }
                             }
                             else if (room.controller.level === 4) {
@@ -122,7 +123,7 @@ module.exports = function (spawn) {
                             }
                             else if (room.controller.level >= 5) {
                                 if (upgraderQty !== 1) {
-                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 1;
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader = 3;
                                 }
                             }
 
@@ -154,23 +155,17 @@ module.exports = function (spawn) {
                                 }
                             }
                             //CLAIMER
-                            if (Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer === 0) {
-                                if (Game.flags.claim) {
-                                    var claimQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer;
-                                    var flagColor = Game.flags.claim;
-                                    if (flagColor.color === COLOR_BLUE && flagColor.secondaryColor === COLOR_GREEN) {
-                                      if (claimQty !== 1) {
-                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
-                                      }
-                                    }
-                                    else {
-                                      if (claimQty !== 0) {
-                                        Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
-                                      }
-                                    }
+                            var claimQty = Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer;
+                            if (Game.flags.claim) {
+                                if (claimQty !== 1) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 1;
                                 }
                             }
-
+                            else {
+                                if (claimQty !== 0) {
+                                    Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer = 0;
+                                }
+                            }
                         }
 
                         //POPULATE QUEUE LIST
@@ -179,36 +174,42 @@ module.exports = function (spawn) {
                             spawnProtoCreep(spawn.name, 'harvester', spawn.pos.roomName);
                         }
                         else {
-                            var totalTransporters = countCreeps('transporter', spawn.pos.roomName, 100);
-                            if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter) {
-                              spawnProtoCreep(spawn.name, 'transporter', spawn.pos.roomName);
+                            var totalUpgraders = countCreeps('upgrader', spawn.pos.roomName, 100);
+                            if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
+                                spawnProtoCreep(spawn.name, 'upgrader', spawn.pos.roomName);
                             }
                             else {
-                                var totalGuards = countCreeps('guard', spawn.pos.roomName, 100);
-                                if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
-                                    spawnProtoCreep(spawn.name, 'guard', spawn.pos.roomName);
+                                var totalTransporters = countCreeps('transporter', spawn.pos.roomName, 100);
+                                if (totalTransporters < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.transporter && Game.rooms[spawn.pos.roomName].controller.level > 1) {
+                                    spawnProtoCreep(spawn.name, 'transporter', spawn.pos.roomName);
                                 }
                                 else {
-                                    var totalUpgraders = countCreeps('upgrader', spawn.pos.roomName, 100);
-                                    if (totalUpgraders < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.upgrader) {
-                                      spawnProtoCreep(spawn.name, 'upgrader', spawn.pos.roomName);
+                                    var totalClaimers = countCreeps('claimer', spawn.pos.roomName, 100);
+                                    if (totalClaimers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.claimer && Game.rooms[spawn.pos.roomName].controller.level > 4) {
+                                        spawnProtoCreep(spawn.name, 'claimer', spawn.pos.roomName);
                                     }
                                     else {
-                                        var totalEngineers = countCreeps('engineer', spawn.pos.roomName, 100);
-                                        if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer) {
-                                            spawnProtoCreep(spawn.name, 'engineer', spawn.pos.roomName);
+                                        var totalGuards = countCreeps('guard', spawn.pos.roomName, 100);
+                                        if (totalGuards < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard && Game.rooms[spawn.pos.roomName].controller.level > 1) {
+                                            spawnProtoCreep(spawn.name, 'guard', spawn.pos.roomName);
                                         }
                                         else {
-                                            var totalHealers = countCreeps('healer', spawn.pos.roomName, 100);
-                                            if (totalHealers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard) {
-                                                spawnProtoCreep(spawn.name, 'healer', spawn.pos.roomName);
+                                            var totalEngineers = countCreeps('engineer', spawn.pos.roomName, 100);
+                                            if (totalEngineers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.engineer && Game.rooms[spawn.pos.roomName].controller.level > 1) {
+                                                spawnProtoCreep(spawn.name, 'engineer', spawn.pos.roomName);
                                             }
                                             else {
-                                                if (Memory.rooms[spawn.pos.roomName].mineral) {
-                                                    if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
-                                                        var totalMiners = countCreeps('miner', spawn.pos.roomName, 100);
-                                                        if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner) {
-                                                          spawnProtoCreep(spawn.name, 'miner', spawn.pos.roomName);
+                                                var totalHealers = countCreeps('healer', spawn.pos.roomName, 100);
+                                                if (totalHealers < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.guard && Memory.rooms[spawn.pos.roomName].security.underattack === 'yes' && Game.rooms[spawn.pos.roomName].controller.level > 1) {
+                                                    spawnProtoCreep(spawn.name, 'healer', spawn.pos.roomName);
+                                                }
+                                                else {
+                                                    if (Memory.rooms[spawn.pos.roomName].mineral) {
+                                                        if (Memory.rooms[spawn.pos.roomName].mineral.extractor) {
+                                                            var totalMiners = countCreeps('miner', spawn.pos.roomName, 100);
+                                                            if (totalMiners < Memory.rooms[spawn.pos.roomName].spawns[spawn.name].spawner.miner && Game.rooms[spawn.pos.roomName].controller.level > 1) {
+                                                              spawnProtoCreep(spawn.name, 'miner', spawn.pos.roomName);
+                                                            }
                                                         }
                                                     }
                                                 }

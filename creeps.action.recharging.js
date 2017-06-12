@@ -2,8 +2,10 @@ var creepActFunctions = function(creep) {
 
     //SET TARGET FOR EACH ACTION
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
-        //recharging
-        if (creep.memory.action === 'recharging') {
+        if (creep.memory.homeroom !== creep.room.name) {
+            moveToByPath(creep, Memory.rooms[creep.memory.homeroom].spawns[creep.memory.homespawn]);
+        }
+        else {
             if (Memory.rooms[creep.room.name].structure.container.controller) {
                 var containerId = Memory.rooms[creep.room.name].structure.container.controller;
                 var container = Game.getObjectById(containerId);
@@ -26,13 +28,7 @@ var creepActFunctions = function(creep) {
                     }
                     else {
                         creep.say('⛽?');
-                        var totalHrvst = countCreeps('harvester', creep.memory.homeroom);
-                        if (totalHrvst < Memory.rooms[creep.room.name].sources.total) {
-                            creep.memory.action = 'harvesting';
-                        }
-                        else {
-                            creep.memory.action = 'undefined';
-                        }
+                        creep.memory.action = 'undefined';
                     }
                 }
             }
@@ -41,121 +37,117 @@ var creepActFunctions = function(creep) {
 
     if (creep.memory.targetId) {
 
-        if (creep.memory.action === 'recharging') {
-            if (creep.memory.targetType === 'HIGSTO') {
-                target = Game.getObjectById(creep.memory.targetId);
-                if (target) {
-                    if (target.pos.roomName !== creep.room.name) {
-                        creep.moveTo(target);
+        if (creep.memory.targetType === 'HIGSTO') {
+            target = Game.getObjectById(creep.memory.targetId);
+            if (target) {
+                if (target.pos.roomName !== creep.room.name) {
+                    creep.moveTo(target);
+                }
+                else {
+                    if ((_.sum(target.store) > 0)) {
+                        if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
+                            creep.moveTo(target);
+                        }
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
+                            creep.say('!');
+                        }
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_FULL) {
+                            creep.say('!!');
+                        }
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_TIRED) {
+                            creep.say('!!!');
+                        }
+                        else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_INVALID_TARGET) {
+                            cleanTarget(creep);
+                            creep.say('⛽?');
+                        }
+                        else {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
+                        }
                     }
                     else {
-                        if ((_.sum(target.store) > 0)) {
-                            if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                                //VISUALS
-                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
-                                creep.moveTo(target);
-                            }
-                            else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_BUSY) {
-                                creep.say('!');
-                            }
-                            else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_FULL) {
-                                creep.say('!!');
-                            }
-                            else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_TIRED) {
-                                creep.say('!!!');
-                            }
-                            else if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_INVALID_TARGET) {
-                                cleanTarget(creep);
-                                creep.say('⛽?');
-                            }
-                            else {
-                                //VISUALS
-                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
-                            }
-                        }
-                        else {
-                            cleanTarget(creep);
-                        }
-                    }
-                }
-                else {
-                    cleanTarget(creep);
-                }
-            }
-            if (creep.memory.targetType === 'HIGCT') {
-                target = Game.getObjectById(creep.memory.targetId);
-                if (target) {
-                    if (target.pos.roomName !== creep.room.name) {
-                        creep.moveTo(target);
-                    }
-                        else {
-                        if ((_.sum(target.store) > 0)) {
-                            if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                                //VISUALS
-                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
-                                creep.moveTo(target);
-                            }
-                            else if (creep.transfer(target) === ERR_BUSY) {
-                                creep.say('!');
-                            }
-                            else if (creep.transfer(target) === ERR_FULL) {
-                                creep.say('!!');
-                            }
-                            else if (creep.transfer(target) === ERR_TIRED) {
-                                creep.say('!!!');
-                            }
-                            else if (creep.transfer(target) === ERR_INVALID_TARGET) {
-                                cleanTarget(creep);
-                                creep.say('⛽?');
-                            }
-                            else {
-                                //VISUALS
-                                new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
-                            }
-                        }
-                        else {
-                            cleanTarget(creep);
-                        }
-                    }
-                }
-                else {
-                    cleanTarget(creep);
-                }
-            }
-            if (creep.memory.targetType === 'DROP') {
-                targetId = creep.memory.targetId;
-                target = Game.getObjectById(targetId);
-                if (target) {
-                    if (creep.pickup(target) === ERR_NOT_IN_RANGE) {
-                        //VISUALS
-                        new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.2});
-                        creep.moveTo(target);
-                    }
-                    else if (creep.pickup(target) === ERR_BUSY) {
-                        creep.say('!');
-                    }
-                    else if (creep.pickup(target) === ERR_FULL) {
-                        creep.say('!!');
-                    }
-                    else if (creep.pickup(target) === ERR_TIRED) {
-                        creep.say('!!!');
-                    }
-                    else if (creep.pickup(target) === ERR_INVALID_TARGET) {
                         cleanTarget(creep);
-                        creep.say('?');
-                    }
-                    else {
-                        //VISUALS
-                        new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.3});
                     }
                 }
-                else {
-                    cleanTarget(creep);
-                }
+            }
+            else {
+                cleanTarget(creep);
             }
         }
-
-
+        if (creep.memory.targetType === 'HIGCT') {
+            target = Game.getObjectById(creep.memory.targetId);
+            if (target) {
+                if (target.pos.roomName !== creep.room.name) {
+                    creep.moveTo(target);
+                }
+                    else {
+                    if ((_.sum(target.store) > 0)) {
+                        if (creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.2});
+                            creep.moveTo(target);
+                        }
+                        else if (creep.transfer(target) === ERR_BUSY) {
+                            creep.say('!');
+                        }
+                        else if (creep.transfer(target) === ERR_FULL) {
+                            creep.say('!!');
+                        }
+                        else if (creep.transfer(target) === ERR_TIRED) {
+                            creep.say('!!!');
+                        }
+                        else if (creep.transfer(target) === ERR_INVALID_TARGET) {
+                            cleanTarget(creep);
+                            creep.say('⛽?');
+                        }
+                        else {
+                            //VISUALS
+                            new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'red', lineStyle: 'dotted', opacity: 0.3});
+                        }
+                    }
+                    else {
+                        cleanTarget(creep);
+                    }
+                }
+            }
+            else {
+                cleanTarget(creep);
+            }
+        }
+        if (creep.memory.targetType === 'DROP') {
+            targetId = creep.memory.targetId;
+            target = Game.getObjectById(targetId);
+            if (target) {
+                if (creep.pickup(target) === ERR_NOT_IN_RANGE) {
+                    //VISUALS
+                    new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.2});
+                    creep.moveTo(target);
+                }
+                else if (creep.pickup(target) === ERR_BUSY) {
+                    creep.say('!');
+                }
+                else if (creep.pickup(target) === ERR_FULL) {
+                    creep.say('!!');
+                }
+                else if (creep.pickup(target) === ERR_TIRED) {
+                    creep.say('!!!');
+                }
+                else if (creep.pickup(target) === ERR_INVALID_TARGET) {
+                    cleanTarget(creep);
+                    creep.say('?');
+                }
+                else {
+                    //VISUALS
+                    new RoomVisual(creep.room.name).circle((target.pos.x), (target.pos.y), {radius: 0.4, fill: 'yellow', lineStyle: 'dotted', opacity: 0.3});
+                }
+            }
+            else {
+                cleanTarget(creep);
+            }
+        }
     }
 
 };

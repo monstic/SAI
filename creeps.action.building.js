@@ -10,8 +10,21 @@ var creepActFunctions = function(creep) {
                 setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
             }
             else {
-                creep.memory.action = 'repairing';
-                cleanTarget(creep);
+                if (Memory.constructionSite) {
+                    if (creep.room.name !== Memory.constructionSite.pos.roomName) {
+                      moveToByPath(creep, Memory.constructionSite);
+                    }
+                    else {
+                        var findConstructionSiteToBuild = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+                        if (findConstructionSiteToBuild) {
+                            setTarget(creep, findConstructionSiteToBuild.id, 'CTST', findConstructionSiteToBuild.room.name);
+                        }
+                    }
+                }
+                else {
+                    creep.memory.action = 'repairing';
+                    cleanTarget(creep);
+                }
             }
         }
     }

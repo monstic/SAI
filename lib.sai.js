@@ -278,174 +278,191 @@ spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
-            var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
-            var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
-            if (totalHarvesters === 0 && spawn.energy < 300) {
-                var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'harvester', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                if (_.isString(name)) {
-                    result = ('Spawning new harvester on ' + spawn.name + ' with name ' + name + '.');
-                    log(result);
+            if (spawn.energy >= 200) {
+                var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
+                var spawn = Game.spawns[spawnname];
+                var room = Game.rooms[spawn.pos.roomName];
+                if (totalHarvesters === 0) {
+                    var totalOfParts = 1;
                 }
-            }
-            else if (totalHarvesters > 0 && totalTransporters === 0) {
-                var name = spawn.createCreep([WORK, CARRY, MOVE], null, { type: 'transporter', action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                if (_.isString(name)) {
-                    result = ('Spawning new transporter on ' + spawn.name + ' with name ' + name + '.');
-                    log(result);
+                else {
+                    var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 200)-1);
                 }
-            }
-            else {
-                if (spawn.energy >= 300) {
-                    //ACTION: SPAWN
-                    // create a balanced body as big as possible with the given energy
-                    var spawn = Game.spawns[spawnname];
-                    var room = Game.rooms[spawn.pos.roomName];
-                    var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 200);
-                    // make sure the creep is not too big (more than 50 parts)
-                    if (creeptype === 'harvester') {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(7));
-                        var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
+                if (creeptype === 'harvester') {
+                    var maxOfWorkParts = 8;
+                    var maxOfCarryParts = 3;
+                    var maxOfMoveParts = 3;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfWorkParts) {
                             body.push(WORK);
                         }
-                        for (let i = 0; i < 1; i++) {
+                        if (i < maxOfCarryParts) {
                             body.push(CARRY);
                         }
-                        for (let i = 0; i < 3; i++) {
+                        if (i < maxOfMoveParts) {
                             body.push(MOVE);
                         }
+                    i++;
                     }
-                    else if (creeptype === 'transporter') {
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 50);
-                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 2));
-                        var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(CARRY);
-                        }
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(MOVE);
-                        }
-                    }
-                    else if (creeptype === 'upgrader') {
-                        var body = [];
-                        if (room.controller.level < 4) {
-                            var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
-                            numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(WORK);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(CARRY);
-                            }
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(MOVE);
-                            }
-                        }
-                        else {
-                            var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
-                            numberOfParts = Math.min(numberOfParts, Math.floor(40));
-                            for (let i = 0; i < numberOfParts; i++) {
-                                body.push(WORK);
-                            }
-                            for (let i = 0; i < 2; i++) {
-                                body.push(CARRY);
-                            }
-                            for (let i = 0; i < 4; i++) {
-                                body.push(MOVE);
-                            }
-                        }
-                    }
-                    else if (creeptype === 'engineer') {
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
-                        numberOfParts = Math.min(numberOfParts, Math.floor(45 / 2));
-                        var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(WORK);
-                        }
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(CARRY);
-                        }
-                        for (let i = 0; i < 2; i++) {
-                            body.push(MOVE);
-                        }
-                    }
-                    else if (creeptype === 'miner') {
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 100);
-                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
-                        var body = [];
-                        for (let i = 0; i < 1; i++) {
-                            body.push(WORK);
-                        }
-                        for (let i = 0; i < 1; i++) {
-                            body.push(CARRY);
-                        }
-                        for (let i = 0; i < 9; i++) {
-                            body.push(MOVE);
-                        }
-                    }
-                    else if (creeptype === 'guard') {
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 80);
-                        numberOfParts = Math.min(numberOfParts, Math.floor(48 / 2));
-                        var body = [];
-                        for (let i = 0; i < 1; i++) {
-                            body.push(TOUGH);
-                        }
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(MOVE);
-                        }
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(ATTACK);
-                        }
-                    }
-                    else if (creeptype === 'healer') {
-                        var numberOfParts = Math.floor(spawn.room.energyCapacityAvailable / 150);
-                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
-                        var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(TOUGH);
-                        }
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(MOVE);
-                        }
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(HEAL);
-                        }
-                    }
-                    else if (creeptype === 'claimer') {
-                        var numberOfParts = Math.floor(700-(spawn.room.energyCapacityAvailable / 50));
-                        numberOfParts = Math.min(numberOfParts, Math.floor(45));
-                        var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
-                            body.push(MOVE);
-                        }
-                        for (let i = 0; i < 1; i++) {
-                            body.push(CLAIM);
-                        }
-                        for (let i = 0; i < 1; i++) {
-                            body.push(TOUGH);
-                        }
+                }
+                else if (creeptype === 'upgrader') {
+                    var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
+                    if (totalTransporters <= 1) {
+                        var totalOfParts = 1;
                     }
                     else {
-                        numberOfParts = Math.min(numberOfParts, Math.floor(50 / 3));
-                        var body = [];
-                        for (let i = 0; i < numberOfParts; i++) {
+                      var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 200)-1);
+                    }
+                    var maxOfWorkParts = 7;
+                    var maxOfCarryParts = 3;
+                    var maxOfMoveParts = 3;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfWorkParts) {
                             body.push(WORK);
                         }
-                        for (let i = 0; i < numberOfParts; i++) {
+                        if (i < maxOfCarryParts) {
                             body.push(CARRY);
                         }
-                        for (let i = 0; i < numberOfParts; i++) {
+                        if (i < maxOfMoveParts) {
                             body.push(MOVE);
                         }
+                    i++;
                     }
-
-                    var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                    if (canIspawn === 0) {
-                        var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                        if (_.isString(name)) {
-                            result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
-                            log(result);
+                }
+                else if (creeptype === 'transporter') {
+                    var totalTransporters = countCreeps('transporter', spawn.pos.roomName);
+                    if (totalTransporters === 0) {
+                        var totalOfParts = 1;
+                    }
+                    else {
+                      var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 100)-1);
+                    }
+                    var maxOfCarryParts = 25;
+                    var maxOfMoveParts = 25;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfCarryParts) {
+                            body.push(CARRY);
                         }
+                        if (i < maxOfMoveParts) {
+                            body.push(MOVE);
+                        }
+                    i++;
+                    }
+                }
+                else if (creeptype === 'engineer') {
+                  var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 200)-1);
+                    var maxOfWorkParts = totalOfParts;
+                    var maxOfCarryParts = totalOfParts;
+                    var maxOfMoveParts = 4;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfWorkParts) {
+                            body.push(WORK);
+                        }
+                        if (i < maxOfCarryParts) {
+                            body.push(CARRY);
+                        }
+                        if (i < maxOfMoveParts) {
+                            body.push(MOVE);
+                        }
+                    i++;
+                    }
+                }
+                else if (creeptype === 'miner') {
+                  var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 200)-1);
+                    var maxOfWorkParts = totalOfParts;
+                    var maxOfCarryParts = 2;
+                    var maxOfMoveParts = 2;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfWorkParts) {
+                            body.push(WORK);
+                        }
+                        if (i < maxOfCarryParts) {
+                            body.push(CARRY);
+                        }
+                        if (i < maxOfMoveParts) {
+                            body.push(MOVE);
+                        }
+                    i++;
+                    }
+                }
+                else if (creeptype === 'guard') {
+                  var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 140)-1);
+                    var maxOfToughParts = totalOfParts;
+                    var maxOfMoveParts = 4;
+                    var maxOfAttackParts = totalOfParts;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfToughParts) {
+                            body.push(TOUGH);
+                        }
+                        if (i < maxOfMoveParts) {
+                            body.push(MOVE);
+                        }
+                        if (i < maxOfAttackParts) {
+                            body.push(ATTACK);
+                        }
+                    i++;
+                    }
+                }
+                else if (creeptype === 'healer') {
+                  var totalOfParts =  Math.round((spawn.room.energyCapacityAvailable / 310)-1);
+                    var maxOfToughParts = 2;
+                    var maxOfMoveParts = 4;
+                    var maxOfHealParts = totalOfParts;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfToughParts) {
+                            body.push(TOUGH);
+                        }
+                        if (i < maxOfMoveParts) {
+                            body.push(MOVE);
+                        }
+                        if (i < maxOfHealParts) {
+                            body.push(HEAL);
+                        }
+                    i++;
+                    }
+                }
+                else if (creeptype === 'claimer') {
+                    var totalOfParts = Math.round((spawn.room.energyCapacityAvailable / 150)-6);
+                    var maxOfAttackParts = totalOfParts;
+                    var maxOfMoveParts = totalOfParts;
+                    var maxOfClaimParts = 1;
+                    var body = [];
+                    var i = 0;
+                    while (i < totalOfParts) {
+                        if (i < maxOfMoveParts) {
+                            body.push(MOVE);
+                        }
+                        if (i < maxOfAttackParts) {
+                            body.push(ATTACK);
+                        }
+                        if (i < maxOfClaimParts) {
+                            body.push(CLAIM);
+                        }
+                    i++;
+                    }
+                }
+
+                var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+
+                if (canIspawn === 0) {
+                    var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+                    if (_.isString(name)) {
+                        result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
+                        log(result);
                     }
                 }
             }
@@ -711,9 +728,6 @@ if (Memory.rooms[room.name].config.autobuild === 'on') {
                 }
                 else {
                     Memory.rooms[room.name].info.constructionslevel = 1;
-                    if (Game.flags.claim) {
-                        Game.flags.claim.remove();
-                    }
                 }
             }
         }
@@ -749,16 +763,17 @@ if (Memory.rooms[room.name].config.autobuild === 'on') {
     if (Memory.rooms[room.name].info.constructionslevel === 2) {
         var constructionSites = room.find(FIND_CONSTRUCTION_SITES);
         if (constructionSites.length === 0) {
-            var haveContainer = Memory.rooms[room.name].structure.container.controller;
-            if (!haveContainer) {
-                var getFreePos = getRandomFreePosOutOfRoad(room.controller.pos, 2, room);
+            if (!Memory.rooms[room.name].structure.container.source) {
+                var sourceId = Memory.rooms[room.name].sources[0];
+                var source = Game.getObjectById(sourceId);
+                var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                 if (getFreePos !== 'searching') {
                     getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                 }
             }
             else {
-                if (!Memory.rooms[room.name].structure.container.source) {
-                    var sourceId = Memory.rooms[room.name].sources[0];
+                if (!Memory.rooms[room.name].structure.container.source1) {
+                    var sourceId = Memory.rooms[room.name].sources[1];
                     var source = Game.getObjectById(sourceId);
                     var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
                     if (getFreePos !== 'searching') {
@@ -766,10 +781,9 @@ if (Memory.rooms[room.name].config.autobuild === 'on') {
                     }
                 }
                 else {
-                    if (!Memory.rooms[room.name].structure.container.source1) {
-                        var sourceId = Memory.rooms[room.name].sources[1];
-                        var source = Game.getObjectById(sourceId);
-                        var getFreePos = getRandomFreePosOutOfRoad(source.pos, 2, room);
+                    var haveContainer = Memory.rooms[room.name].structure.container.controller;
+                    if (!haveContainer) {
+                        var getFreePos = getRandomFreePosOutOfRoad(room.controller.pos, 2, room);
                         if (getFreePos !== 'searching') {
                             getFreePos.createConstructionSite(STRUCTURE_CONTAINER);
                         }

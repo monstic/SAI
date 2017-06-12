@@ -31,20 +31,6 @@ if (FORCE_PAUSE !== true) {
             console.log('CPU: ' + Game.cpu.getUsed() + '%');
         }
 
-        //PULSE CREEPS
-        for (var creepName in Game.creeps) {
-            //load creep
-            var creep = Game.creeps[creepName];
-            //load main
-            initCreeps(creep);
-            //load types
-            var initCreepType = require('creeps.type.' + creep.memory.type);
-            initCreepType(creep);
-            //load actions
-            var initCreepAction = require('creeps.action.' + creep.memory.action);
-            initCreepAction(creep);
-        }
-        
         //REMOVE DEAD CREEPS FROM MEMORY
         for (var name in Memory.creeps) {
             if (!Game.creeps[name] || Memory.creeps[name] == undefined) {
@@ -66,6 +52,20 @@ if (FORCE_PAUSE !== true) {
                 initSpawns(Game.spawns[spawnName]);
             }
 
+        }
+
+        //PULSE CREEPS
+        for (var creepName in Game.creeps) {
+            //load creep
+            var creep = Game.creeps[creepName];
+            //load main
+            initCreeps(creep);
+            //load types
+            var initCreepType = require('creeps.type.' + creep.memory.type);
+            initCreepType(creep);
+            //load actions
+            var initCreepAction = require('creeps.action.' + creep.memory.action);
+            initCreepAction(creep);
         }
 
     };
