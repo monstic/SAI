@@ -2,6 +2,11 @@ module.exports = function (spawn) {
     
     if (Memory.spawns) {
     
+        //CREATE SPAWN DB
+        if (!Memory.spawns[spawn.name] || Memory.spawns[spawn.name].cron === 'undefined') {
+            Memory.spawns[spawn.name] = {};
+        }
+        
         //CREATE CRONJOBS        
         if (!Memory.spawns[spawn.name].cron || Memory.spawns[spawn.name].cron === 'undefined') {
             Memory.spawns[spawn.name].cron = {};
