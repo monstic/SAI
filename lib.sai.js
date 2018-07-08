@@ -269,10 +269,10 @@ spawnProtoCreep =
                     }
 
                 }
-
             }
+            
             var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-
+            console.log(canIspawn);
             if (canIspawn === 0) {
                 var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
                 if (_.isString(name)) {
