@@ -61,11 +61,8 @@ if (FORCE_PAUSE !== true) {
             //load main
             initCreeps(creep);
             //load types
-            var initCreepType = require('creeps.type.' + creep.memory.type);
-            initCreepType(creep);
-            //load actions
-            var initCreepAction = require('creeps.action.' + creep.memory.action);
-            initCreepAction(creep);
+            var initCreep = require('creeps.type.' + creep.memory.type);
+            initCreep(creep);
         }
 
     };

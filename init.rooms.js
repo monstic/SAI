@@ -12,76 +12,34 @@ module.exports = function (room) {
 
         if (Memory.rooms[room.name]) {
 
-            //CREATE SPAWNS DATABASE
-            if (!Memory.rooms[room.name].spawns || Memory.rooms[room.name].spawns === undefined) {
-                Memory.rooms[room.name].spawns = {};
-                console.log('Spawns database created.');
-            }
-
-
-            //CREATE SUMMARY
+            //INFO DB
             if (!Memory.rooms[room.name].info || Memory.rooms[room.name].info === 'undefined') {
                 Memory.rooms[room.name].info = {};
-                Memory.rooms[room.name].info.lastseen = Game.time;
+                Memory.rooms[room.name].info.lastvisit = Game.time;
                 Memory.rooms[room.name].info.constructionslevel = 0;
+                Memory.rooms[room.name].info.underattack = 0;
             }
 
-            //CREATE ROOM CONFIG
+            //CONFIG DB
             if (!Memory.rooms[room.name].config || Memory.rooms[room.name].config === 'undefined') {
                 Memory.rooms[room.name].config = {};
-                Memory.rooms[room.name].config.deleteemptyroomsafter = 500;
-                Memory.rooms[room.name].config.display = 'on';
-                Memory.rooms[room.name].config.autobuild = 'on';
-                Memory.rooms[room.name].config.autobuildroads = 'on';
-                Memory.rooms[room.name].config.autobuildwalls = 'on';
-            }
-
-            //CREATE STRUCTURES DB
-            if (!Memory.rooms[room.name].structure || Memory.rooms[room.name].structure === 'undefined') {
-                Memory.rooms[room.name].structure = {};
-                Memory.rooms[room.name].structure.container = {};
-                Memory.rooms[room.name].structure.storage = {};
-                Memory.rooms[room.name].structure.tower = {};
-                Memory.rooms[room.name].structure.spawn = {};
-                Memory.rooms[room.name].structure.link = {};
-                Memory.rooms[room.name].structure.road = {};
+                Memory.rooms[room.name].config.deleteifnovisitin = 500;
+                Memory.rooms[room.name].config.autobuild = 0;
+                Memory.rooms[room.name].config.autobuildroads = 0;
+                Memory.rooms[room.name].config.autobuildwalls = 0;
             }
 
             //CREATE SECURITY
             if (!Memory.rooms[room.name].security || Memory.rooms[room.name].security === 'undefined') {
                 Memory.rooms[room.name].security = {};
-                Memory.rooms[room.name].security.mode = 'defend';
-                Memory.rooms[room.name].security.level = 1;
-                Memory.rooms[room.name].security.underattack = 'no';
+                Memory.rooms[room.name].security.mode = 0;
+                Memory.rooms[room.name].security.level = 0;
             }
+            
             if (!Memory.hostiles || Memory.hostiles === 'undefined') {
                 Memory.hostiles = {};
             }
 
-            //FLAGS
-            if (Game.flags.defend) {
-                if (!Memory.flags.defend || Memory.flags.defend === 'undefined') {
-                    Memory.flags.defend = Game.flags.defend;
-                }
-            }
-            else {
-                if (Memory.flags.defend) {
-                    delete Memory.flags.defend;
-                }
-            }
-
-
-            //CREATE TRAIL DB
-            if (!Memory.rooms[room.name].trail || Memory.rooms[room.name].trail === 'undefined') {
-                Memory.rooms[room.name].trail = {};
-            }
-
-
-
-            //CREATE SUMMARY
-            if (!Memory.rooms[room.name].exit || Memory.rooms[room.name].exit === 'undefined') {
-                Memory.rooms[room.name].exit = {};
-            }
 
             //CREATE CRONJOBS
             if (!Memory.rooms[room.name].cron || Memory.rooms[room.name].cron === 'undefined') {
@@ -90,401 +48,155 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].cron[0] || Memory.rooms[room.name].cron[0] === 'undefined') {
                 Memory.rooms[room.name].cron[0] = {};
                 Memory.rooms[room.name].cron[0].lastrun = Game.time;
-                Memory.rooms[room.name].cron[0].interval = 27;
+                Memory.rooms[room.name].cron[0].interval = 15;
             }
             if (!Memory.rooms[room.name].cron[1] || Memory.rooms[room.name].cron[1] === 'undefined') {
                 Memory.rooms[room.name].cron[1] = {};
-                Memory.rooms[room.name].cron[1].lastrun = (Game.time+1);
-                Memory.rooms[room.name].cron[1].interval = 500;
-            }
-            if (!Memory.rooms[room.name].cron[2] || Memory.rooms[room.name].cron[2] === 'undefined') {
-                Memory.rooms[room.name].cron[2] = {};
-                Memory.rooms[room.name].cron[2].lastrun = (Game.time+2);
-                Memory.rooms[room.name].cron[2].interval = 61;
-            }
-            if (!Memory.rooms[room.name].cron[3] || Memory.rooms[room.name].cron[3] === 'undefined') {
-                Memory.rooms[room.name].cron[3] = {};
-                Memory.rooms[room.name].cron[3].lastrun = (Game.time+3);
-                Memory.rooms[room.name].cron[3].interval = 9999;
-            }
-            if (!Memory.rooms[room.name].cron[4] || Memory.rooms[room.name].cron[4] === 'undefined') {
-                Memory.rooms[room.name].cron[4] = {};
-                Memory.rooms[room.name].cron[4].lastrun = (Game.time+4);
-                Memory.rooms[room.name].cron[4].interval = 9999;
-            }
-            if (!Memory.rooms[room.name].cron[5] || Memory.rooms[room.name].cron[5] === 'undefined') {
-                Memory.rooms[room.name].cron[5] = {};
-                Memory.rooms[room.name].cron[5].lastrun = (Game.time+5);
-                Memory.rooms[room.name].cron[5].interval = 49;
-            }
-            if (!Memory.rooms[room.name].cron[6] || Memory.rooms[room.name].cron[6] === 'undefined') {
-                Memory.rooms[room.name].cron[6] = {};
-                Memory.rooms[room.name].cron[6].lastrun = (Game.time+5);
-                Memory.rooms[room.name].cron[6].interval = 100;
+                Memory.rooms[room.name].cron[1].lastrun = Game.time;
+                Memory.rooms[room.name].cron[1].interval = 15;
             }
 
-        //END ONE TIME RUN
-
-        //START SCAN ROOM
-
-            //START CRONJOBS
-
-            //START CRON 0 [REGISTER STRUCTURES]
-            if (Memory.rooms[room.name].cron[0].lastrun < (Game.time-Memory.rooms[room.name].cron[0].interval)) {
-
-                //REGISTER AVAILABLE MINERALS
-                if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
-                    var findMinerals = room.find(FIND_MINERALS);
-                    if (findMinerals.length > 0) {
-                        Memory.rooms[room.name].mineral = {};
-                        Memory.rooms[room.name].mineral.id = findMinerals[0].id;
-                        console.log('Mineral type ' + findMinerals[0].mineralType + ' was found in room ' + room.name + '.');
-                    }
-                }
-
-                //REGISTER AVAILABLE SOURCES
-                if (!Memory.rooms[room.name].sources || Memory.rooms[room.name].sources === 'undefined') {
-                    var findSources = room.find(FIND_SOURCES);
-                    if (findSources.length > 0) {
-                        Memory.rooms[room.name].sources = {};
-                        Memory.rooms[room.name].sources.total = findSources.length;
-                        console.log('Found ' + findSources.length + ' source(s) in room ' + room.name + '.');
-                        i = 0;
-                        while (i < findSources.length) {
-                            Memory.rooms[room.name].sources[i] = findSources[i].id;
-                            console.log('Source ' + findSources[i].id + ' registered in room ' + room.name + '.');
-                            i++;
-                        }
-                    }
-                }
-
-                //REGISTER STRUCTURES
-                if (Memory.rooms[room.name].structure) {
-
-                    //REGISTER CONSTRUCTION SITE TO BUILD SPAWN
-                    var spawnExist = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_SPAWN)});
-                    if (spawnExist === 0) {
-                        var csSpawnExist = room.find(FIND_CONSTRUCTION_SITES);
-                        if (csSpawnExist > 0) {
-                            Memory.constructionSite = csSpawnExist[0];
-                        }
-                    }
+        }
 
 
-                    //REGISTER EXTRACTOR
-                    if (Memory.rooms[room.name].mineral) {
-                        if (!Memory.rooms[room.name].mineral.extractor || Memory.rooms[room.name].mineral.extractor === 'undefined') {
-                            var extractor = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_EXTRACTOR)});
-                            if (extractor.length > 0) {
-                                Memory.rooms[room.name].mineral.extractor = extractor[0].id;
+        //START CRONJOBS
+
+        //START CRON 0 [REGISTER STRUCTURES]
+        if (Memory.rooms[room.name].cron[0].lastrun < (Game.time-Memory.rooms[room.name].cron[0].interval)) {
+            Memory.rooms[room.name].cron[0].lastrun = Game.time;
+
+            //CHECK ROOM HOSTILES
+            var target = room.find(FIND_HOSTILE_CREEPS);
+            if (target.length > 0) {
+                Memory.rooms[room.name].security.underattack = 1;
+                if (Memory.rooms[room.name].security.mode > 0) {
+                    if (Memory.hostiles) {
+                        if (!Memory.hostiles.targetId || Memory.hostiles.targetId === 'undefined') {
+                            if (target.length > 0) {
+                              Memory.hostiles.targetId = target[0].id;
                             }
-                        }
-                        if (Memory.rooms[room.name].mineral.extractor) {
-                            var extractor = Game.getObjectById(Memory.rooms[room.name].mineral.extractor);
-                            if (!extractor || extractor === 'undefined') {
-                                delete Memory.rooms[room.name].mineral.extractor;
-                            }
-                        }
-                    }
-
-                    //REGISTER CONTAINER NEAR CONTROLLER
-                    if (Memory.rooms[room.name].structure.container) {
-                        if (!Memory.rooms[room.name].structure.container.controller || Memory.rooms[room.name].structure.container.controller === 'undefined') {
-                            var controller = new RoomPosition(room.controller.pos.x, room.controller.pos.y, room.name);
-                            var container = controller.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
-                            if (container[0]) {
-                                Memory.rooms[room.name].structure.container.controller = container[0].id;
-                            }
-                        }
-                        if (Memory.rooms[room.name].structure.container.controller) {
-                            var container = Game.getObjectById(Memory.rooms[room.name].structure.container.controller);
-                            if (!container || container === 'undefined') {
-                                delete Memory.rooms[room.name].structure.container.controller;
-                            }
-                        }
-                    }
-
-                    //REGISTER CONTAINER NEAR SOURCE 0
-                    if (Memory.rooms[room.name].structure.container) {
-                        if (!Memory.rooms[room.name].structure.container.source || Memory.rooms[room.name].structure.container.source === 'undefined') {
-                            var sourceId = Memory.rooms[room.name].sources[0];
-                            var sourceStr = Game.getObjectById(sourceId);
-                            var source = new RoomPosition(sourceStr.pos.x, sourceStr.pos.y, room.name);
-                            var container = source.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
-                            if (container[0]) {
-                                Memory.rooms[room.name].structure.container.source = container[0].id;
-                            }
-                        }
-                        if (Memory.rooms[room.name].structure.container.source) {
-                            var container = Game.getObjectById(Memory.rooms[room.name].structure.container.source);
-                            if (!container || container === 'undefined') {
-                                delete Memory.rooms[room.name].structure.container.source;
-                            }
-                        }
-                    }
-
-                    //REGISTER CONTAINER NEAR SOURCE 1
-                    if (Memory.rooms[room.name].structure.container) {
-                        if (!Memory.rooms[room.name].structure.container.source1 || Memory.rooms[room.name].structure.container.source1 === 'undefined') {
-                            if (Memory.rooms[room.name].sources[1]) {
-                                var sourceId = Memory.rooms[room.name].sources[1];
-                                var sourceStr = Game.getObjectById(sourceId);
-                                var source = new RoomPosition(sourceStr.pos.x, sourceStr.pos.y, room.name);
-                                var container = source.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_CONTAINER)});
-                                if (container[0]) {
-                                    Memory.rooms[room.name].structure.container.source1 = container[0].id;
-                                }
-                            }
-                        }
-                        if (Memory.rooms[room.name].structure.container.source1) {
-                            var container = Game.getObjectById(Memory.rooms[room.name].structure.container.source1);
-                            if (!container || container === 'undefined') {
-                                delete Memory.rooms[room.name].structure.container.source1;
-                            }
-                        }
-                    }
-
-                    //REGISTER STORAGES NEAR MINERAL
-                    if (Memory.rooms[room.name].structure.storage) {
-                        if (!Memory.rooms[room.name].structure.storage.mineral || Memory.rooms[room.name].structure.storage.mineral === 'undefined') {
-                            if (Memory.rooms[room.name].mineral) {
-                                var mineral = Game.getObjectById(Memory.rooms[room.name].mineral.id);
-                                var mineralpos = new RoomPosition(mineral.pos.x, mineral.pos.y, room.name);
-                                var storage = mineralpos.findInRange(FIND_STRUCTURES, 3, { filter: (s) => (s.structureType === STRUCTURE_STORAGE)});
-                                if (storage[0]) {
-                                    Memory.rooms[room.name].structure.storage.mineral = storage[0].id;
-                                }
-                            }
-                        }
-                    }
-
-                    //REGISTER TOWERS
-                    if (Memory.rooms[room.name].structure.tower) {
-                        var towers = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_TOWER)});
-                        if (towers.length > 0) {
-                            Memory.rooms[room.name].structure.tower.total = towers.length;
-                            var i = 0;
-                            while (i < towers.length) {
-                                if (!Memory.rooms[room.name].structure.tower[i] || Memory.rooms[room.name].structure.tower[i] === 'undefined') {
-                                    Memory.rooms[room.name].structure.tower[i] = towers[i].id;
-                                }
-                                if (Memory.rooms[room.name].structure.tower[i]) {
-                                    var towers = Game.getObjectById(Memory.rooms[room.name].structure.tower[i]);
-                                    if (!towers || towers === 'undefined') {
-                                        delete Memory.rooms[room.name].structure.tower[i];
-                                    }
-                                }
-                                i++;
-                            }
-                        }
-                    }
-
-                    //REGISTER LINKS
-                    if (Memory.rooms[room.name].structure.link) {
-                        var link = room.find(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_LINK)});
-                        if (link.length > 0) {
-                            Memory.rooms[room.name].structure.link.total = link.length;
-                            var i = 0;
-                            while (i < link.length) {
-                                if (!Memory.rooms[room.name].structure.link[i] || Memory.rooms[room.name].structure.link[i] === 'undefined') {
-                                    Memory.rooms[room.name].structure.link[i] = link[i].id;
-                                }
-                                if (Memory.rooms[room.name].structure.link[i]) {
-                                    var link = Game.getObjectById(Memory.rooms[room.name].structure.link[i]);
-                                    if (!link || link === 'undefined') {
-                                        delete Memory.rooms[room.name].structure.link[i];
-                                    }
-                                }
-                                i++;
-                            }
-                        }
-                    }
-
-                    //CHECK ROOM HOSTILES
-                    var target = room.find(FIND_HOSTILE_CREEPS);
-                    if (target.length > 0) {
-                        if (Game.flags.defend) {
-                            if (Memory.hostiles) {
-                                if (!Memory.hostiles.targetId || Memory.hostiles.targetId === 'undefined') {
-                                    if (target.length > 1) {
-                                      Memory.hostiles.targetId = target[0].id;
-                                    }
-                                    else {
-                                      Memory.hostiles.targetId = target.id;
-                                    }
-                                }
-                            }
-                        }
-                        if (Memory.rooms[room.name].security.underattack !== 'yes') {
-                            Memory.rooms[room.name].security.underattack = 'yes';
                         }
                     }
                     else {
-                      if (Memory.hostiles) {
-                          if (Memory.hostiles.targetId) {
-                              delete Memory.hostiles.targetId;
-                          }
-                      }
-                      if (Memory.rooms[room.name].security.underattack !== 'no') {
-                          Memory.rooms[room.name].security.underattack = 'no';
-                      }
-                    }
-
-
-                    //DEFINE WALL AND RAMPART POSITIONS
-                    if (Memory.rooms[room.name].exit) {
-                        if (!Memory.rooms[room.name].exit.left) {
-                            Memory.rooms[room.name].exit.left = {};
-                            //SAVE EXIT POSITION
-                            var exits = room.find(FIND_EXIT_LEFT);
-                            if (exits.length > 0) {
-                                for (var exit in exits) {
-                                    Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
-                                }
-                            }
-                            //SAVE RAMPART POSITION
-                            var countExits = room.find(FIND_EXIT_LEFT);
-                            var rexits = Memory.rooms[room.name].exit.left;
-                            var i = 0;
-                            for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) {
-                                    delete Memory.rooms[room.name].exit.left[exit];
-                                }
-                                i++;
-                            }
-                        }
-                        if (!Memory.rooms[room.name].exit.right) {
-                            Memory.rooms[room.name].exit.right = {};
-                            //SAVE EXIT POSITION
-                            var exits = room.find(FIND_EXIT_RIGHT);
-                            if (exits.length > 0) {
-                                for (var exit in exits) {
-                                    Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
-                                }
-                            }
-                            //SAVE RAMPART POSITION
-                            var countExits = room.find(FIND_EXIT_RIGHT);
-                            var rexits = Memory.rooms[room.name].exit.right;
-                            var i = 0;
-                            for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) {
-                                    delete Memory.rooms[room.name].exit.right[exit];
-                                }
-                                i++;
-                            }
-                        }
-                        if (!Memory.rooms[room.name].exit.top) {
-                            Memory.rooms[room.name].exit.top = {};
-                            //SAVE EXIT POSITION
-                            var exits = room.find(FIND_EXIT_TOP);
-                            if (exits.length > 0) {
-                                for (var exit in exits) {
-                                    Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
-                                }
-                            }
-                            //SAVE RAMPART POSITION
-                            var countExits = room.find(FIND_EXIT_TOP);
-                            var rexits = Memory.rooms[room.name].exit.top;
-                            var i = 0;
-                            for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) {
-                                    delete Memory.rooms[room.name].exit.top[exit];
-                                }
-                                i++;
-                            }
-                        }
-                        if (!Memory.rooms[room.name].exit.bottom) {
-                            Memory.rooms[room.name].exit.bottom = {};
-                            //SAVE EXIT POSITION
-                            var exits = room.find(FIND_EXIT_BOTTOM);
-                            if (exits.length > 0) {
-                                for (var exit in exits) {
-                                    Memory.rooms[room.name].exit.bottom[exits[exit].x] = exits[exit].x;
-                                }
-                            }
-                            //SAVE RAMPART POSITION
-                            var countExits = room.find(FIND_EXIT_BOTTOM);
-                            var rexits = Memory.rooms[room.name].exit.bottom;
-                            var i = 0;
-                            for (var exit in rexits) {
-                                if (i === parseInt(countExits.length/2)) {
-                                    delete Memory.rooms[room.name].exit.bottom[exit];
-                                }
-                                i++;
-                            }
-                        }
+                        Memory.hostiles = {};
                     }
                 }
-
-
-                //SAVE LAST RUN
-                Memory.rooms[room.name].cron[0].lastrun = Game.time;
-
             }
-            //END CRON 0
+            else {
+              if (Memory.hostiles) {
+                  if (Memory.hostiles.targetId) {
+                      delete Memory.hostiles.targetId;
+                  }
+              }
+              if (Memory.rooms[room.name].security.underattack !== 0) {
+                  Memory.rooms[room.name].security.underattack = 0;
+              }
+            }
 
-            //START CRON 1 [CLEANING OLD DATA]
-            if (Memory.rooms[room.name].cron[1].lastrun < (Game.time-Memory.rooms[room.name].cron[1].interval)) {
 
-                //DELETE UNUSED ROOMS (CRON)
-                if (Memory.rooms[room.name]) {
-                    var searchStructures;
-                    searchStructures = room.find(FIND_MY_STRUCTURES);
-                    if (searchStructures.length === 0) {
-                        console.log('Deleting ' + room.name + ' from memory, no structures in this room.');
-                        delete Memory.rooms[room.name];
-                    }
-                }
-
-                //SAVE LAST RUN
-                if (Memory.rooms[room.name]) {
-                    if (Memory.rooms[room.name].cron) {
-                        if (Memory.rooms[room.name].cron[1]) {
-                            Memory.rooms[room.name].cron[1].lastrun = Game.time;
+            //DEFINE WALL AND RAMPART POSITIONS
+            if (Memory.rooms[room.name].exit) {
+                if (!Memory.rooms[room.name].exit.left) {
+                    Memory.rooms[room.name].exit.left = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_LEFT);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
                         }
                     }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_LEFT);
+                    var rexits = Memory.rooms[room.name].exit.left;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.left[exit];
+                        }
+                        i++;
+                    }
                 }
-
+                if (!Memory.rooms[room.name].exit.right) {
+                    Memory.rooms[room.name].exit.right = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_RIGHT);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_RIGHT);
+                    var rexits = Memory.rooms[room.name].exit.right;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.right[exit];
+                        }
+                        i++;
+                    }
+                }
+                if (!Memory.rooms[room.name].exit.top) {
+                    Memory.rooms[room.name].exit.top = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_TOP);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_TOP);
+                    var rexits = Memory.rooms[room.name].exit.top;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.top[exit];
+                        }
+                        i++;
+                    }
+                }
+                if (!Memory.rooms[room.name].exit.bottom) {
+                    Memory.rooms[room.name].exit.bottom = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_BOTTOM);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.bottom[exits[exit].x] = exits[exit].x;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_BOTTOM);
+                    var rexits = Memory.rooms[room.name].exit.bottom;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.bottom[exit];
+                        }
+                        i++;
+                    }
+                }
             }
-            //END CRON 1
-
-            //START CRON 2
-            // in use by init.spawns
-            //END CRON 2
-
-            //START CRON 3 [AUTO DECREASE ROADS]
-            //if (Memory.rooms[room.name].cron[3].lastrun < (Game.time-Memory.rooms[room.name].cron[3].interval)) {
-                //Memory.rooms[room.name].cron[3].lastrun = Game.time;
-            //}
-            //END CRON 3
-
-            //START CRON 4 [AUTO BUILD ROADS]
-            //if (Memory.rooms[room.name].cron[4].lastrun < (Game.time-Memory.rooms[room.name].cron[4].interval)) {
-                //Memory.rooms[room.name].cron[4].lastrun = Game.time;
-            //}
-            //END CRON 4
-
-            //START CRON 5 [AUTO BUILD STRUCTURES]
-            if (Memory.rooms[room.name].cron[5].lastrun < (Game.time-Memory.rooms[room.name].cron[5].interval)) {
-                autoBuild(room);
-                Memory.rooms[room.name].cron[5].lastrun = Game.time;
-            }
-            //END CRON 5
-
-            //START CRON 6 [AUTO BUILD WALLS AND RAMPARTS]
-            if (Memory.rooms[room.name].cron[6].lastrun < (Game.time-Memory.rooms[room.name].cron[6].interval)) {
-                autoBuildWalls(room);
-                Memory.rooms[room.name].cron[6].lastrun = Game.time;
-            }
-            //END CRON 6
-            //END CRONJOBS
 
         }
-        //END SCAN ROOM
+        //END CRON 0
 
-        //LOAD MODULES
-        enableTowers(room);
-        showRoomInfoInScreen(room);
+        //START CRON 1 [CLEANING OLD DATA]
+        if (Memory.rooms[room.name].cron[1].lastrun < (Game.time-Memory.rooms[room.name].cron[1].interval)) {
+            Memory.rooms[room.name].cron[1].lastrun = Game.time;
+
+            //DELETE UNUSED ROOMS (CRON)
+            if (Memory.rooms[room.name]) {
+                var searchStructures;
+                searchStructures = room.find(FIND_MY_STRUCTURES);
+                if (searchStructures.length === 0) {
+                    console.log('Deleting ' + room.name + ' from memory, no structures in this room.');
+                    delete Memory.rooms[room.name];
+                }
+            }
+
+        }
+        //END CRON 1
 
     }
 
