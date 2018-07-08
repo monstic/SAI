@@ -29,6 +29,7 @@ spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
+            var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
             if (spawn.energy >= 200) {
                 var spawn = Game.spawns[spawnname];
                 var room = Game.rooms[spawn.pos.roomName];
@@ -205,19 +206,8 @@ spawnProtoCreep =
                     i++;
                     }
                 }
-
-                var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-
-                if (canIspawn === 0) {
-                    var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
-                    if (_.isString(name)) {
-                        result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
-                        console.log(result);
-                    }
-                }
             }
             else {
-                var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
                 if (totalHarvesters === 0) {
                     var totalOfParts = 1;
                     if (creeptype === 'harvester') {
@@ -243,6 +233,15 @@ spawnProtoCreep =
 
                 }
 
+            }
+            var canIspawn = spawn.canCreateCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+
+            if (canIspawn === 0) {
+                var name = spawn.createCreep(body, null, { type: creeptype, action: 'undefined', homeroom: spawn.pos.roomName, homespawn: spawn.name, goto: creepgoto, id: Game.time });
+                if (_.isString(name)) {
+                    result = ('Spawning new ' + creeptype + ' on ' + spawn.name + ' with name ' + name + '.');
+                    console.log(result);
+                }
             }
         }
     };
