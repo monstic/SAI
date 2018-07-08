@@ -48,6 +48,19 @@ setTarget =
         return 1;
     };
 
+//CLEAN TARGET
+cleanTarget =
+    function (creep) {
+        delete creep.memory.targetId;
+        delete creep.memory.targetRoom;
+        delete creep.memory.targetType;
+        delete creep.memory.sourceId;
+        delete creep.memory.sourceRoom;
+        delete creep.memory.sourceType;
+        delete creep.memory.path;
+        return 1;
+    };
+
 
 //CREEP TYPES
 spawnProtoCreep =
