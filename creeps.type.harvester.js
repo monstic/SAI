@@ -1,15 +1,13 @@
 var creepTypeFunctions = function(creep) {
 
-    log('debug');
-
     //DEFINE ACTIONS
     if (creep.carry.energy === 0 && creep.memory.action !== 'harvesting') {
         creep.memory.action = 'harvesting';
-        creep.say('🔌');
+        creep.say('harvesting');
     }
     if (creep.memory.action === 'undefined') {
         creep.memory.action = 'harvesting';
-        creep.say('🔌');
+        creep.say('harvesting');
         cleanTarget(creep);
     }
     if (creep.memory.action === 'harvesting' && creep.carry.energy === creep.carryCapacity) {
@@ -19,22 +17,22 @@ var creepTypeFunctions = function(creep) {
             if (container[0]) {
                 creep.memory.action = 'fillcontainer';
                 setTarget(creep, container[0].id, 'LOWCT', creep.room.name);
-                creep.say('🚨');
+                creep.say('fill c');
             }
             else {
                 creep.memory.action = 'dropping';
-                creep.say('🚨');
+                creep.say('dropping');
             }
         }
         else {
             if (Game.rooms[creep.memory.homeroom].energyAvailable < Game.rooms[creep.memory.homeroom].energyCapacityAvailable) {
                 creep.memory.action = 'filling';
-                creep.say('🚛');
+                creep.say('filling');
                 cleanTarget(creep);
             }
             else {
               creep.memory.action = 'dropping';
-              creep.say('🚨');
+              creep.say('dropping');
             }
         }
     }
