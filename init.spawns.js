@@ -17,6 +17,11 @@ module.exports = function (spawn) {
             Memory.spawns[spawn.name].cron[0].lastrun = Game.time;
             Memory.spawns[spawn.name].cron[0].interval = 15;
         }
+        if (!Memory.spawns[spawn.name].cron[1] || Memory.spawns[spawn.name].cron[1] === 'undefined') {
+            Memory.spawns[spawn.name].cron[1] = {};
+            Memory.spawns[spawn.name].cron[1].lastrun = Game.time;
+            Memory.spawns[spawn.name].cron[1].interval = 15;
+        }
 
 
         if (Memory.spawns) {
@@ -47,6 +52,20 @@ module.exports = function (spawn) {
                     }
                 }
             }
+            
+            //SPAWNER
+            if (Memory.spawns[spawn.name].cron[1].lastrun < (Game.time-Memory.spawns[spawn.name].cron[1].interval)) {
+                Memory.spawns[spawn.name].cron[1].lastrun = Game.time;
+                
+                //HARVESTER
+                if (Memory.spawns[spawn.name].spawner.harvester > 0) {
+                    var harvestersLive = countCreeps('harvesrter', spawn.pos.roomName);
+                    if (harvestersLive < Memory.spawns[spawn.name].spawner.harvester) {
+                        spawnProtoCreep(spawn.name, 'harvester', spawn.pos.roomName);
+                    }
+                }
+            }
+
         }
     }
     else {
