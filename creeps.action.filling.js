@@ -7,7 +7,7 @@ var creepActFunctions = function(creep) {
 
             //FILL SPAWN
             if (Memory.spawns[creep.memory.homespawn]) {
-                var target = Game.getObjectById(Memory.spawns[creep.memory.homespawn].id);
+                var target = Game.getObjectById(Game.spawns[creep.memory.homespawn].id);
                 if (target.energy < target.energyCapacity) {
                     setTarget(creep, target.id, 'LOWSP', target.room.name);
                 }
