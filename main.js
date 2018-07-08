@@ -72,8 +72,3 @@ if (FORCE_PAUSE !== true) {
     //END LOOP
 
 }
-
-//END
-
-// Screeting Artificial intelligence - SAI
-// http://www.screepting.tk
