@@ -217,11 +217,11 @@ spawnProtoCreep =
                 }
             }
             else {
-                log('debug');
                 var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
                 if (totalHarvesters === 0) {
                     var totalOfParts = 1;
                     if (creeptype === 'harvester') {
+                        log('debug');
                         var maxOfWorkParts = 8;
                         var maxOfCarryParts = 3;
                         var maxOfMoveParts = 3;
