@@ -6,8 +6,8 @@ var creepActFunctions = function(creep) {
         if (Memory.rooms[creep.room.name]) {
 
             //FILL SPAWN
-            if (Memory.rooms[creep.room.name].spawns[creep.memory.homespawn]) {
-                var target = Game.getObjectById(Memory.rooms[creep.room.name].spawns[creep.memory.homespawn].id);
+            if (Memory.spawns[creep.memory.homespawn]) {
+                var target = Game.getObjectById(Memory.spawns[creep.memory.homespawn].id);
                 if (target.energy < target.energyCapacity) {
                     setTarget(creep, target.id, 'LOWSP', target.room.name);
                 }
@@ -48,15 +48,15 @@ var creepActFunctions = function(creep) {
                                         if (Memory.rooms[creep.room.name].structure.container) {
                                             var containerC = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.controller);
                                             if (!containerC) {
-                                                  var containerC = 'no'
+                                                  var containerC = 'no';
                                             }
                                         }
                                         else {
-                                            var containerC = 'no'
+                                            var containerC = 'no';
                                         }
                                     }
                                     else {
-                                        var containerC = 'no'
+                                        var containerC = 'no';
                                     }
                                     // if one was found
                                     if (containerC !== 'no') {
@@ -72,19 +72,19 @@ var creepActFunctions = function(creep) {
                                                 if (Memory.rooms[creep.room.name].structure.container.source) {
                                                     var containerS = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source);
                                                     if (!containerS) {
-                                                          var containerS = 'no'
+                                                          var containerS = 'no';
                                                     }
                                                 }
                                                 else {
-                                                    var containerS = 'no'
+                                                    var containerS = 'no';
                                                 }
                                             }
                                             else {
-                                                var containerS = 'no'
+                                                var containerS = 'no';
                                             }
                                         }
                                         else {
-                                            var containerS = 'no'
+                                            var containerS = 'no';
                                         }
                                         // if one was found
                                         if (containerS !== 'no') {
@@ -100,19 +100,19 @@ var creepActFunctions = function(creep) {
                                                     if (Memory.rooms[creep.room.name].structure.container.source1) {
                                                         var containerSS = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source1);
                                                         if (!containerSS) {
-                                                              var containerSS = 'no'
+                                                              var containerSS = 'no';
                                                         }
                                                     }
                                                     else {
-                                                        var containerSS = 'no'
+                                                        var containerSS = 'no';
                                                     }
                                                 }
                                                 else {
-                                                    var containerSS = 'no'
+                                                    var containerSS = 'no';
                                                 }
                                             }
                                             else {
-                                                var containerSS = 'no'
+                                                var containerSS = 'no';
                                             }
                                             // if one was found
                                             if (containerSS !== 'no') {
