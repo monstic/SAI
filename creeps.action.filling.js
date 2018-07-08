@@ -3,94 +3,76 @@ var creepActFunctions = function(creep) {
     //SET TARGET FOR EACH ACTION
     if (!creep.memory.targetId || creep.memory.targetId === 'undefined') {
 
-        if (creep.carry[RESOURCE_GHODIUM_OXIDE] > 0) {
-            if (Memory.rooms[creep.room.name].structure.storage.mineral) {
-                var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
-            }
-            else {
-                var target = null;
-            }
-            // if one was found
-            if (target !== null && (_.sum(target.store) < 1000000)) {
-                setTarget(creep, target.id, 'LOWSTO', target.room.name);
-            }
-        }
-        else {
+        if (Memory.rooms[creep.room.name]) {
 
-            if (Memory.rooms[creep.room.name]) {
+            //FILL SPAWN
+            if (Memory.rooms[creep.room.name].spawns[creep.memory.homespawn]) {
+                var target = Game.getObjectById(Memory.rooms[creep.room.name].spawns[creep.memory.homespawn].id);
+                if (target.energy < target.energyCapacity) {
+                    setTarget(creep, target.id, 'LOWSP', target.room.name);
+                }
+                else {
 
-                //FILL SPAWN
-                if (Memory.rooms[creep.room.name].spawns[creep.memory.homespawn]) {
-                    var target = Game.getObjectById(Memory.rooms[creep.room.name].spawns[creep.memory.homespawn].id);
-                    if (target.energy < target.energyCapacity) {
-                        setTarget(creep, target.id, 'LOWSP', target.room.name);
+                    //FILL TOWERS IF IS UNDER ATTACK
+                    if (Memory.rooms[creep.room.name].security.underattack === 'yes') {
+                        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
+                        if (target) {
+                             setTarget(creep, target.id, 'LOWTW', creep.room.name);
+                        }
                     }
                     else {
 
-                        //FILL TOWERS IF IS UNDER ATTACK
-                        if (Memory.rooms[creep.room.name].security.underattack === 'yes') {
-                            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
-                            if (target) {
-                                 setTarget(creep, target.id, 'LOWTW', creep.room.name);
-                            }
+                        //FILL EXTENSIONS
+                        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity)});
+                        if (target) {
+                            setTarget(creep, target.id, 'LOWST', target.room.name);
                         }
                         else {
 
-                            //FILL EXTENSIONS
-                            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => (structure.structureType === STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity)});
+                            //FILL TOWERS WITH NO ENERGY
+                            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy === 0)))}});
                             if (target) {
-                                setTarget(creep, target.id, 'LOWST', target.room.name);
+                                setTarget(creep, target.id, 'LOWTW', target.room.name);
                             }
                             else {
 
-                                //FILL TOWERS WITH NO ENERGY
-                                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy === 0)))}});
+                                //FILL TOWERS IS NOT FULL
+                                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
                                 if (target) {
                                     setTarget(creep, target.id, 'LOWTW', target.room.name);
                                 }
                                 else {
 
-                                    //FILL TOWERS IS NOT FULL
-                                    var target = creep.pos.findClosestByPath(FIND_STRUCTURES, { filter: (structure) => { return ( ((structure.structureType === STRUCTURE_TOWER) && (structure.energy < structure.energyCapacity)))}});
-                                    if (target) {
-                                        setTarget(creep, target.id, 'LOWTW', target.room.name);
-                                    }
-                                    else {
-
-                                        //FILL CONTROLLER CONTAINER IF EXIST
-                                        if (Memory.rooms[creep.room.name].structure) {
-                                            if (Memory.rooms[creep.room.name].structure.container) {
-                                                var containerC = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.controller);
-                                                if (!containerC) {
-                                                      var containerC = 'no'
-                                                }
-                                            }
-                                            else {
-                                                var containerC = 'no'
+                                    //FILL CONTROLLER CONTAINER IF EXIST
+                                    if (Memory.rooms[creep.room.name].structure) {
+                                        if (Memory.rooms[creep.room.name].structure.container) {
+                                            var containerC = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.controller);
+                                            if (!containerC) {
+                                                  var containerC = 'no'
                                             }
                                         }
                                         else {
                                             var containerC = 'no'
                                         }
-                                        // if one was found
-                                        if (containerC !== 'no') {
-                                            if (containerC.store[RESOURCE_ENERGY] < containerC.storeCapacity) {
-                                                setTarget(creep, Memory.rooms[creep.room.name].structure.container.controller, 'LOWCT', creep.room.name);
-                                            }
+                                    }
+                                    else {
+                                        var containerC = 'no'
+                                    }
+                                    // if one was found
+                                    if (containerC !== 'no') {
+                                        if (containerC.store[RESOURCE_ENERGY] < containerC.storeCapacity) {
+                                            setTarget(creep, Memory.rooms[creep.room.name].structure.container.controller, 'LOWCT', creep.room.name);
                                         }
-                                        else {
+                                    }
+                                    else {
 
-                                            //FILL SOURCE 0 CONTAINER IF EXIST
-                                            if (Memory.rooms[creep.room.name].structure) {
-                                                if (Memory.rooms[creep.room.name].structure.container) {
-                                                    if (Memory.rooms[creep.room.name].structure.container.source) {
-                                                        var containerS = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source);
-                                                        if (!containerS) {
-                                                              var containerS = 'no'
-                                                        }
-                                                    }
-                                                    else {
-                                                        var containerS = 'no'
+                                        //FILL SOURCE 0 CONTAINER IF EXIST
+                                        if (Memory.rooms[creep.room.name].structure) {
+                                            if (Memory.rooms[creep.room.name].structure.container) {
+                                                if (Memory.rooms[creep.room.name].structure.container.source) {
+                                                    var containerS = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source);
+                                                    if (!containerS) {
+                                                          var containerS = 'no'
                                                     }
                                                 }
                                                 else {
@@ -100,25 +82,25 @@ var creepActFunctions = function(creep) {
                                             else {
                                                 var containerS = 'no'
                                             }
-                                            // if one was found
-                                            if (containerS !== 'no') {
-                                                if (containerS.store[RESOURCE_ENERGY] < containerS.storeCapacity) {
-                                                    setTarget(creep, Memory.rooms[creep.room.name].structure.container.source, 'LOWCT', creep.room.name);
-                                                }
+                                        }
+                                        else {
+                                            var containerS = 'no'
+                                        }
+                                        // if one was found
+                                        if (containerS !== 'no') {
+                                            if (containerS.store[RESOURCE_ENERGY] < containerS.storeCapacity) {
+                                                setTarget(creep, Memory.rooms[creep.room.name].structure.container.source, 'LOWCT', creep.room.name);
                                             }
-                                            else {
+                                        }
+                                        else {
 
-                                                //FILL SOURCE 1 CONTAINER IF EXIST
-                                                if (Memory.rooms[creep.room.name].structure) {
-                                                    if (Memory.rooms[creep.room.name].structure.container) {
-                                                        if (Memory.rooms[creep.room.name].structure.container.source1) {
-                                                            var containerSS = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source1);
-                                                            if (!containerSS) {
-                                                                  var containerSS = 'no'
-                                                            }
-                                                        }
-                                                        else {
-                                                            var containerSS = 'no'
+                                            //FILL SOURCE 1 CONTAINER IF EXIST
+                                            if (Memory.rooms[creep.room.name].structure) {
+                                                if (Memory.rooms[creep.room.name].structure.container) {
+                                                    if (Memory.rooms[creep.room.name].structure.container.source1) {
+                                                        var containerSS = Game.getObjectById(Memory.rooms[creep.room.name].structure.container.source1);
+                                                        if (!containerSS) {
+                                                              var containerSS = 'no'
                                                         }
                                                     }
                                                     else {
@@ -128,11 +110,14 @@ var creepActFunctions = function(creep) {
                                                 else {
                                                     var containerSS = 'no'
                                                 }
-                                                // if one was found
-                                                if (containerSS !== 'no') {
-                                                    if ((_.sum(containerSS.store) < 1000000)) {
-                                                        setTarget(creep, target.id, 'LOWSTO', target.room.name);
-                                                    }
+                                            }
+                                            else {
+                                                var containerSS = 'no'
+                                            }
+                                            // if one was found
+                                            if (containerSS !== 'no') {
+                                                if ((_.sum(containerSS.store) < 1000000)) {
+                                                    setTarget(creep, target.id, 'LOWSTO', target.room.name);
                                                 }
                                             }
                                         }

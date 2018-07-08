@@ -37,6 +37,17 @@ countCreepsInSource =
         return i;
     };
 
+//SET TARGET
+setTarget =
+    function (creep, targetid, type, roomname) {
+        creep.memory.targetId = targetid;
+        creep.memory.targetType = type;
+        creep.memory.targetRoom = roomname;
+        var target = Game.getObjectById(targetid);
+        creep.memory.path = creep.pos.findPathTo(target);
+        return 1;
+    };
+
 
 //CREEP TYPES
 spawnProtoCreep =

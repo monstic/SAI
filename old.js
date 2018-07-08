@@ -1486,3 +1486,17 @@ function (creep, target) {
         creep.drop(RESOURCE_GHODIUM_OXIDE);
         creep.say('🚨🚨');
     }
+        if (creep.carry[RESOURCE_GHODIUM_OXIDE] > 0) {
+            if (Memory.rooms[creep.room.name].structure.storage.mineral) {
+                var target = Game.getObjectById(Memory.rooms[creep.room.name].structure.storage.mineral);
+            }
+            else {
+                var target = null;
+            }
+            // if one was found
+            if (target !== null && (_.sum(target.store) < 1000000)) {
+                setTarget(creep, target.id, 'LOWSTO', target.room.name);
+            }
+        }
+        else {
+
