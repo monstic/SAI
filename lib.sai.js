@@ -28,8 +28,8 @@ countCreeps =
 spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
         var spawn = Game.spawns[spawnname];
+        console.log('debug');
         if (!spawn.spawning) {
-            log('debug');
             if (spawn.energy >= 200) {
                 var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
                 var spawn = Game.spawns[spawnname];
