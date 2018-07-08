@@ -24,6 +24,20 @@ countCreeps =
         }
     };
 
+//COUNT CREEPS IN SAME SOURCE
+countCreepsInSource =
+    function (source) {
+        var creeps = Game.creeps;
+        var i = 0;
+        for (var creep in creeps) {
+            if (creeps[creep].memory.sourceId === source) {
+                i++;
+            }
+        }
+        return i;
+    };
+
+
 //CREEP TYPES
 spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
