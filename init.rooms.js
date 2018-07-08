@@ -199,6 +199,9 @@ module.exports = function (room) {
         //END CRON 1
 
     }
+    else {
+        Memory.rooms = {};
+    }
 
 };
 //END ROOM
