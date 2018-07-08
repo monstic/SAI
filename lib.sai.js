@@ -66,11 +66,10 @@ cleanTarget =
 spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
         var spawn = Game.spawns[spawnname];
+        var room = Game.rooms[spawn.pos.roomName];
         if (!spawn.spawning) {
             var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
             if (spawn.energy >= 200) {
-                var spawn = Game.spawns[spawnname];
-                var room = Game.rooms[spawn.pos.roomName];
                 if (totalHarvesters === 0) {
                     var totalOfParts = 1;
                 }
