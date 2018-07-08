@@ -55,8 +55,26 @@ module.exports = function (room) {
                 Memory.rooms[room.name].cron[1].lastrun = Game.time;
                 Memory.rooms[room.name].cron[1].interval = 15;
             }
+            
+            //REGISTER AVAILABLE SOURCES
+            if (!Memory.rooms[room.name].sources || Memory.rooms[room.name].sources === 'undefined') {
+                var findSources = room.find(FIND_SOURCES);
+                if (findSources.length > 0) {
+                    Memory.rooms[room.name].sources = {};
+                    Memory.rooms[room.name].sources.total = findSources.length;
+                    console.log('Found ' + findSources.length + ' source(s) in room ' + room.name + '.');
+                    i = 0;
+                    while (i < findSources.length) {
+                        Memory.rooms[room.name].sources[i] = findSources[i].id;
+                        console.log('Source ' + findSources[i].id + ' registered in room ' + room.name + '.');
+                        i++;
+                    }
+                }
+            }
 
         }
+        
+
 
 
         //START CRONJOBS
@@ -92,92 +110,6 @@ module.exports = function (room) {
                   Memory.rooms[room.name].security.underattack = 0;
               }
             }
-
-
-            //DEFINE WALL AND RAMPART POSITIONS
-            if (Memory.rooms[room.name].exit) {
-                if (!Memory.rooms[room.name].exit.left) {
-                    Memory.rooms[room.name].exit.left = {};
-                    //SAVE EXIT POSITION
-                    var exits = room.find(FIND_EXIT_LEFT);
-                    if (exits.length > 0) {
-                        for (var exit in exits) {
-                            Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
-                        }
-                    }
-                    //SAVE RAMPART POSITION
-                    var countExits = room.find(FIND_EXIT_LEFT);
-                    var rexits = Memory.rooms[room.name].exit.left;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === parseInt(countExits.length/2)) {
-                            delete Memory.rooms[room.name].exit.left[exit];
-                        }
-                        i++;
-                    }
-                }
-                if (!Memory.rooms[room.name].exit.right) {
-                    Memory.rooms[room.name].exit.right = {};
-                    //SAVE EXIT POSITION
-                    var exits = room.find(FIND_EXIT_RIGHT);
-                    if (exits.length > 0) {
-                        for (var exit in exits) {
-                            Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
-                        }
-                    }
-                    //SAVE RAMPART POSITION
-                    var countExits = room.find(FIND_EXIT_RIGHT);
-                    var rexits = Memory.rooms[room.name].exit.right;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === parseInt(countExits.length/2)) {
-                            delete Memory.rooms[room.name].exit.right[exit];
-                        }
-                        i++;
-                    }
-                }
-                if (!Memory.rooms[room.name].exit.top) {
-                    Memory.rooms[room.name].exit.top = {};
-                    //SAVE EXIT POSITION
-                    var exits = room.find(FIND_EXIT_TOP);
-                    if (exits.length > 0) {
-                        for (var exit in exits) {
-                            Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
-                        }
-                    }
-                    //SAVE RAMPART POSITION
-                    var countExits = room.find(FIND_EXIT_TOP);
-                    var rexits = Memory.rooms[room.name].exit.top;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === parseInt(countExits.length/2)) {
-                            delete Memory.rooms[room.name].exit.top[exit];
-                        }
-                        i++;
-                    }
-                }
-                if (!Memory.rooms[room.name].exit.bottom) {
-                    Memory.rooms[room.name].exit.bottom = {};
-                    //SAVE EXIT POSITION
-                    var exits = room.find(FIND_EXIT_BOTTOM);
-                    if (exits.length > 0) {
-                        for (var exit in exits) {
-                            Memory.rooms[room.name].exit.bottom[exits[exit].x] = exits[exit].x;
-                        }
-                    }
-                    //SAVE RAMPART POSITION
-                    var countExits = room.find(FIND_EXIT_BOTTOM);
-                    var rexits = Memory.rooms[room.name].exit.bottom;
-                    var i = 0;
-                    for (var exit in rexits) {
-                        if (i === parseInt(countExits.length/2)) {
-                            delete Memory.rooms[room.name].exit.bottom[exit];
-                        }
-                        i++;
-                    }
-                }
-            }
-
         }
         //END CRON 0
 

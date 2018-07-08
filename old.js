@@ -1399,3 +1399,86 @@ function (creep, target) {
         creep.move(creep.pos.getDirectionTo(pos));
     }
 };
+            //DEFINE WALL AND RAMPART POSITIONS
+            if (Memory.rooms[room.name].exit) {
+                if (!Memory.rooms[room.name].exit.left) {
+                    Memory.rooms[room.name].exit.left = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_LEFT);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.left[exits[exit].y] = exits[exit].y;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_LEFT);
+                    var rexits = Memory.rooms[room.name].exit.left;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.left[exit];
+                        }
+                        i++;
+                    }
+                }
+                if (!Memory.rooms[room.name].exit.right) {
+                    Memory.rooms[room.name].exit.right = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_RIGHT);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.right[exits[exit].y] = exits[exit].y;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_RIGHT);
+                    var rexits = Memory.rooms[room.name].exit.right;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.right[exit];
+                        }
+                        i++;
+                    }
+                }
+                if (!Memory.rooms[room.name].exit.top) {
+                    Memory.rooms[room.name].exit.top = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_TOP);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.top[exits[exit].x] = exits[exit].x;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_TOP);
+                    var rexits = Memory.rooms[room.name].exit.top;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.top[exit];
+                        }
+                        i++;
+                    }
+                }
+                if (!Memory.rooms[room.name].exit.bottom) {
+                    Memory.rooms[room.name].exit.bottom = {};
+                    //SAVE EXIT POSITION
+                    var exits = room.find(FIND_EXIT_BOTTOM);
+                    if (exits.length > 0) {
+                        for (var exit in exits) {
+                            Memory.rooms[room.name].exit.bottom[exits[exit].x] = exits[exit].x;
+                        }
+                    }
+                    //SAVE RAMPART POSITION
+                    var countExits = room.find(FIND_EXIT_BOTTOM);
+                    var rexits = Memory.rooms[room.name].exit.bottom;
+                    var i = 0;
+                    for (var exit in rexits) {
+                        if (i === parseInt(countExits.length/2)) {
+                            delete Memory.rooms[room.name].exit.bottom[exit];
+                        }
+                        i++;
+                    }
+                }
+            }

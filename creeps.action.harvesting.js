@@ -3,76 +3,71 @@ var creepActFunctions = function(creep) {
     //SET TARGET FOR EACH ACTION
     if (!creep.memory.sourceId || creep.memory.sourceId === 'undefined') {
 
-        //harvesting
-        if (creep.memory.action === 'harvesting') {
+        if (Memory.rooms[creep.room.name].sources) {
+            var sources = Memory.rooms[creep.room.name].sources;
+            var haveSources = Memory.rooms[creep.room.name].sources.total;
+        }
 
-            if (Memory.rooms[creep.room.name].sources) {
-                var sources = Memory.rooms[creep.room.name].sources;
-                var haveSources = Memory.rooms[creep.room.name].sources.total;
+
+        if (haveSources > 0) {
+
+            if (haveSources === 1) {
+                creep.memory.sourceId = sources[0];
+                creep.memory.sourceRoom = creep.room.name;
+                creep.memory.sourceType = 'SCAC';
             }
 
-
-            if (haveSources > 0) {
-
-                if (haveSources === 1) {
+            if (haveSources === 2) {
+                var isBusy = countCreepsInSource(sources[0]);
+                if (isBusy > 0) {
+                    var isBusyToo = countCreepsInSource(sources[1]);
+                    if (isBusyToo > 0) {
+                        creep.say('?');
+                        creep.memory.action = 'undefined';
+                    }
+                    else {
+                        creep.memory.sourceId = sources[1];
+                        creep.memory.sourceRoom = creep.room.name;
+                        creep.memory.sourceType = 'SCAC';
+                    }
+                }
+                else {
                     creep.memory.sourceId = sources[0];
                     creep.memory.sourceRoom = creep.room.name;
                     creep.memory.sourceType = 'SCAC';
                 }
+            }
 
-                if (haveSources === 2) {
-                    var isBusy = countCreepsInSource(sources[0]);
-                    if (isBusy > 0) {
-                        var isBusyToo = countCreepsInSource(sources[1]);
-                        if (isBusyToo > 0) {
+            if (haveSources >= 3) {
+                var isBusy = countCreepsInSource(sources[0]);
+                if (isBusy > 0) {
+                    var isBusyToo = countCreepsInSource(sources[1]);
+                    if (isBusyToo > 0) {
+                        var isBusyTooToo = countCreepsInSource(sources[2]);
+                        if (isBusyTooToo > 0) {
                             creep.say('?');
                             creep.memory.action = 'undefined';
                         }
                         else {
-                            creep.memory.sourceId = sources[1];
+                            creep.memory.sourceId = sources[2];
                             creep.memory.sourceRoom = creep.room.name;
                             creep.memory.sourceType = 'SCAC';
                         }
                     }
                     else {
-                        creep.memory.sourceId = sources[0];
+                        creep.memory.sourceId = sources[1];
                         creep.memory.sourceRoom = creep.room.name;
                         creep.memory.sourceType = 'SCAC';
                     }
                 }
-
-                if (haveSources >= 3) {
-                    var isBusy = countCreepsInSource(sources[0]);
-                    if (isBusy > 0) {
-                        var isBusyToo = countCreepsInSource(sources[1]);
-                        if (isBusyToo > 0) {
-                            var isBusyTooToo = countCreepsInSource(sources[2]);
-                            if (isBusyTooToo > 0) {
-                                creep.say('?');
-                                creep.memory.action = 'undefined';
-                            }
-                            else {
-                                creep.memory.sourceId = sources[2];
-                                creep.memory.sourceRoom = creep.room.name;
-                                creep.memory.sourceType = 'SCAC';
-                            }
-                        }
-                        else {
-                            creep.memory.sourceId = sources[1];
-                            creep.memory.sourceRoom = creep.room.name;
-                            creep.memory.sourceType = 'SCAC';
-                        }
-                    }
-                    else {
-                        creep.memory.sourceId = sources[0];
-                        creep.memory.sourceRoom = creep.room.name;
-                        creep.memory.sourceType = 'SCAC';
-                    }
+                else {
+                    creep.memory.sourceId = sources[0];
+                    creep.memory.sourceRoom = creep.room.name;
+                    creep.memory.sourceType = 'SCAC';
                 }
-
             }
-        }
 
+        }
     }
 
     if (creep.memory.sourceId) {
