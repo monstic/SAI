@@ -34,6 +34,12 @@ if (!Memory.rooms || Memory.rooms === undefined) {
     console.log('Rooms database created.');
 }
 
+//CREATE SPAWNS DATABASE
+if (!Memory.spawns || Memory.spawns === undefined) {
+    Memory.spawns = {};
+    console.log('Spawns database created.');
+}
+
 //CREATE FLAGS DATABASE
 if (!Memory.flags || Memory.flags === undefined) {
     Memory.flags = {};
