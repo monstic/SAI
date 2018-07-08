@@ -1482,3 +1482,7 @@ function (creep, target) {
                     }
                 }
             }
+    if (creep.carry[RESOURCE_GHODIUM_OXIDE] > 0) {
+        creep.drop(RESOURCE_GHODIUM_OXIDE);
+        creep.say('🚨🚨');
+    }
