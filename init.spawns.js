@@ -29,8 +29,8 @@ module.exports = function (spawn) {
                     if (!Memory.spawns[spawn.name] || Memory.spawns[spawn.name] === undefined) {
                         Memory.spawns[spawn.name] = {};
                         Memory.spawns[spawn.name] = spawnObject;
+                        console.log('Spawner ' + spawn.name + ' registered in database.');
                     }
-                    console.log('Spawner ' + spawn.name + ' registered in database.');
                     //CREATE SPAWN RULES
                     if (!Memory.spawns[spawn.name].spawner || Memory.spawns[spawn.name].spawner === undefined) {
                         Memory.spawns[spawn.name].spawner = {};
