@@ -28,10 +28,8 @@ countCreeps =
 spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
         var spawn = Game.spawns[spawnname];
-        console.log('debug');
         if (!spawn.spawning) {
             if (spawn.energy >= 200) {
-                var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
                 var spawn = Game.spawns[spawnname];
                 var room = Game.rooms[spawn.pos.roomName];
                 if (totalHarvesters === 0) {
@@ -217,6 +215,33 @@ spawnProtoCreep =
                         console.log(result);
                     }
                 }
+            }
+            else {
+                var totalHarvesters = countCreeps('harvester', spawn.pos.roomName);
+                if (totalHarvesters === 0) {
+                    var totalOfParts = 1;
+                    if (creeptype === 'harvester') {
+                        var maxOfWorkParts = 8;
+                        var maxOfCarryParts = 3;
+                        var maxOfMoveParts = 3;
+                        var body = [];
+                        var i = 0;
+                        while (i < totalOfParts) {
+                            if (i < maxOfWorkParts) {
+                                body.push(WORK);
+                            }
+                            if (i < maxOfCarryParts) {
+                                body.push(CARRY);
+                            }
+                            if (i < maxOfMoveParts) {
+                                body.push(MOVE);
+                            }
+                        i++;
+                        }
+                    }
+
+                }
+
             }
         }
     };
