@@ -5,7 +5,7 @@
 //START
 
 //USE THIS ONLY IF HAVE ERRORS
-var FORCE_PAUSE = false;
+var FORCE_PAUSE = true;
 if (FORCE_PAUSE !== true) {
 
     //LIBS
