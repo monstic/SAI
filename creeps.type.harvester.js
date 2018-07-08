@@ -1,5 +1,7 @@
 var creepTypeFunctions = function(creep) {
 
+    log('debug');
+
     //DEFINE ACTIONS
     if (creep.carry.energy === 0 && creep.memory.action !== 'harvesting') {
         creep.memory.action = 'harvesting';
