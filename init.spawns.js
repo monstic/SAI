@@ -66,7 +66,7 @@ module.exports = function (spawn) {
                         spawnProtoCreep(spawn.name, 'harvester', spawn.pos.roomName);
                     }
                 }
-            }SS
+            }
 
         }
     }
