@@ -60,6 +60,7 @@ module.exports = function (spawn) {
                 //HARVESTER
                 if (Memory.spawns[spawn.name].spawner.harvester > 0) {
                     var harvestersLive = countCreeps('harvesrter', spawn.pos.roomName);
+                    console.log('You have ' + harvestersLive + ' harvesters alive in room ' + spawn.pos.roomName);
                     if (harvestersLive < Memory.spawns[spawn.name].spawner.harvester) {
                         spawnProtoCreep(spawn.name, 'harvester', spawn.pos.roomName);
                     }
