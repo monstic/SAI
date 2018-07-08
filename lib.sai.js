@@ -27,6 +27,7 @@ countCreeps =
 //CREEP TYPES
 spawnProtoCreep =
     function (spawnname, creeptype, creepgoto) {
+        log(spawnname, creeptype, creepgoto);
         var spawn = Game.spawns[spawnname];
         if (!spawn.spawning) {
             if (spawn.energy >= 200) {
