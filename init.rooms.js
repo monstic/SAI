@@ -36,6 +36,14 @@ module.exports = function (room) {
                 Memory.rooms[room.name].security.level = 0;
             }
             
+            //ROOM DB
+            if (!Memory.rooms[creep.room.name].structure || Memory.rooms[creep.room.name].structure === 'undefined') {
+                Memory.rooms[creep.room.name].structure = {};
+            }
+            if (!Memory.rooms[creep.room.name].structure.container || Memory.rooms[creep.room.name].structure.container === 'undefined') {
+                Memory.rooms[creep.room.name].structure.container = {};
+            }
+            
             if (!Memory.hostiles || Memory.hostiles === 'undefined') {
                 Memory.hostiles = {};
             }
