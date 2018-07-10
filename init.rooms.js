@@ -40,6 +40,9 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].structure || Memory.rooms[room.name].structure === 'undefined') {
                 Memory.rooms[room.name].structure = {};
             }
+            if (!Memory.rooms[room.name].structure.container || Memory.rooms[room.name].structure.container === 'undefined') {
+                Memory.rooms[room.name].structure.container = {};
+            }
             
             if (!Memory.hostiles || Memory.hostiles === 'undefined') {
                 Memory.hostiles = {};
