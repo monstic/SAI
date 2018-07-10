@@ -65,6 +65,14 @@ module.exports = function (spawn) {
                         spawnProtoCreep(spawn.name, 'harvester', spawn.pos.roomName);
                     }
                 }
+                //UPGRADER
+                if (Memory.spawns[spawn.name].spawner.upgrader > 0) {
+                    var upgradersLive = countCreeps('upgrader', spawn.pos.roomName);
+                    console.log('You have ' + upgradersLive + ' upgraders alive in room ' + spawn.pos.roomName);
+                    if (upgradersLive < Memory.spawns[spawn.name].spawner.harvester) {
+                        spawnProtoCreep(spawn.name, 'upgrader', spawn.pos.roomName);
+                    }
+                }
             }
 
         }
