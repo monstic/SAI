@@ -61,6 +61,21 @@ cleanTarget =
         return 1;
     };
 
+//SIGN CONTROLLER
+signController =
+    function (creep) {
+        if (creep.room.controller) {
+            if (creep.room.controller.my) {
+                if (!creep.room.controller.sign) {
+                    var SignMessage = Memory.system.signmsg;
+                    if (creep.signController(creep.room.controller, SignMessage) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(creep.room.controller);
+                    }
+                }
+            }
+        }
+    };
+
 
 //CREEP TYPES
 spawnProtoCreep =
