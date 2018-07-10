@@ -43,6 +43,12 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].structure.container || Memory.rooms[room.name].structure.container === 'undefined') {
                 Memory.rooms[room.name].structure.container = {};
             }
+            if (!Memory.rooms[room.name].structure.storage || Memory.rooms[room.name].structure.storage === 'undefined') {
+                Memory.rooms[room.name].structure.storage = {};
+            }
+            if (!Memory.rooms[room.name].structure.storage.mineral || Memory.rooms[room.name].structure.storage.mineral === 'undefined') {
+                Memory.rooms[room.name].structure.storage.mineral = {};
+            }
             if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
                 Memory.rooms[room.name].mineral = {};
             }
