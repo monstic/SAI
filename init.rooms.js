@@ -43,6 +43,9 @@ module.exports = function (room) {
             if (!Memory.rooms[room.name].structure.container || Memory.rooms[room.name].structure.container === 'undefined') {
                 Memory.rooms[room.name].structure.container = {};
             }
+            if (!Memory.rooms[room.name].mineral || Memory.rooms[room.name].mineral === 'undefined') {
+                Memory.rooms[room.name].mineral = {};
+            }
             
             if (!Memory.hostiles || Memory.hostiles === 'undefined') {
                 Memory.hostiles = {};
